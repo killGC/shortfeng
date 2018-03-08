@@ -341,8 +341,7 @@
 </ul>
 </blockquote>
 <hr>
-<p>###拦截器与过滤器的区别</p>
-<blockquote>
+<h3 id="拦截器与过滤器的区别"><a href="#拦截器与过滤器的区别" class="headerlink" title="拦截器与过滤器的区别"></a>拦截器与过滤器的区别</h3><blockquote>
 <ul>
 <li>过滤器可以简单的理解为“取你所想取”，过滤器关注的是web请求；</li>
 <li>拦截器可以简单的理解为“拒你所想拒”，拦截器关注的是方法调用，比如拦截敏感词汇</li>
@@ -368,7 +367,7 @@
 <p>Filter-&gt;Interceptor.preHandle-&gt;Handler-&gt;Interceptor.postHandle-&gt;Interceptor.afterCompletion-&gt;Filter</p>
 <h4 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h4><p>拦截器本质上是面向切面编程（AOP），符合横切关注点的功能都可以放在拦截器中来实现，主要的应用场景包括：</p>
 <p>登录验证，判断用户是否登录。<br>权限验证，判断用户是否有权限访问资源。<br>日志记录，记录请求日志，以便统计请求访问量。<br>处理cookie、本地化、国际化、主题等。<br>性能监控，监控请求处理时长等。</p>
-<p>####spring boot配置拦截器<br>为了使自定义的拦截器生效，需要注册拦截器到spring容器中，具体的做法是继承WebMvcConfigurerAdapter类，覆盖其addInterceptors(InterceptorRegistry registry)方法。最后别忘了把Bean注册到Spring容器中，可以选择@Component 或者 @Configuration</p>
+<h4 id="spring-boot配置拦截器"><a href="#spring-boot配置拦截器" class="headerlink" title="spring boot配置拦截器"></a>spring boot配置拦截器</h4><p>为了使自定义的拦截器生效，需要注册拦截器到spring容器中，具体的做法是继承WebMvcConfigurerAdapter类，覆盖其addInterceptors(InterceptorRegistry registry)方法。最后别忘了把Bean注册到Spring容器中，可以选择@Component 或者 @Configuration</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class InterceptorConfiguration extends WebMvcConfigurerAdapter&#123;</span><br><span class="line">@Override</span><br><span class="line">public void addInterceptors(InterceptorRegistry registry) &#123;</span><br><span class="line">// 注册拦截器</span><br><span class="line">InterceptorRegistration ir = registry.addInterceptor(new LoginInterceptor());</span><br><span class="line">// 配置拦截的路径</span><br><span class="line">ir.addPathPatterns(&quot;/**&quot;);</span><br><span class="line">// 配置不拦截的路径</span><br><span class="line">ir.excludePathPatterns(&quot;/**.html&quot;);</span><br><span class="line"></span><br><span class="line">// 还可以在这里注册其它的拦截器</span><br><span class="line">//registry.addInterceptor(new OtherInterceptor()).addPathPatterns(&quot;/**&quot;);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
           
