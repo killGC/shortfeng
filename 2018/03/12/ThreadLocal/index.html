@@ -94,17 +94,17 @@
 
 
 
-<meta name="description" content="ThreadLocal Thread类保存了ThreadLocalMap类型的变量, ThreadLocalMap的key为ThreadLoacal对象 1ThreadLocal.ThreadLocalMap threadLocals = null; ThreadLocal类，支持范型 12345678910111213public T get() &amp;#123;    Thread t = Thr">
+<meta name="description" content="ThreadLocal   synchronized 以时间换空间 ThreadLocal 以空间换时间   Thread类保存了ThreadLocalMap类型的变量, ThreadLocalMap的key为ThreadLoacal对象 1ThreadLocal.ThreadLocalMap threadLocals = null; ThreadLocal类，支持范型 1234567891011">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ThreadLocal">
 <meta property="og:url" content="https://killgc.github.io/shortfeng/2018/03/12/ThreadLocal/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="ThreadLocal Thread类保存了ThreadLocalMap类型的变量, ThreadLocalMap的key为ThreadLoacal对象 1ThreadLocal.ThreadLocalMap threadLocals = null; ThreadLocal类，支持范型 12345678910111213public T get() &amp;#123;    Thread t = Thr">
+<meta property="og:description" content="ThreadLocal   synchronized 以时间换空间 ThreadLocal 以空间换时间   Thread类保存了ThreadLocalMap类型的变量, ThreadLocalMap的key为ThreadLoacal对象 1ThreadLocal.ThreadLocalMap threadLocals = null; ThreadLocal类，支持范型 1234567891011">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-12T10:04:32.000Z">
+<meta property="og:updated_time" content="2018-03-12T10:07:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ThreadLocal">
-<meta name="twitter:description" content="ThreadLocal Thread类保存了ThreadLocalMap类型的变量, ThreadLocalMap的key为ThreadLoacal对象 1ThreadLocal.ThreadLocalMap threadLocals = null; ThreadLocal类，支持范型 12345678910111213public T get() &amp;#123;    Thread t = Thr">
+<meta name="twitter:description" content="ThreadLocal   synchronized 以时间换空间 ThreadLocal 以空间换时间   Thread类保存了ThreadLocalMap类型的变量, ThreadLocalMap的key为ThreadLoacal对象 1ThreadLocal.ThreadLocalMap threadLocals = null; ThreadLocal类，支持范型 1234567891011">
 
 
 
@@ -330,6 +330,12 @@
 
       
         <h2 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h2><hr>
+<blockquote>
+<ul>
+<li>synchronized 以时间换空间</li>
+<li>ThreadLocal 以空间换时间</li>
+</ul>
+</blockquote>
 <p>Thread类保存了ThreadLocalMap类型的变量, ThreadLocalMap的key为ThreadLoacal对象</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ThreadLocal.ThreadLocalMap threadLocals = <span class="keyword">null</span>;</span><br></pre></td></tr></table></figure>
 <p>ThreadLocal类，支持范型</p>
