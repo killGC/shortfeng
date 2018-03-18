@@ -94,17 +94,21 @@
 
 
 
-<meta name="description" content="性能优化相关linux命令 top命令top命令是Linux下常用的性能分析工具，能够实时显示系统中各个进程的资源占用状况，类似于Windows的任务管理器，查看系统平均负载和 CPU 使用率 平均负载有三个数字：63.66，58.39，57.18，分别表示过去 1 分钟、5 分钟、15 分钟机器的负载。按照经验，若数值小于 0.7*CPU 个数，则系统工作正常；若超过这个值，甚至达到 CPU 核">
+<meta name="description" content="并发控制mysql通过加锁进行并发控制。mysql有两种锁，分别是共享锁和排它锁，也叫读锁和写锁。读锁是共享的，写锁是排它的。多个读锁可以同时存在，但是写锁不能和读锁和写锁共存。在读多写少的场景比较适合读写锁。 按锁的粒度，分为表级锁和行级锁。 myisam与innoDB区别  innoDB支持事务，myisam不支持 innoDB支持外键，myisam不支持 innoDB是聚集索引，数据文件和索">
 <meta property="og:type" content="article">
-<meta property="og:title" content="性能优化相关linux命令">
-<meta property="og:url" content="https://killgc.github.io/shortfeng/2018/03/13/性能优化相关linux命令/index.html">
+<meta property="og:title" content="mysql">
+<meta property="og:url" content="https://killgc.github.io/shortfeng/2018/03/18/mysql/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="性能优化相关linux命令 top命令top命令是Linux下常用的性能分析工具，能够实时显示系统中各个进程的资源占用状况，类似于Windows的任务管理器，查看系统平均负载和 CPU 使用率 平均负载有三个数字：63.66，58.39，57.18，分别表示过去 1 分钟、5 分钟、15 分钟机器的负载。按照经验，若数值小于 0.7*CPU 个数，则系统工作正常；若超过这个值，甚至达到 CPU 核">
+<meta property="og:description" content="并发控制mysql通过加锁进行并发控制。mysql有两种锁，分别是共享锁和排它锁，也叫读锁和写锁。读锁是共享的，写锁是排它的。多个读锁可以同时存在，但是写锁不能和读锁和写锁共存。在读多写少的场景比较适合读写锁。 按锁的粒度，分为表级锁和行级锁。 myisam与innoDB区别  innoDB支持事务，myisam不支持 innoDB支持外键，myisam不支持 innoDB是聚集索引，数据文件和索">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-14T12:56:36.000Z">
+<meta property="og:image" content="http://omu7tit09.bkt.clouddn.com/15005180938867.jpg">
+<meta property="og:image" content="http://omu7tit09.bkt.clouddn.com/15005182105086.jpg">
+<meta property="og:image" content="http://omu7tit09.bkt.clouddn.com/15005182105086.jpg">
+<meta property="og:updated_time" content="2018-03-18T14:16:01.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="性能优化相关linux命令">
-<meta name="twitter:description" content="性能优化相关linux命令 top命令top命令是Linux下常用的性能分析工具，能够实时显示系统中各个进程的资源占用状况，类似于Windows的任务管理器，查看系统平均负载和 CPU 使用率 平均负载有三个数字：63.66，58.39，57.18，分别表示过去 1 分钟、5 分钟、15 分钟机器的负载。按照经验，若数值小于 0.7*CPU 个数，则系统工作正常；若超过这个值，甚至达到 CPU 核">
+<meta name="twitter:title" content="mysql">
+<meta name="twitter:description" content="并发控制mysql通过加锁进行并发控制。mysql有两种锁，分别是共享锁和排它锁，也叫读锁和写锁。读锁是共享的，写锁是排它的。多个读锁可以同时存在，但是写锁不能和读锁和写锁共存。在读多写少的场景比较适合读写锁。 按锁的粒度，分为表级锁和行级锁。 myisam与innoDB区别  innoDB支持事务，myisam不支持 innoDB支持外键，myisam不支持 innoDB是聚集索引，数据文件和索">
+<meta name="twitter:image" content="http://omu7tit09.bkt.clouddn.com/15005180938867.jpg">
 
 
 
@@ -133,13 +137,13 @@
 
 
 
-  <link rel="canonical" href="https://killgc.github.io/shortfeng/2018/03/13/性能优化相关linux命令/"/>
+  <link rel="canonical" href="https://killgc.github.io/shortfeng/2018/03/18/mysql/"/>
 
 
 
 
 
-  <title>性能优化相关linux命令 | Hexo</title>
+  <title>mysql | Hexo</title>
   
 
 
@@ -262,7 +266,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/13/性能优化相关linux命令/">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/18/mysql/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="changfeng">
@@ -279,7 +283,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">性能优化相关linux命令</h1>
+          <h1 class="post-title" itemprop="name headline">mysql</h1>
         
 
         <div class="post-meta">
@@ -291,8 +295,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-13T16:48:10+08:00">
-                2018-03-13
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-18T16:23:56+08:00">
+                2018-03-18
               </time>
             
 
@@ -329,173 +333,79 @@
       
 
       
-        <h2 id="性能优化相关linux命令"><a href="#性能优化相关linux命令" class="headerlink" title="性能优化相关linux命令"></a>性能优化相关linux命令</h2><hr>
-<h4 id="top命令"><a href="#top命令" class="headerlink" title="top命令"></a>top命令</h4><p>top命令是Linux下常用的性能分析工具，能够实时显示系统中各个进程的资源占用状况，类似于Windows的任务管理器，查看系统平均负载和 CPU 使用率</p>
-<p>平均负载有三个数字：63.66，58.39，57.18，分别表示过去 1 分钟、5 分钟、15 分钟机器的负载。按照经验，若数值小于 0.7*CPU 个数，则系统工作正常；若超过这个值，甚至达到 CPU 核数的四五倍，则系统的负载就明显偏高</p>
-<p>命令格式：<br>top [参数]</p>
-<p>命令功能：<br>显示当前系统正在执行的进程的相关信息，包括进程ID、内存占用率、CPU占用率等</p>
-<p>默认以pid倒序排序<br>命令参数：</p>
-<pre><code>top    [-a | -d | -e | -c &lt;mode&gt;]
-       [-F | -f]
-       [-h]
-       [-i &lt;interval&gt;]
-       [-l &lt;samples&gt;]
-       [-ncols &lt;columns&gt;]
-       [-o &lt;key&gt;] [-O &lt;skey&gt;]
-       [-R | -r]
-       [-S]
-       [-s &lt;delay&gt;]
-       [-n &lt;nprocs&gt;]
-       [-stats &lt;keys&gt;]
-       [-pid &lt;processid&gt;]
-       [-user &lt;username&gt;]
-       [-U &lt;username&gt;]
-       [-u]
-
- [-a | -d | -e | -c &lt;mode&gt;] 
- -c &lt;mode&gt;
-    a 累积模式,从top命令执行开始计算
-    d delta模式
-    e 绝对模式，计算事件的绝对数量
-    n 无事件模式，为默认模式
- -a 等同与-c a，类似的-d、-e 分别等同与-c d、-c e
-
- [-F | -f]
- -F 不计算共享内存
- -f 计算共享内存，默认
-
- [-h] 打印信息并退出 **这个参数执行不了**
- [-i &lt;interval&gt;] 每隔多少秒更新信息
- [-l &lt;samples&gt;]
- [-ncols &lt;columns&gt;]
- [-o &lt;key&gt;] [-O &lt;secondaryKey&gt;]
- -o &lt;key&gt; 第一排序字段
- -O &lt;secondaryKey&gt; 第二排序字段
- 支持以下key，key前面可以带上+或-，用于说明倒序还是正序：
- pid 默认
- cpu cpu_me CPU time charged to me by other processes.
- cpu_others  CPU time charged to other processes by me
- csw 上下文切换次数
- time 执行时间
- threads 别名为th，线程数量（总的线程数/运行中线程数）
- ports 别名prt，机器端口数量
- mregion 别名mreg, reg，内存区数量
- mem 内存大小
- rprvt 常驻私有地址空间大小
- purg 可移除内存大小
- vsize  Total memory size.
- vprvt  Private address space size.
- kprvt  Private kernel memory size.
- kshrd  Shared kernel memory size.
- pgrp   Process group id.
- ppid   Parent process id.
- state  alias: pstate Process state.
- uid    User ID.
- wq     alias: #wq, workqueue
-              The workqueue total/running.
-
- faults alias: fault
-              The number of page faults.
-
- cow    alias: cow_faults
-              The copy-on-write faults.
-
- user   alias: username Username.
-
- msgsent Total number of mach messages sent.
-
- msgrecv Total number of mach messages received.
-
- sysbsd Total BSD syscalls.
-
- sysmach Total Mach syscalls.
-
-
- -R     Do not traverse and  report  the  memory  object  map  for  each
-       process.
-
--r     Traverse  and report the memory object map for each process (de-
-       fault).
-
--S     Display the global statistics for swap and purgeable memory.
-
--s &lt;delay&gt; 每隔多少秒更新显示
-       Set the delay between updates to &lt;delay&gt; seconds.   The  default delay between updates is 1 second.
-
--stats &lt;keys&gt;
-       Only  display  the  comma separated statistics.  See the -o flag
-       for the valid &lt;keys&gt;.
-
--pid &lt;processid&gt;
-       Only display &lt;processid&gt; in top.  This option may  be  specified
-       multiple times.
-
--user &lt;user&gt;
-       Only display processes owned by &lt;user&gt;.
-
--U &lt;user&gt;
-       This is an alias for -user.
-
--u     This is an alias equivalent to: -o cpu -O time.
-</code></pre><p>交互式命令：</p>
-<pre><code>?      Display the help screen.  Any character exits help screen  mode.
-       This command always works, even in the middle of a command.
-
-^L     Redraw the screen.
-
-c&lt;mode&gt;
-       Set output mode to &lt;mode&gt;.  The supported modes are:
-
-       a      Accumulative mode.
-
-       d      Delta mode.
-
-       e      Event mode.
-
-       n      Non-event mode.
-
-O&lt;skey&gt;
-       Use &lt;skey&gt; as a secondary key when ordering the process display.
-       See the -o option for key names.
-
-o&lt;key&gt;
-       Order the process display by sorting on &lt;key&gt; in descending  or-
-       der.   A  +  or - can be prefixed to the key name to specify as-
-       cending or descending order, respectively.  The  supported  keys
-       and alises are listed with the -o option above.
-
-q      Quit.
-
-r      Toggle traversal and reporting of the memory object map for each
-       process.
-
-S&lt;signal&gt;&lt;pid&gt;
-       Send &lt;sig&gt; to &lt;pid&gt;.  &lt;sig&gt; can be specified either as a  number
-       or  as a name (for example, HUP).  The default signal starts out
-       as TERM.  Each time a signal is successfully sent,  the  default
-       signal is updated to be that signal.  &lt;pid&gt; is a process id.
-
-s&lt;delay&gt;
-       Set the delay between updates to &lt;delay&gt; seconds.
-U&lt;user&gt;
-       Only  display processes owned by &lt;user&gt;.  Either the username or
-       uid number can be specified.  To display  all  processes,  press
-       enter without entering a username or uid number.
-</code></pre><p>示例：</p>
-<pre><code>top -o cpu -O +rsize -s 5 -n 20
-       Sort the processes according to CPU usage (descending) and resi-
-       dent memory size (ascending), sample and update the display at 5
-       second intervals, and limit the display to 20 processes.
-
-top -c d
-       Run top in delta mode.
-
-top -stats pid,command,cpu,th,pstate,time
-       Display  only the specified statistics, regardless of any growth
-       of the terminal.  If the terminal is too small, only the statis-
-       tics that fit will be displayed.
-</code></pre><p>相关命令：</p>
-<p>kill(2), vm_stat(1), signal(3), vmmap(1)</p>
+        <h4 id="并发控制"><a href="#并发控制" class="headerlink" title="并发控制"></a>并发控制</h4><p>mysql通过加锁进行并发控制。mysql有两种锁，分别是共享锁和排它锁，也叫读锁和写锁。读锁是共享的，写锁是排它的。多个读锁可以同时存在，但是写锁不能和读锁和写锁共存。在读多写少的场景比较适合读写锁。</p>
+<p>按锁的粒度，分为表级锁和行级锁。</p>
+<h4 id="myisam与innoDB区别"><a href="#myisam与innoDB区别" class="headerlink" title="myisam与innoDB区别"></a>myisam与innoDB区别</h4><blockquote>
+<ul>
+<li>innoDB支持事务，myisam不支持</li>
+<li>innoDB支持外键，myisam不支持</li>
+<li>innoDB是聚集索引，数据文件和索引绑在一起，必须要主键索引；myisam是非聚集索引，数据文件是分离的，索引保存的是数据文件的指针，主键索引和辅助索引是独立的</li>
+<li>innoDB不保存表的具体行数，执行select count(*) from table是需要全表扫描；而myisam用一个变量保存整个表的行数，执行上述语句只需要读出该变量即可，速度很快。</li>
+<li>innoDB不支持全文索引，而myisam支持全文索引。</li>
+<li>innoDB支持行级锁，而myisam只支持表级锁</li>
+</ul>
+</blockquote>
+<h4 id="聚簇索引和非聚簇索引"><a href="#聚簇索引和非聚簇索引" class="headerlink" title="聚簇索引和非聚簇索引"></a>聚簇索引和非聚簇索引</h4><p>myisam的主键索引和其它索引没有什么不同，都只是存储了数据的物理位置指针，innoDB的聚簇索引和非聚簇索引很不相同。</p>
+<p>聚簇索引：</p>
+<p>innoDB一定会建立聚簇索引，把实际数据行与相关的键值保存在一起。</p>
+<blockquote>
+<ul>
+<li>一个表只能有一个聚簇索引</li>
+<li>有主键时，根据主键创建聚簇索引</li>
+<li>没有主键时，会用一个唯一且不为空的索引列作为主键创建聚簇索引</li>
+<li>以上都不满足，隐式定义一个主键作为聚簇索引</li>
+<li>主键不能太大</li>
+</ul>
+</blockquote>
+<p>按主键顺序插入行<br>对应高并发，按主键顺序插入行可能会造成主键争用，主键的上限会成为热点，并发插入会导致间隙锁经侦；另外一个热点是auto_increment锁机制</p>
+<p>非聚簇索引：</p>
+<p>非聚簇索引（二级索引），也称为辅助索引</p>
+<blockquote>
+<ul>
+<li>叶子节点保存的不是行的物理位置指针，而是是主键值，当行移动或数据页分裂时无需更新二级索引的物理位置指针。</li>
+<li>访问数据需要两次索引查找</li>
+</ul>
+</blockquote>
+<h4 id="B树、B-树、B-树"><a href="#B树、B-树、B-树" class="headerlink" title="B树、B+树、B*树"></a>B树、B+树、B*树</h4><p>B树作为一种多路搜索树（并不是二叉的）</p>
+<blockquote>
+<ul>
+<li>定义任意非叶子结点最多只有M个儿子；且M&gt;2；</li>
+<li>根结点的儿子数为[2, M]；</li>
+<li>除根结点以外的非叶子结点的儿子数为[M/2, M]；</li>
+<li>每个结点存放至少M/2-1（取上整）和至多M-1个关键字；(至少2个关键字）</li>
+<li>非叶子结点的关键字个数=指向儿子的指针个数-1；</li>
+<li>非叶子结点的关键字：K[1], K[2], …, K[M-1]；且K[i] &lt; K[i+1]；&gt; * v非叶子结点的指针：P[1], P[2], …, P[M]；其中P[1]指向关键字小于K[1]的子树，P[M]指向关键字大于K[M-1]的子树，其它P[i]指向关键字属于(K[i-1], K[i])的子树；</li>
+<li>所有叶子结点位于同一层；</li>
+</ul>
+</blockquote>
+<p><img src="http://omu7tit09.bkt.clouddn.com/15005180938867.jpg" alt="cmd-markdown-logo"></p>
+<p>B+树：</p>
+<p>B+树是B树的变体，也是一种多路搜索树，其定义基本与B-树相同，除了：</p>
+<blockquote>
+<ul>
+<li>非叶子结点的子树指针与关键字个数相同；</li>
+<li>非叶子结点的子树指针P[i]，指向关键字值属于[K[i], K[i+1])的子树（B-树是开区间）；</li>
+<li>为所有叶子结点增加一个链指针；</li>
+<li>所有关键字都在叶子结点出现；</li>
+</ul>
+</blockquote>
+<p>B+树性质：</p>
+<blockquote>
+<ul>
+<li>所有关键字都出现在叶子结点的链表中（稠密索引），且链表中的关键字恰好是有序的；</li>
+<li>不可能在非叶子结点命中；</li>
+<li>非叶子结点相当于是叶子结点的索引（稀疏索引），叶子结点相当于是存储（关键字）数据的数据层；</li>
+<li>更适合文件索引系统。</li>
+</ul>
+</blockquote>
+<p><img src="http://omu7tit09.bkt.clouddn.com/15005182105086.jpg" alt="cmd-markdown-logo"></p>
+<p>B∗树：</p>
+<p>B*树是B+树的变体，在B+树的非根和非叶子结点再增加指向兄弟的指针，将结点的最低利用率从1/2提高到2/3</p>
+<p><img src="http://omu7tit09.bkt.clouddn.com/15005182105086.jpg" alt="cmd-markdown-logo"></p>
+<p>B∗树定义了非叶子结点关键字个数至少为23M，即块的最低使用率为2/3（代替B+树的1/2）；</p>
+<p>B+树的分裂：当一个结点满时，分配一个新的结点，并将原结点中1/2的数据复制到新结点，最后在父结点中增加新结点的指针；B+树的分裂只影响原结点和父结点，而不会影响兄弟结点，所以它不需要指向兄弟的指针；</p>
+<p>B∗树的分裂：当一个结点满时，如果它的下一个兄弟结点未满，那么将一部分数据移到兄弟结点中，再在原结点插入关键字，最后修改父结点中兄弟结点的关键字（因为兄弟结点的关键字范围改变了）；如果兄弟也满了，则在原结点与兄弟结点之间增加新结点，并各复制1/3的数据到新结点，最后在父结点增加新结点的指针；</p>
+<p>所以，B∗树分配新结点的概率比B+树要低，空间使用率更高。</p>
 
       
     </div>
@@ -520,8 +430,8 @@ top -stats pid,command,cpu,th,pstate,time
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/shortfeng/2018/03/12/多线程/" rel="next" title="多线程">
-                <i class="fa fa-chevron-left"></i> 多线程
+              <a href="/shortfeng/2018/03/15/spring事务传播机制和隔离级别/" rel="next" title="spring事务传播机制和隔离级别">
+                <i class="fa fa-chevron-left"></i> spring事务传播机制和隔离级别
               </a>
             
           </div>
@@ -529,10 +439,6 @@ top -stats pid,command,cpu,th,pstate,time
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/shortfeng/2018/03/15/spring事务传播机制和隔离级别/" rel="prev" title="spring事务传播机制和隔离级别">
-                spring事务传播机制和隔离级别 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -648,7 +554,7 @@ top -stats pid,command,cpu,th,pstate,time
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#性能优化相关linux命令"><span class="nav-number">1.</span> <span class="nav-text">性能优化相关linux命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#top命令"><span class="nav-number">1.0.1.</span> <span class="nav-text">top命令</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#并发控制"><span class="nav-number">1.</span> <span class="nav-text">并发控制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#myisam与innoDB区别"><span class="nav-number">2.</span> <span class="nav-text">myisam与innoDB区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聚簇索引和非聚簇索引"><span class="nav-number">3.</span> <span class="nav-text">聚簇索引和非聚簇索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#B树、B-树、B-树"><span class="nav-number">4.</span> <span class="nav-text">B树、B+树、B*树</span></a></li></ol></div>
             
 
           </div>
