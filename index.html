@@ -333,7 +333,7 @@
           
             <h4 id="并发控制"><a href="#并发控制" class="headerlink" title="并发控制"></a>并发控制</h4><p>mysql通过加锁进行并发控制。mysql有两种锁，分别是共享锁和排它锁，也叫读锁和写锁。读锁是共享的，写锁是排它的。多个读锁可以同时存在，但是写锁不能和读锁和写锁共存。在读多写少的场景比较适合读写锁。</p>
 <p>按锁的粒度，分为表级锁和行级锁。</p>
-<h4 id="myisam与innoDB区别"><a href="#myisam与innoDB区别" class="headerlink" title="myisam与innoDB区别"></a>myisam与innoDB区别</h4><blockquote>
+<h4 id="Myisam与InnoDB区别"><a href="#Myisam与InnoDB区别" class="headerlink" title="Myisam与InnoDB区别"></a>Myisam与InnoDB区别</h4><blockquote>
 <ul>
 <li>InnoDB支持事务，Myisam不支持</li>
 <li>InnoDB支持外键，Myisam不支持</li>
@@ -344,8 +344,7 @@
 </ul>
 </blockquote>
 <h4 id="聚簇索引和非聚簇索引"><a href="#聚簇索引和非聚簇索引" class="headerlink" title="聚簇索引和非聚簇索引"></a>聚簇索引和非聚簇索引</h4><p>myisam的主键索引和其它索引没有什么不同，都只是存储了数据的物理位置指针，innoDB的聚簇索引和非聚簇索引很不相同。</p>
-<p>聚簇索引：</p>
-<p>InnoDB一定会建立聚簇索引，把实际数据行与相关的键值保存在一起。</p>
+<h5 id="聚簇索引："><a href="#聚簇索引：" class="headerlink" title="聚簇索引："></a>聚簇索引：</h5><p>InnoDB一定会建立聚簇索引，把实际数据行与相关的键值保存在一起。</p>
 <blockquote>
 <ul>
 <li>一个表只能有一个聚簇索引</li>
@@ -356,8 +355,7 @@
 </ul>
 </blockquote>
 <p>按主键顺序插入行<br>对应高并发，按主键顺序插入行可能会造成主键争用，主键的上限会成为热点，并发插入会导致间隙锁经侦；另外一个热点是auto_increment锁机制</p>
-<p>非聚簇索引：</p>
-<p>非聚簇索引（二级索引），也称为辅助索引</p>
+<h5 id="非聚簇索引："><a href="#非聚簇索引：" class="headerlink" title="非聚簇索引："></a>非聚簇索引：</h5><p>非聚簇索引（二级索引），也称为辅助索引</p>
 <blockquote>
 <ul>
 <li>叶子节点保存的不是行的物理位置指针，而是是主键值，当行移动或数据页分裂时无需更新二级索引的物理位置指针。</li>
@@ -365,8 +363,7 @@
 </ul>
 </blockquote>
 <h4 id="B树、B-树、B-树"><a href="#B树、B-树、B-树" class="headerlink" title="B树、B+树、B*树"></a>B树、B+树、B*树</h4><p>InnoDB使用的是B+树。</p>
-<p>B树(B-Tree）：</p>
-<p>B树作为一种多路搜索树（并不是二叉的）</p>
+<h5 id="B树-B-Tree）："><a href="#B树-B-Tree）：" class="headerlink" title="B树(B-Tree）："></a>B树(B-Tree）：</h5><p>B树作为一种多路搜索树（并不是二叉的）</p>
 <blockquote>
 <ul>
 <li>定义任意非叶子结点最多只有M个儿子；且M&gt;2；</li>
@@ -379,8 +376,7 @@
 </ul>
 </blockquote>
 <p><img src="http://omu7tit09.bkt.clouddn.com/15005176551496.jpg" alt="cmd-markdown-logo"></p>
-<p>B+树(B+tree)：</p>
-<p>B+树是B树的变体，也是一种多路搜索树，其定义基本与B-树相同，除了：</p>
+<h5 id="B-树-B-tree-："><a href="#B-树-B-tree-：" class="headerlink" title="B+树(B+tree)："></a>B+树(B+tree)：</h5><p>B+树是B树的变体，也是一种多路搜索树，其定义基本与B-树相同，除了：</p>
 <blockquote>
 <ul>
 <li>非叶子结点的子树指针与关键字个数相同；</li>
@@ -399,8 +395,7 @@
 </ul>
 </blockquote>
 <p><img src="http://omu7tit09.bkt.clouddn.com/15005182105086.jpg" alt="cmd-markdown-logo"></p>
-<p>B∗树：</p>
-<p>B*树是B+树的变体，在B+树的非根和非叶子结点再增加指向兄弟的指针，将结点的最低利用率从1/2提高到2/3</p>
+<h5 id="B∗树："><a href="#B∗树：" class="headerlink" title="B∗树："></a>B∗树：</h5><p>B*树是B+树的变体，在B+树的非根和非叶子结点再增加指向兄弟的指针，将结点的最低利用率从1/2提高到2/3</p>
 <p><img src="http://omu7tit09.bkt.clouddn.com/15005180938867.jpg" alt="cmd-markdown-logo"></p>
 <p>B∗树定义了非叶子结点关键字个数至少为23M，即块的最低使用率为2/3（代替B+树的1/2）；</p>
 <p>B+树的分裂：当一个结点满时，分配一个新的结点，并将原结点中1/2的数据复制到新结点，最后在父结点中增加新结点的指针；B+树的分裂只影响原结点和父结点，而不会影响兄弟结点，所以它不需要指向兄弟的指针；</p>
