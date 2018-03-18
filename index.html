@@ -337,10 +337,10 @@
 <li>propagation_required 支持当前事务，如果不存在事务，则新建一个事务</li>
 <li>propagation_supports 支持当前事务，如果不存在事务，则以非事务方式执行</li>
 <li>propagation_mandatory 支持当前事务，如果不存在事务，则抛出异常</li>
-<li>propagation_required__new 新建事务，如果当前存在事务，则挂起当前事务</li>
-<li>propagation_not__supported 以非事务方式执行，如果当前存在事务，则把当前事务挂起</li>
+<li>propagation_required_new 新建事务，如果当前存在事务，则挂起当前事务</li>
+<li>propagation_not_supported 以非事务方式执行，如果当前存在事务，则把当前事务挂起</li>
 <li>propagation_never 以非事务方式执行，如果当前存在事务，则抛出异常</li>
-<li>propagation_<em>nested 如果当前存在事务，则在嵌套事务内执行，如果当前没有事务，则其行为与propagation</em> required一样。嵌套的事务可以独立于当前事务进行单独的提交或回滚。内部事务的回滚不会对外部事务造成影响，如果外部事务commit, 嵌套事务也会被commit, 这个规则同样适用于 roll back</li>
+<li>propagation_nested 如果当前存在事务，则在嵌套事务内执行，如果当前没有事务，则其行为与propagation_required一样。嵌套的事务可以独立于当前事务进行单独的提交或回滚。内部事务的回滚不会对外部事务造成影响，如果外部事务commit, 嵌套事务也会被commit, 这个规则同样适用于 roll back</li>
 </ul>
 </blockquote>
 <h4 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h4><hr>
@@ -356,9 +356,9 @@
 <blockquote>
 <ul>
 <li>isolation_default 使用数据库默认的隔离级别</li>
-<li>isolation<em> read</em> uncommited 读未提交，可能出现脏读、不可重复读、幻读</li>
-<li>isolation<em> read</em> commited 读已提交，避免了脏读，可能会出现不可重复读、幻读</li>
-<li>isolation<em> repeatable</em> read 可重复读，避免了脏读、不可重复读，可能出现幻读</li>
+<li>isolation_read_uncommited 读未提交，可能出现脏读、不可重复读、幻读</li>
+<li>isolation_ read_commited 读已提交，避免了脏读，可能会出现不可重复读、幻读</li>
+<li>isolation_repeatable_read 可重复读，避免了脏读、不可重复读，可能出现幻读</li>
 <li>isolation_seriablizable 串行访问，避免脏读、不可重复读、幻读。读加共享锁，写加排他锁，读写互斥</li>
 </ul>
 </blockquote>
