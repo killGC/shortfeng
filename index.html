@@ -335,17 +335,17 @@
 <p>按锁的粒度，分为表级锁和行级锁。</p>
 <h4 id="myisam与innoDB区别"><a href="#myisam与innoDB区别" class="headerlink" title="myisam与innoDB区别"></a>myisam与innoDB区别</h4><blockquote>
 <ul>
-<li>innoDB支持事务，myisam不支持</li>
-<li>innoDB支持外键，myisam不支持</li>
-<li>innoDB是聚集索引，数据文件和索引绑在一起，必须要主键索引；myisam是非聚集索引，数据文件是分离的，索引保存的是数据文件的指针，主键索引和辅助索引是独立的</li>
-<li>innoDB不保存表的具体行数，执行select count(*) from table是需要全表扫描；而myisam用一个变量保存整个表的行数，执行上述语句只需要读出该变量即可，速度很快。</li>
-<li>innoDB不支持全文索引，而myisam支持全文索引。</li>
-<li>innoDB支持行级锁，而myisam只支持表级锁</li>
+<li>InnoDB支持事务，Myisam不支持</li>
+<li>InnoDB支持外键，Myisam不支持</li>
+<li>InnoDB是聚集索引，数据文件和索引绑在一起，必须要主键索引；Myisam是非聚集索引，数据文件是分离的，索引保存的是数据文件的指针，主键索引和辅助索引是独立的</li>
+<li>InnoDB不保存表的具体行数，执行select count(*) from table是需要全表扫描；而Myisam用一个变量保存整个表的行数，执行上述语句只需要读出该变量即可，速度很快。</li>
+<li>InnoDB不支持全文索引，而Myisam支持全文索引。</li>
+<li>InnoDB支持行级锁，而Myisam只支持表级锁</li>
 </ul>
 </blockquote>
 <h4 id="聚簇索引和非聚簇索引"><a href="#聚簇索引和非聚簇索引" class="headerlink" title="聚簇索引和非聚簇索引"></a>聚簇索引和非聚簇索引</h4><p>myisam的主键索引和其它索引没有什么不同，都只是存储了数据的物理位置指针，innoDB的聚簇索引和非聚簇索引很不相同。</p>
 <p>聚簇索引：</p>
-<p>innoDB一定会建立聚簇索引，把实际数据行与相关的键值保存在一起。</p>
+<p>InnoDB一定会建立聚簇索引，把实际数据行与相关的键值保存在一起。</p>
 <blockquote>
 <ul>
 <li>一个表只能有一个聚簇索引</li>
@@ -364,7 +364,9 @@
 <li>访问数据需要两次索引查找</li>
 </ul>
 </blockquote>
-<h4 id="B树、B-树、B-树"><a href="#B树、B-树、B-树" class="headerlink" title="B树、B+树、B*树"></a>B树、B+树、B*树</h4><p>B树作为一种多路搜索树（并不是二叉的）</p>
+<h4 id="B树、B-树、B-树"><a href="#B树、B-树、B-树" class="headerlink" title="B树、B+树、B*树"></a>B树、B+树、B*树</h4><p>InnoDB使用的是B+树。</p>
+<p>B树(B-Tree）：</p>
+<p>B树作为一种多路搜索树（并不是二叉的）</p>
 <blockquote>
 <ul>
 <li>定义任意非叶子结点最多只有M个儿子；且M&gt;2；</li>
@@ -377,7 +379,7 @@
 </ul>
 </blockquote>
 <p><img src="http://omu7tit09.bkt.clouddn.com/15005176551496.jpg" alt="cmd-markdown-logo"></p>
-<p>B+树：</p>
+<p>B+树(B+tree)：</p>
 <p>B+树是B树的变体，也是一种多路搜索树，其定义基本与B-树相同，除了：</p>
 <blockquote>
 <ul>
