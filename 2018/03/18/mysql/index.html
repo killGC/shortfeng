@@ -101,14 +101,14 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="并发控制mysql通过加锁进行并发控制。mysql有两种锁，分别是共享锁和排它锁，也叫读锁和写锁。读锁是共享的，写锁是排它的。多个读锁可以同时存在，但是写锁不能和读锁和写锁共存。在读多写少的场景比较适合读写锁。 按锁的粒度，分为表级锁和行级锁。 myisam与innoDB区别  innoDB支持事务，myisam不支持 innoDB支持外键，myisam不支持 innoDB是聚集索引，数据文件和索">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://omu7tit09.bkt.clouddn.com/15005176551496.jpg">
+<meta property="og:image" content="http://omu7tit09.bkt.clouddn.com/15005182105086.jpg">
 <meta property="og:image" content="http://omu7tit09.bkt.clouddn.com/15005180938867.jpg">
-<meta property="og:image" content="http://omu7tit09.bkt.clouddn.com/15005182105086.jpg">
-<meta property="og:image" content="http://omu7tit09.bkt.clouddn.com/15005182105086.jpg">
-<meta property="og:updated_time" content="2018-03-18T14:16:01.000Z">
+<meta property="og:updated_time" content="2018-03-18T14:29:25.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql">
 <meta name="twitter:description" content="并发控制mysql通过加锁进行并发控制。mysql有两种锁，分别是共享锁和排它锁，也叫读锁和写锁。读锁是共享的，写锁是排它的。多个读锁可以同时存在，但是写锁不能和读锁和写锁共存。在读多写少的场景比较适合读写锁。 按锁的粒度，分为表级锁和行级锁。 myisam与innoDB区别  innoDB支持事务，myisam不支持 innoDB支持外键，myisam不支持 innoDB是聚集索引，数据文件和索">
-<meta name="twitter:image" content="http://omu7tit09.bkt.clouddn.com/15005180938867.jpg">
+<meta name="twitter:image" content="http://omu7tit09.bkt.clouddn.com/15005176551496.jpg">
 
 
 
@@ -378,7 +378,7 @@
 <li>所有叶子结点位于同一层；</li>
 </ul>
 </blockquote>
-<p><img src="http://omu7tit09.bkt.clouddn.com/15005180938867.jpg" alt="cmd-markdown-logo"></p>
+<p><img src="http://omu7tit09.bkt.clouddn.com/15005176551496.jpg" alt="cmd-markdown-logo"></p>
 <p>B+树：</p>
 <p>B+树是B树的变体，也是一种多路搜索树，其定义基本与B-树相同，除了：</p>
 <blockquote>
@@ -401,7 +401,7 @@
 <p><img src="http://omu7tit09.bkt.clouddn.com/15005182105086.jpg" alt="cmd-markdown-logo"></p>
 <p>B∗树：</p>
 <p>B*树是B+树的变体，在B+树的非根和非叶子结点再增加指向兄弟的指针，将结点的最低利用率从1/2提高到2/3</p>
-<p><img src="http://omu7tit09.bkt.clouddn.com/15005182105086.jpg" alt="cmd-markdown-logo"></p>
+<p><img src="http://omu7tit09.bkt.clouddn.com/15005180938867.jpg" alt="cmd-markdown-logo"></p>
 <p>B∗树定义了非叶子结点关键字个数至少为23M，即块的最低使用率为2/3（代替B+树的1/2）；</p>
 <p>B+树的分裂：当一个结点满时，分配一个新的结点，并将原结点中1/2的数据复制到新结点，最后在父结点中增加新结点的指针；B+树的分裂只影响原结点和父结点，而不会影响兄弟结点，所以它不需要指向兄弟的指针；</p>
 <p>B∗树的分裂：当一个结点满时，如果它的下一个兄弟结点未满，那么将一部分数据移到兄弟结点中，再在原结点插入关键字，最后修改父结点中兄弟结点的关键字（因为兄弟结点的关键字范围改变了）；如果兄弟也满了，则在原结点与兄弟结点之间增加新结点，并各复制1/3的数据到新结点，最后在父结点增加新结点的指针；</p>
