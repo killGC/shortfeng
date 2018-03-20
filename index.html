@@ -479,12 +479,9 @@
 <p>类在虚拟机中的唯一性，由加载它的类加载器和这个类本身一同确立；比较两个类是否“相等”，只有这两个类是由同一类加载器加载的前提下才意义，否则，即使两个类来源于同一个class文件，被同一个虚拟机加载，只要加载它们的类加载器不同，那这两个类就必定不相等。</p>
 <blockquote>
 <ul>
-<li><p>启动类加载器: 或称引导类加载器，Bootstrap ClassLoader，由C++语言实现，是虚拟机自身的一部分，负责将<java_home>\lib目录中或被-Xbootclasspath参数所指定的路径中的类库加载到虚拟机内存,启动类加载器无法被Java程序直接引用</java_home></p>
-</li>
-<li><p>扩展类加载器: Extension ClassLoader，由sun.misc.Launcher$ExtClassLoader实现，负责加载<java_home>\lib\ext目录中或被java.ext.dirs系统变量所指定逻辑中的所有类库。</java_home></p>
-</li>
-<li><p>应用程序类加载器: 或称系统类加载器，Applicatiion ClassLoader，由sun.misc.Launcher$AppClassLoader实现，负责加载用户类路径(ClassPath)所指定的类库，一般情况下程序默认使用应用程序类加载器。</p>
-</li>
+<li>启动类加载器: 或称引导类加载器，Bootstrap ClassLoader，由C++语言实现，是虚拟机自身的一部分，负责将<java_home>\lib目录中或被-Xbootclasspath参数所指定的路径中的类库加载到虚拟机内存,启动类加载器无法被Java程序直接引用</java_home></li>
+<li>扩展类加载器: Extension ClassLoader，由sun.misc.Launcher$ExtClassLoader实现，负责加载<java_home>\lib\ext目录中或被java.ext.dirs系统变量所指定逻辑中的所有类库。</java_home></li>
+<li>应用程序类加载器: 或称系统类加载器，Applicatiion ClassLoader，由sun.misc.Launcher$AppClassLoader实现，负责加载用户类路径(ClassPath)所指定的类库，一般情况下程序默认使用应用程序类加载器。</li>
 </ul>
 </blockquote>
 <p>由Java实现的类加载器都继承自抽象类java.lang.ClassLoader。</p>
