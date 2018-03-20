@@ -101,7 +101,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="内存区域 Java内存粗糙的分为堆内存、栈内存 运行时数据区域：   程序计数器 当前线程所执行的字节码的行号指示器，用于线程切换后能恢复到正确的执行位置，线程私有的 Java虚拟机栈 为虚拟机执行Java方法服务，线程私有的 本地方法栈 为虚拟机执行Native方法服务，线程私有的 Java堆 别名GC堆，内存中最大的一块，垃圾收集器管理的主要区域，细分为新生代和老年代，所有线程共享 方法区 别">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-19T16:43:35.000Z">
+<meta property="og:updated_time" content="2018-03-20T16:16:48.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM">
 <meta name="twitter:description" content="内存区域 Java内存粗糙的分为堆内存、栈内存 运行时数据区域：   程序计数器 当前线程所执行的字节码的行号指示器，用于线程切换后能恢复到正确的执行位置，线程私有的 Java虚拟机栈 为虚拟机执行Java方法服务，线程私有的 本地方法栈 为虚拟机执行Native方法服务，线程私有的 Java堆 别名GC堆，内存中最大的一块，垃圾收集器管理的主要区域，细分为新生代和老年代，所有线程共享 方法区 别">
@@ -374,7 +374,8 @@
 <li>采用标记-清理、标记-整理算法</li>
 </ul>
 </blockquote>
-<h4 id="内存分配与回收策略"><a href="#内存分配与回收策略" class="headerlink" title="内存分配与回收策略"></a>内存分配与回收策略</h4><p>1、对象优先在Eden分配：</p>
+<h4 id="内存分配与回收策略"><a href="#内存分配与回收策略" class="headerlink" title="内存分配与回收策略"></a>内存分配与回收策略</h4><hr>
+<p>1、对象优先在Eden分配：</p>
 <blockquote>
 <ul>
 <li>大多数情况，对象在新生代Eden区中分配。当Eden区没有足够内存空间来分配时，虚拟机将发起一次Minor GC。</li>
@@ -412,16 +413,43 @@
 <li>Major GC／Full GC 老年代GC，出现了Major GC，经常会伴随至少一次Minor GC，Major GC的速度一般比Minor GC慢10倍以上。</li>
 </ul>
 </blockquote>
-<h4 id="虚拟机参数"><a href="#虚拟机参数" class="headerlink" title="虚拟机参数"></a>虚拟机参数</h4><blockquote>
+<h4 id="虚拟机参数"><a href="#虚拟机参数" class="headerlink" title="虚拟机参数"></a>虚拟机参数</h4><hr>
+<p>-XX:+<option> 开启option参数<br>-XX:-</option><option> 关闭option参数<br>-XX:</option><option>=<value> 将option参数的值设置为value</value></option></p>
+<p>整个堆大小=年轻代大小 + 年老代大小 + 持久代大小</p>
+<p>配置参数：</p>
+<blockquote>
 <ul>
-<li>-XX:+PrintGCDetails 发送垃圾收集行为时打印内存回收日志</li>
-<li>-XX:PretenureSizeThreshold 大小超过这个设置值的对象直接在老年代分配</li>
+<li>-Xms 初始堆大小</li>
+<li>-Xmx 最大堆大小</li>
+<li>-Xmn(1.4or lator) 年轻代大小 为eden+ 2个Survivor,增大年轻代后,将会减小年老代大小.此值对系统性能影响较大,Sun官方推荐配置为整个堆的3/8</li>
+<li>-XX:NewSize(1.3/1.4)  年轻代大小</li>
+<li>-XX:MaxNewSize(1.3/1.4)  年轻代最大值</li>
+<li>-XX:PermSize 持久代(perm gen)初始值</li>
+<li>-XX:MaxPermSize 持久代最大值</li>
+<li>-Xss 每个线程的堆栈大小</li>
+<li>-XX:NewRatio 年轻代与年老代的比值</li>
+<li>-XX:SurvivorRatio Eden区与Survivor区的大小比值</li>
+</ul>
+</blockquote>
+<p>内存管理参数：</p>
+<blockquote>
+<ul>
+<li>-XX:PretenureSizeThreshold 大小超过这个设置值的对象直接在老年代分配，默认值为15</li>
 <li>-XX:MaxTenuringThreshold 对象晋升老年代的年龄阀值</li>
-<li>-XX:+HeapDumpOnOutOfMemoryError 虚拟机在OOM异常出现之后自动生成dump文件</li>
+</ul>
+</blockquote>
+<p>调试参数：</p>
+<blockquote>
+<ul>
+<li>-XX:+PrintFlagsFinal 输出索引参数的名称及默认值</li>
+<li>-XX:+PrintGC 打印GC信息</li>
+<li>-XX:+PrintGCDetails 发生垃圾收集行为时打印内存回收日志</li>
+<li>-XX:+HeapDumpOnOutOfMemoryError 虚拟机在OOM异常出现之后自动生成dump文件* </li>
 <li>-XX:+HeapDumpOnCtrlBreak 使用【Ctrl】+【Break】键让虚拟机生成dump文件</li>
 </ul>
 </blockquote>
-<h4 id="JVM优化命令"><a href="#JVM优化命令" class="headerlink" title="JVM优化命令"></a>JVM优化命令</h4><p>1、ps：虚拟机进程状况工具</p>
+<h4 id="JVM优化命令"><a href="#JVM优化命令" class="headerlink" title="JVM优化命令"></a>JVM优化命令</h4><hr>
+<p>1、ps：虚拟机进程状况工具</p>
 <p>2、jstat：虚拟机统计信息监视工具</p>
 <blockquote>
 <ul>
@@ -444,7 +472,22 @@
 <li>用于定位线程出现长时间停顿的原因，如果线程间死锁、死循环、请求外部资源导致的长时间等待</li>
 </ul>
 </blockquote>
-<p>7、</p>
+<h4 id="类加载机制"><a href="#类加载机制" class="headerlink" title="类加载机制"></a>类加载机制</h4><hr>
+<p>类加载器:</p>
+<p>类在虚拟机中的唯一性，由加载它的类加载器和这个类本身一同确立；比较两个类是否“相等”，只有这两个类是由同一类加载器加载的前提下才意义，否则，即使两个类来源于同一个class文件，被同一个虚拟机加载，只要加载它们的类加载器不同，那这两个类就必定不相等。</p>
+<blockquote>
+<ul>
+<li><p>启动类加载器: 或称引导类加载器，Bootstrap ClassLoader，由C++语言实现，是虚拟机自身的一部分，负责将<java_home>\lib目录中或被-Xbootclasspath参数所指定的路径中的类库加载到虚拟机内存,启动类加载器无法被Java程序直接引用</java_home></p>
+</li>
+<li><p>扩展类加载器: Extension ClassLoader，由sun.misc.Launcher$ExtClassLoader实现，负责加载<java_home>\lib\ext目录中或被java.ext.dirs系统变量所指定逻辑中的所有类库。</java_home></p>
+</li>
+<li><p>应用程序类加载器: 或称系统类加载器，Applicatiion ClassLoader，由sun.misc.Launcher$AppClassLoader实现，负责加载用户类路径(ClassPath)所指定的类库，一般情况下程序默认使用应用程序类加载器。</p>
+</li>
+</ul>
+</blockquote>
+<p>由Java实现的类加载器都继承自抽象类java.lang.ClassLoader。</p>
+<p>双亲委派模型：</p>
+<p>工作过程是：如果一个类加载器收到类加载的请求，它首先不会自己去尝试加载这个类，而是把这个请求委派给父类加载器去完成，每一个层次的类加载器都是如此，因此索引额加载请求最终都应该传送到顶层的启动类加载器中，只有当父类加载器反馈自己无法完成这个加载请求时，子加载器才会尝试自己去加载。</p>
 
       
     </div>
@@ -593,7 +636,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#内存区域"><span class="nav-number">1.</span> <span class="nav-text">内存区域</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#垃圾收集算法"><span class="nav-number">2.</span> <span class="nav-text">垃圾收集算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内存分配与回收策略"><span class="nav-number">3.</span> <span class="nav-text">内存分配与回收策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#虚拟机参数"><span class="nav-number">4.</span> <span class="nav-text">虚拟机参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JVM优化命令"><span class="nav-number">5.</span> <span class="nav-text">JVM优化命令</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#内存区域"><span class="nav-number">1.</span> <span class="nav-text">内存区域</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#垃圾收集算法"><span class="nav-number">2.</span> <span class="nav-text">垃圾收集算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内存分配与回收策略"><span class="nav-number">3.</span> <span class="nav-text">内存分配与回收策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#虚拟机参数"><span class="nav-number">4.</span> <span class="nav-text">虚拟机参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JVM优化命令"><span class="nav-number">5.</span> <span class="nav-text">JVM优化命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类加载机制"><span class="nav-number">6.</span> <span class="nav-text">类加载机制</span></a></li></ol></div>
             
 
           </div>
