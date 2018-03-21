@@ -617,6 +617,54 @@
 <p>双亲委派模型：</p>
 <p>工作过程是：如果一个类加载器收到类加载的请求，它首先不会自己去尝试加载这个类，而是把这个请求委派给父类加载器去完成，每一个层次的类加载器都是如此，因此索引额加载请求最终都应该传送到顶层的启动类加载器中，只有当父类加载器反馈自己无法完成这个加载请求时，子加载器才会尝试自己去加载。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> Class&lt;?&gt; loadClass(String name, <span class="keyword">boolean</span> resolve)</span><br><span class="line">    <span class="keyword">throws</span> ClassNotFoundException</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (getClassLoadingLock(name)) &#123;</span><br><span class="line">        <span class="comment">// First, check if the class has already been loaded</span></span><br><span class="line">        Class&lt;?&gt; c = findLoadedClass(name);</span><br><span class="line">        <span class="keyword">if</span> (c == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">long</span> t0 = System.nanoTime();</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (parent != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    c = parent.loadClass(name, <span class="keyword">false</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    c = findBootstrapClassOrNull(name);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">                <span class="comment">// ClassNotFoundException thrown if class not found</span></span><br><span class="line">                <span class="comment">// from the non-null parent class loader</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (c == <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="comment">// If still not found, then invoke findClass in order</span></span><br><span class="line">                <span class="comment">// to find the class.</span></span><br><span class="line">                <span class="keyword">long</span> t1 = System.nanoTime();</span><br><span class="line">                c = findClass(name);</span><br><span class="line"></span><br><span class="line">                <span class="comment">// this is the defining class loader; record the stats</span></span><br><span class="line">                sun.misc.PerfCounter.getParentDelegationTime().addTime(t1 - t0);</span><br><span class="line">                sun.misc.PerfCounter.getFindClassTime().addElapsedTimeFrom(t1);</span><br><span class="line">                sun.misc.PerfCounter.getFindClasses().increment();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (resolve) &#123;</span><br><span class="line">            resolveClass(c);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> c;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="内存模型"><a href="#内存模型" class="headerlink" title="内存模型"></a>内存模型</h4><p>java内存模型(java memory model JMM)来屏蔽各种硬件和操作系统的内存访问差异，以实现让Java程序在各种平台下都能达到一致的内存访问效果。</p>
+<p>1、主内存与工作内存</p>
+<blockquote>
+<ul>
+<li>定义程序中各个变量的访问规则，即在虚拟机中将变量存储到内存和从内存中取出变量这样的底层细节</li>
+<li>每个线程有自己的工作内存，工作内存中保存了线程使用到的变量的主内存工作副本，线程对变量的所有操作（读取、赋值）都必须在工作内存中进行；不能直接读写主内存中的变量。</li>
+<li>主内存对应Java堆中的对象实例数据部分，而工作内存则对应虚拟机栈中的部分区域。</li>
+</ul>
+</blockquote>
+<p>2、内存交互操作</p>
+<blockquote>
+<ul>
+<li>lock(锁定)：把变量标识为一条线程独占的状态。</li>
+<li>unlock(解锁)：把处于锁定状态的变量释放出来。</li>
+<li>read(读取)：把变量的值从主内存传输到线程的工作内存中</li>
+<li>load(载入)：把read操作从主内存中得到的变量值放入工作内存的变量副本。</li>
+<li>use(使用)：把工作内存的变量值传递给执行引擎，每当虚拟机遇到一个需要使用到变量的值的字节码指令时将会执行这个操作。</li>
+<li>assign(赋值) 把从执行引擎接收到的值赋给工作内存的变量，每当虚拟机遇到给变量赋值的字节码指令时执行这个操作</li>
+<li>store(存储) 把工作内存的值传送到主内存中</li>
+<li>write(写入）把store操作从工作内存中得到的变量的值放入主内存的变量中</li>
+</ul>
+</blockquote>
+<p>变量从主内存复制到工作内存，要顺序执行read和load，变量从工作内存同步回主内存，要顺序执行store和write，只要求两个操作顺序执行，而没有保证是连续执行。read和load之间、store和write之间是可以插入其他指令的。如read a、read b、load b、load a。</p>
+<p>3、volatile型变量</p>
+<p>最轻量级的同步机制</p>
+<p>特性：</p>
+<blockquote>
+<ul>
+<li>保证变量对所有线程的可见性，可见性是指一条线程修改了这个变量的值，新值对于其他线程来说是可以立即得到的</li>
+<li>每次使用之前都要刷新</li>
+<li>新值立即同步到主内存</li>
+<li>语义是禁止指令重排序优化</li>
+</ul>
+</blockquote>
+<p>不符合以下规则的运算场景，仍然要通过加锁(synchronized或java.util.concurrent中的原子类)来保证原子性：</p>
+<blockquote>
+<ul>
+<li>运算结果并不依赖当前变量的当前值，或者能够确保只有单一线程修改变量的值。</li>
+<li>变量不需要与其他的状态变量共同参与不变约束。</li>
+</ul>
+</blockquote>
+<p>4、long和double型变量的非原子协定</p>
+<p>5、原子性、可见性与有序性</p>
+<p>原子性：</p>
+<p>可见性：除了volatile外，synchronized和final也能实现可见性。</p>
+<p>有序性：如果在本线程内观察，所有操作都是有序的；如果在一个线程中观察另外一个线程，所有操作都是无序的。前半句是指线程内表现为串行的语义，后半句是指“指令重排序”现象和“工作内存与主内存同步延迟”现象。volatile和synchronized能保证线程之间操作的有序性。</p>
+<p>6、先行发生原则(happen-before)</p>
+<p>先行发生是Java内存模型中定义的两项操作之间的偏序关系，如果说操作A先行发生与操作B，其实是说在发生操作B之前，操作A产生的影响能被操作B观察到，“影响”包括修改了内存中共享变量的值、发送了消息、调用了方法</p>
 
           
         
