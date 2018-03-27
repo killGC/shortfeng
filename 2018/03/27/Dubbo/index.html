@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/shortfeng/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/shortfeng/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/shortfeng/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/shortfeng/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="dubbo 循环依赖问题1、check属性    默认check=true：dubbo缺省会在启动时检查依赖的服务是否可用（是否有提供者），不可用时会抛出异常，阻止Spring初始化完成，以便上线时，能及早发现问题 check=false：关闭检查依赖的服务是否可用   以下场景需关闭检查： 出现循环依赖，必须有一方先启动时；或者测试时，有些服务不关心；Spring容器是懒加载或者通过API编程延">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dubbo">
+<meta property="og:url" content="https://killgc.github.io/shortfeng/2018/03/27/Dubbo/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="dubbo 循环依赖问题1、check属性    默认check=true：dubbo缺省会在启动时检查依赖的服务是否可用（是否有提供者），不可用时会抛出异常，阻止Spring初始化完成，以便上线时，能及早发现问题 check=false：关闭检查依赖的服务是否可用   以下场景需关闭检查： 出现循环依赖，必须有一方先启动时；或者测试时，有些服务不关心；Spring容器是懒加载或者通过API编程延">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.uml.org.cn/zjjs/images/2015091041.jpg">
+<meta property="og:updated_time" content="2018-03-27T16:01:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Dubbo">
+<meta name="twitter:description" content="dubbo 循环依赖问题1、check属性    默认check=true：dubbo缺省会在启动时检查依赖的服务是否可用（是否有提供者），不可用时会抛出异常，阻止Spring初始化完成，以便上线时，能及早发现问题 check=false：关闭检查依赖的服务是否可用   以下场景需关闭检查： 出现循环依赖，必须有一方先启动时；或者测试时，有些服务不关心；Spring容器是懒加载或者通过API编程延">
+<meta name="twitter:image" content="http://www.uml.org.cn/zjjs/images/2015091041.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/shortfeng/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://killgc.github.io/shortfeng/2018/03/27/Dubbo/"/>
+
+
+
+
+
+  <title>Dubbo | Hexo</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/shortfeng/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/shortfeng/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/shortfeng/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/shortfeng/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/27/Dubbo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Dubbo</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-27T23:00:36+08:00">
+                2018-03-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="dubbo"><a href="#dubbo" class="headerlink" title="dubbo"></a>dubbo</h2><hr>
+<h4 id="循环依赖问题"><a href="#循环依赖问题" class="headerlink" title="循环依赖问题"></a>循环依赖问题</h4><p>1、check属性 </p>
+<blockquote>
+<ul>
+<li>默认check=true：dubbo缺省会在启动时检查依赖的服务是否可用（是否有提供者），不可用时会抛出异常，阻止Spring初始化完成，以便上线时，能及早发现问题</li>
+<li>check=false：关闭检查依赖的服务是否可用</li>
+</ul>
+</blockquote>
+<p>以下场景需关闭检查：</p>
+<p>出现循环依赖，必须有一方先启动时；或者测试时，有些服务不关心；Spring容器是懒加载或者通过API编程延迟引用服务</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">关闭某个服务的启动检查：</span><br><span class="line">&lt;dubbo:reference</span><br><span class="line"><span class="class"><span class="keyword">interface</span></span>=<span class="string">"com.foo.BarService"</span></span><br><span class="line">check=<span class="string">"false"</span></span><br><span class="line">/&gt;</span><br><span class="line"></span><br><span class="line">关闭所有服务的启动时检查：</span><br><span class="line">&lt;dubbo:consumer</span><br><span class="line">check=<span class="string">"false"</span></span><br><span class="line">/&gt;</span><br><span class="line"></span><br><span class="line">关闭注册中心启动时检查：(注册订阅失败时报错)</span><br><span class="line">&lt;dubbo:registry</span><br><span class="line">check=<span class="string">"false"</span></span><br><span class="line">/&gt;</span><br><span class="line"></span><br><span class="line">java -D参数：</span><br><span class="line">dubbo.reference.com.foo.BarService.check=<span class="keyword">false</span></span><br><span class="line">dubbo.reference.check=<span class="keyword">false</span></span><br><span class="line">dubbo.consumer.check=<span class="keyword">false</span></span><br><span class="line">dubbo.registry.check=<span class="keyword">false</span></span><br><span class="line"></span><br><span class="line">dubbo.properties配置：</span><br><span class="line">dubbo.reference.com.foo.BarService.check=<span class="keyword">false</span></span><br><span class="line">dubbo.reference.check=<span class="keyword">false</span></span><br><span class="line">dubbo.consumer.check=<span class="keyword">false</span></span><br><span class="line">dubbo.registry.check=<span class="keyword">false</span></span><br></pre></td></tr></table></figure>
+<p>区别：</p>
+<blockquote>
+<ul>
+<li><p>dubbo.reference.check=false，强制改变所有reference的check值，就算配置中有声明，也会被覆盖。</p>
+</li>
+<li><p>dubbo.consumer.check=false，是设置check的缺省值，如果配置中有显式的声明，如：<dubbo:reference check="true">，不会受影响。</dubbo:reference></p>
+</li>
+<li><p>dubbo.registry.check=false，前面两个都是指订阅成功，但提供者列表是否为空是否报错，如果注册订阅失败时，也允许启动，需使用此选项，将在后台定时重试。</p>
+</li>
+</ul>
+</blockquote>
+<p>2、init属性</p>
+<p>如果需要饥饿加载，即没有人引用也立即生成动态代理，可用配置：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;dubbo:reference </span><br><span class="line"><span class="class"><span class="keyword">interface</span></span>=<span class="string">"com.foo.BarService"</span> init=<span class="string">"true"</span>/&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="集群容错"><a href="#集群容错" class="headerlink" title="集群容错"></a>集群容错</h4><p>集群调用失败时，dubbo提供了多种容错方案，默认为failover重试</p>
+<p><img src="http://www.uml.org.cn/zjjs/images/2015091041.jpg" alt="cmd-markdown-logo"></p>
+<h5 id="各节点关系："><a href="#各节点关系：" class="headerlink" title="各节点关系："></a>各节点关系：</h5><blockquote>
+<ul>
+<li><p>这里的Invoker是Provider的一个可调用Service的抽象，Invoker封装了Provider地址及Service接口信息。</p>
+</li>
+<li><p>Directory代表多个Invoker，可以把它看成List<invoker>，但与List不同的是，它的值可能是动态变化的，比如注册中心推送变更。</invoker></p>
+</li>
+<li><p>Cluster将Directory中的多个Invoker伪装成一个Invoker，对上层透明，伪装过程包含了容错逻辑，调用失败后，重试另一个。</p>
+</li>
+<li><p>Router负责从多个Invoker中按路由规则选出子集，比如读写分离，应用隔离等。</p>
+</li>
+<li><p>LoadBalance负责从多个Invoker中选出具体的一个用于本次调用，选的过程包含了负载均衡算法，调用失败后，需要重选。</p>
+</li>
+</ul>
+</blockquote>
+<h5 id="集群容错模式："><a href="#集群容错模式：" class="headerlink" title="集群容错模式："></a>集群容错模式：</h5><blockquote>
+<ul>
+<li><p>Failover Cluster：失败自动切换，当出现失败，重试其它服务器。(缺省)，通常用于读操作，但重试会带来更长延迟。可通过retries=”2”来设置重试次数(不含第一次)。</p>
+</li>
+<li><p>Failfast Cluster：快速失败，只发起一次调用，失败立即报错。<br>通常用于非幂等性的写操作，比如新增记录。</p>
+</li>
+<li><p>Failsafe Cluster：失败安全，出现异常时，直接忽略。通常用于写入审计日志等操作。</p>
+</li>
+<li><p>Failback Cluster：失败自动恢复，后台记录失败请求，定时重发。<br>通常用于消息通知操作。</p>
+</li>
+<li><p>Forking Cluster：并行调用多个服务器，只要一个成功即返回。<br>通常用于实时性要求较高的读操作，但需要浪费更多服务资源。可通过forks=”2”来设置最大并行数。</p>
+</li>
+<li><p>Broadcast Cluster：广播调用所有提供者，逐个调用，任意一台报错则报错。(2.1.0开始支持)，通常用于通知所有提供者更新缓存或日志等本地资源信息。</p>
+</li>
+</ul>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">重试次数配置（failover集群模式生效）：</span><br><span class="line">&lt;dubbo:service</span><br><span class="line">retries=<span class="string">"2"</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;dubbo:reference</span><br><span class="line">retries=<span class="string">"2"</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;dubbo:reference&gt;</span><br><span class="line"></span><br><span class="line">&lt;dubbo:method</span><br><span class="line">name=<span class="string">"findFoo"</span></span><br><span class="line">retries=<span class="string">"2"</span>/&gt;</span><br><span class="line">&lt;/dubbo:reference&gt;</span><br><span class="line"></span><br><span class="line">集群模式配置：</span><br><span class="line">&lt;dubbo:service</span><br><span class="line">cluster=<span class="string">"failsafe"</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;dubbo:reference</span><br><span class="line">cluster=<span class="string">"failsafe"</span>/&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h5><p>在集群负载均衡时，Dubbo提供了多种均衡策略，缺省为random随机调用。</p>
+<blockquote>
+<ul>
+<li><p>Random LoadBalance：随机，按权重设置随机概率。<br>在一个截面上碰撞的概率高，但调用量越大分布越均匀，而且按概率使用权重后也比较均匀，有利于动态调整提供者权重。</p>
+</li>
+<li><p>RoundRobin LoadBalance<br>轮循，按公约后的权重设置轮循比率。<br>存在慢的提供者累积请求问题，比如：第二台机器很慢，但没挂，当请求调到第二台时就卡在那，久而久之，所有请求都卡在调到第二台上。</p>
+</li>
+<li><p>LeastActive LoadBalance<br>最少活跃调用数，相同活跃数的随机，活跃数指调用前后计数差。<br>使慢的提供者收到更少请求，因为越慢的提供者的调用前后计数差会越大。</p>
+</li>
+<li><p>ConsistentHash LoadBalance<br>一致性Hash，相同参数的请求总是发到同一提供者。<br>当某一台提供者挂时，原本发往该提供者的请求，基于虚拟节点，平摊到其它提供者，不会引起剧烈变动。</p>
+</li>
+</ul>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">缺省只对第一个参数Hash，如果要修改，请配置</span><br><span class="line">&lt;dubbo:parameter key=<span class="string">"hash.arguments"</span> value=<span class="string">"0,1"</span> /&gt;</span><br><span class="line">缺省用<span class="number">160</span>份虚拟节点，如果要修改，请配置</span><br><span class="line">&lt;dubbo:parameter key=<span class="string">"hash.nodes"</span> value=<span class="string">"320"</span> /&gt;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/shortfeng/2018/03/22/ConcurrentHashMap/" rel="next" title="ConcurrentHashMap">
+                <i class="fa fa-chevron-left"></i> ConcurrentHashMap
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/shortfeng/images/avatar.gif"
+               alt="changfeng" />
+          <p class="site-author-name" itemprop="name">changfeng</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/shortfeng/archives/">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#dubbo"><span class="nav-number">1.</span> <span class="nav-text">dubbo</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#循环依赖问题"><span class="nav-number">1.0.1.</span> <span class="nav-text">循环依赖问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#集群容错"><span class="nav-number">1.0.2.</span> <span class="nav-text">集群容错</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#各节点关系："><span class="nav-number">1.0.2.1.</span> <span class="nav-text">各节点关系：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#集群容错模式："><span class="nav-number">1.0.2.2.</span> <span class="nav-text">集群容错模式：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#负载均衡"><span class="nav-number">1.0.2.3.</span> <span class="nav-text">负载均衡</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">changfeng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/shortfeng/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/shortfeng/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/shortfeng/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/shortfeng/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/shortfeng/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/shortfeng/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/shortfeng/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/shortfeng/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/shortfeng/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/shortfeng/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/shortfeng/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
