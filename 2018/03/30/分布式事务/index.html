@@ -94,17 +94,17 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="description" content="分布式事务   事务补偿机制：事务链中的任何一个正向事务操作，都必须存在一个完全符合回滚规则的可逆事务，补偿过程作为一个服务调用过程同样存在调用不成功的情况，这个时候需要通过重试的机制来保证补偿的成功率。当然这也就要求补偿操作本身具备幂等性 柔性事务：分布式事务适用柔性事务 刚性事务：本地事务采用刚性事务 幂等性：不具有幂等性的操作，需要存储操作的执行结果，当执行操作的时候，查询是否已执行过，如果">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="https://killgc.github.io/shortfeng/2018/02/08/hello-world/index.html">
+<meta property="og:title" content="分布式事务">
+<meta property="og:url" content="https://killgc.github.io/shortfeng/2018/03/30/分布式事务/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="分布式事务   事务补偿机制：事务链中的任何一个正向事务操作，都必须存在一个完全符合回滚规则的可逆事务，补偿过程作为一个服务调用过程同样存在调用不成功的情况，这个时候需要通过重试的机制来保证补偿的成功率。当然这也就要求补偿操作本身具备幂等性 柔性事务：分布式事务适用柔性事务 刚性事务：本地事务采用刚性事务 幂等性：不具有幂等性的操作，需要存储操作的执行结果，当执行操作的时候，查询是否已执行过，如果">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-07T16:25:49.000Z">
+<meta property="og:updated_time" content="2018-04-01T11:49:33.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="分布式事务">
+<meta name="twitter:description" content="分布式事务   事务补偿机制：事务链中的任何一个正向事务操作，都必须存在一个完全符合回滚规则的可逆事务，补偿过程作为一个服务调用过程同样存在调用不成功的情况，这个时候需要通过重试的机制来保证补偿的成功率。当然这也就要求补偿操作本身具备幂等性 柔性事务：分布式事务适用柔性事务 刚性事务：本地事务采用刚性事务 幂等性：不具有幂等性的操作，需要存储操作的执行结果，当执行操作的时候，查询是否已执行过，如果">
 
 
 
@@ -133,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="https://killgc.github.io/shortfeng/2018/02/08/hello-world/"/>
+  <link rel="canonical" href="https://killgc.github.io/shortfeng/2018/03/30/分布式事务/"/>
 
 
 
 
 
-  <title>Hello World | Hexo</title>
+  <title>分布式事务 | Hexo</title>
   
 
 
@@ -262,7 +262,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/02/08/hello-world/">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/30/分布式事务/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="changfeng">
@@ -279,7 +279,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hello World</h1>
+          <h1 class="post-title" itemprop="name headline">分布式事务</h1>
         
 
         <div class="post-meta">
@@ -291,8 +291,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-08T00:25:49+08:00">
-                2018-02-08
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-30T23:40:48+08:00">
+                2018-03-30
               </time>
             
 
@@ -329,16 +329,51 @@
       
 
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
+        <h2 id="分布式事务"><a href="#分布式事务" class="headerlink" title="分布式事务"></a>分布式事务</h2><hr>
+<blockquote>
+<ul>
+<li>事务补偿机制：事务链中的任何一个正向事务操作，都必须存在一个完全符合回滚规则的可逆事务，补偿过程作为一个服务调用过程同样存在调用不成功的情况，这个时候需要通过重试的机制来保证补偿的成功率。当然这也就要求补偿操作本身具备幂等性</li>
+<li>柔性事务：分布式事务适用柔性事务</li>
+<li>刚性事务：本地事务采用刚性事务</li>
+<li>幂等性：不具有幂等性的操作，需要存储操作的执行结果，当执行操作的时候，查询是否已执行过，如果执行过直接返回上一次执行的结果，否则执行操作</li>
+</ul>
+</blockquote>
+<h4 id="重试策略"><a href="#重试策略" class="headerlink" title="重试策略"></a>重试策略</h4><p>如果只是一味的失败就立即重试会给工作服务造成不必要的压力，我们要根据服务执行失败的原因来选择不同的重试策略</p>
+<p>重试操作一般会指定重试次数上线，如果重试次数达到了上限就不再进行重试了。这个时候应该通过一种手段通知相关人员进行处理。</p>
+<p>对于等待重试的策略如果重试时仍然错误，可逐渐增加等待的时间，直到达到一个上限后，以上限作为等待时间。</p>
+<p>如果某个时刻聚集了大量需要重试的操作，补偿框架需要控制请求的流量，以防止对工作服务造成过大的压力</p>
+<blockquote>
+<ul>
+<li>如果失败的原因不是暂时性的，由于业务因素导致（如业务要素检查失败）的业务错误，这类错误是不会重发就能自动恢复的，那么应该立即终止重试</li>
+<li>如果错误的原因是一些罕见的异常，比如因为网络传输过程出现数据丢失或者错误，应该立即再次重试，因为类似的错误一般很少会再次发生</li>
+<li>如果错误的原因是系统繁忙（比如http协议返回的500或者另外约定的返回码）或者超时，这个时候需要等待一些时间再重试。</li>
+</ul>
+</blockquote>
+<p>分布式事务实现方案：</p>
+<blockquote>
+<ul>
+<li>两阶段提交(2PC)</li>
+<li>TCC(Try-Confirm-Cancel)</li>
+<li>异步确保型</li>
+<li>最大努力通知型</li>
+</ul>
+</blockquote>
+<h4 id="两阶段提交"><a href="#两阶段提交" class="headerlink" title="两阶段提交"></a>两阶段提交</h4><h4 id="TCC"><a href="#TCC" class="headerlink" title="TCC"></a>TCC</h4><p>适用场景：</p>
+<blockquote>
+<ul>
+<li>严格一致性</li>
+<li>执行时间较短</li>
+<li>实时性要求高</li>
+</ul>
+</blockquote>
+<h4 id="异步确保型"><a href="#异步确保型" class="headerlink" title="异步确保型"></a>异步确保型</h4><p>消息可靠、消息重复消费<br>适用场景：</p>
+<blockquote>
+<ul>
+<li>执行周期较长</li>
+<li>实时性要求不高</li>
+</ul>
+</blockquote>
+<h4 id="最大努力通知型"><a href="#最大努力通知型" class="headerlink" title="最大努力通知型"></a>最大努力通知型</h4>
       
     </div>
     
@@ -362,14 +397,18 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/shortfeng/2018/03/27/Dubbo/" rel="next" title="Dubbo">
+                <i class="fa fa-chevron-left"></i> Dubbo
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/shortfeng/2018/02/09/动态代理/" rel="prev" title="JAVA动态代理">
-                JAVA动态代理 <i class="fa fa-chevron-right"></i>
+              <a href="/shortfeng/2018/04/01/redis/" rel="prev" title="redis">
+                redis <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -486,7 +525,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式事务"><span class="nav-number">1.</span> <span class="nav-text">分布式事务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#重试策略"><span class="nav-number">1.0.1.</span> <span class="nav-text">重试策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#两阶段提交"><span class="nav-number">1.0.2.</span> <span class="nav-text">两阶段提交</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCC"><span class="nav-number">1.0.3.</span> <span class="nav-text">TCC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异步确保型"><span class="nav-number">1.0.4.</span> <span class="nav-text">异步确保型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最大努力通知型"><span class="nav-number">1.0.5.</span> <span class="nav-text">最大努力通知型</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

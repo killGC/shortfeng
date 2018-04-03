@@ -260,6 +260,486 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/04/04/支付/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/shortfeng/2018/04/04/支付/" itemprop="url">支付</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-04T00:03:00+08:00">
+                2018-04-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="支付系统的思考"><a href="#支付系统的思考" class="headerlink" title="支付系统的思考"></a>支付系统的思考</h2><hr>
+<p>支付系统特点：</p>
+<blockquote>
+<ul>
+<li>写多读少，读写分离方案效果不明显</li>
+<li>事务强一致性，事务ACID，强调Consistency（一致性）和Availability（可用性），数据库一般用关系数据库。</li>
+</ul>
+</blockquote>
+<h4 id="防重提交策略"><a href="#防重提交策略" class="headerlink" title="防重提交策略"></a>防重提交策略</h4><blockquote>
+<ul>
+<li><p>乐观锁：通过唯一索引锁住记录（行级锁），UPDATE tab1 SET col1=1,version=version+1 WHERE id=#id# and version=#version#</p>
+</li>
+<li><p>悲观锁：select * from table_xxx where id=’xxx’ for update，id字段一定是主键或者唯一索引，不然是锁表，悲观锁使用时一般伴随事务一起使用，数据锁定时间可能会很长，根据实际情况选用</p>
+</li>
+<li><p>防重表：唯一索引导致插入失败</p>
+</li>
+<li>分布式锁：redis分布式锁</li>
+<li>Token：分为两步，第一步申请Token，第二步拿申请到Token发起请求。可以设置Token过期时间</li>
+<li>支付缓冲：把支付请求快速接下来，后续再启异步任务处理，可以过滤掉重复的支付订单。优点是<br>高吞吐；缺点是不能及时返回处理结果，后续需要监听支付结果的异步返回</li>
+<li>状态机：如果状态机已经处于下一个状态，这时候来了一个上一个状态的变更，理论上是不能够变更的</li>
+</ul>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/04/01/redis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/shortfeng/2018/04/01/redis/" itemprop="url">redis</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-01T19:58:26+08:00">
+                2018-04-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h2><hr>
+<h4 id="Redis持久化"><a href="#Redis持久化" class="headerlink" title="Redis持久化"></a>Redis持久化</h4><blockquote>
+<ul>
+<li><p>RDB持久化：在指定的时间间隔内生成数据集的时间点快照</p>
+</li>
+<li><p>AOF持久化：记录服务器执行的所有写操作命令，并在服务器启动时，通过重新执行这些命令来还原数据集。 AOF 文件中的命令全部以 Redis 协议的格式来保存，新命令会被追加到文件的末尾</p>
+</li>
+</ul>
+</blockquote>
+<h5 id="RDB"><a href="#RDB" class="headerlink" title="RDB"></a>RDB</h5><p>优点：</p>
+<blockquote>
+<ul>
+<li>适合用于备份</li>
+<li>适用于灾难恢复</li>
+<li>父进程在保存RDB文件时唯一要做的就是fork出一个子进程，然后这个子进程就会处理接下来的所有保存工作，父进程无须执行任何磁盘I/O操作</li>
+<li>RDB 在恢复大数据集时的速度比 AOF 的恢复速度要快</li>
+</ul>
+</blockquote>
+<p>缺点：</p>
+<blockquote>
+<ul>
+<li><p>如果你需要尽量避免在服务器故障时丢失数据，那么 RDB 不适合你。 虽然 Redis 允许你设置不同的保存点（save point）来控制保存 RDB 文件的频率， 但是， 因为RDB 文件需要保存整个数据集的状态， 所以它并不是一个轻松的操作。 因此你可能会至少 5 分钟才保存一次 RDB 文件。 在这种情况下， 一旦发生故障停机， 你就可能会丢失好几分钟的数据</p>
+</li>
+<li><p>每次保存 RDB 的时候，Redis 都要 fork() 出一个子进程，并由子进程来进行实际的持久化工作。 在数据集比较庞大时， fork() 可能会非常耗时，造成服务器在某某毫秒内停止处理客户端； 如果数据集非常巨大，并且 CPU 时间非常紧张的话，那么这种停止时间甚至可能会长达整整一秒。 虽然 AOF 重写也需要进行 fork() ，但无论 AOF 重写的执行间隔有多长，数据的耐久性都不会有任何损失</p>
+</li>
+</ul>
+</blockquote>
+<h5 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h5><p>append-only file，AOF</p>
+<p>优点：</p>
+<blockquote>
+<ul>
+<li><p>使用 AOF 持久化会让 Redis 变得非常耐久，AOF 的默认策略为每秒钟 fsync 一次</p>
+</li>
+<li><p>redis-check-aof 工具也可以轻易地修复因为某些原因而包含了未写入完整的命令</p>
+</li>
+<li><p>Redis 可以在 AOF 文件体积变得过大时，自动地在后台对 AOF 进行重写，整个重写操作是绝对安全的</p>
+</li>
+<li><p>AOF 文件有序地保存了对数据库执行的所有写入操作，容易被人读懂</p>
+</li>
+</ul>
+</blockquote>
+<p>缺点：</p>
+<blockquote>
+<ul>
+<li>对于相同的数据集来说，AOF 文件的体积通常要大于 RDB 文件的体积</li>
+<li>根据所使用的 fsync 策略，AOF 的速度可能会慢于 RDB</li>
+</ul>
+</blockquote>
+<p>修改配置文件来打开 AOF 功能：appendonly yes </p>
+<p>配置 Redis 多久才将数据 fsync 到磁盘一次。有三个选项：</p>
+<blockquote>
+<ul>
+<li>每次有新命令追加到 AOF 文件时就执行一次 fsync ：非常慢，也非常安全。</li>
+<li>每秒 fsync 一次：足够快（和使用 RDB 持久化差不多），并且在故障时只会丢失 1 秒钟的数据。</li>
+<li>从不 fsync ：将数据交给操作系统来处理。更快，也更不安全的选择。<br>推荐（并且也是默认）的措施为每秒 fsync 一次， 这种 fsync 策略可以兼顾速度和安全性</li>
+</ul>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/30/分布式事务/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/shortfeng/2018/03/30/分布式事务/" itemprop="url">分布式事务</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-30T23:40:48+08:00">
+                2018-03-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="分布式事务"><a href="#分布式事务" class="headerlink" title="分布式事务"></a>分布式事务</h2><hr>
+<blockquote>
+<ul>
+<li>事务补偿机制：事务链中的任何一个正向事务操作，都必须存在一个完全符合回滚规则的可逆事务，补偿过程作为一个服务调用过程同样存在调用不成功的情况，这个时候需要通过重试的机制来保证补偿的成功率。当然这也就要求补偿操作本身具备幂等性</li>
+<li>柔性事务：分布式事务适用柔性事务</li>
+<li>刚性事务：本地事务采用刚性事务</li>
+<li>幂等性：不具有幂等性的操作，需要存储操作的执行结果，当执行操作的时候，查询是否已执行过，如果执行过直接返回上一次执行的结果，否则执行操作</li>
+</ul>
+</blockquote>
+<h4 id="重试策略"><a href="#重试策略" class="headerlink" title="重试策略"></a>重试策略</h4><p>如果只是一味的失败就立即重试会给工作服务造成不必要的压力，我们要根据服务执行失败的原因来选择不同的重试策略</p>
+<p>重试操作一般会指定重试次数上线，如果重试次数达到了上限就不再进行重试了。这个时候应该通过一种手段通知相关人员进行处理。</p>
+<p>对于等待重试的策略如果重试时仍然错误，可逐渐增加等待的时间，直到达到一个上限后，以上限作为等待时间。</p>
+<p>如果某个时刻聚集了大量需要重试的操作，补偿框架需要控制请求的流量，以防止对工作服务造成过大的压力</p>
+<blockquote>
+<ul>
+<li>如果失败的原因不是暂时性的，由于业务因素导致（如业务要素检查失败）的业务错误，这类错误是不会重发就能自动恢复的，那么应该立即终止重试</li>
+<li>如果错误的原因是一些罕见的异常，比如因为网络传输过程出现数据丢失或者错误，应该立即再次重试，因为类似的错误一般很少会再次发生</li>
+<li>如果错误的原因是系统繁忙（比如http协议返回的500或者另外约定的返回码）或者超时，这个时候需要等待一些时间再重试。</li>
+</ul>
+</blockquote>
+<p>分布式事务实现方案：</p>
+<blockquote>
+<ul>
+<li>两阶段提交(2PC)</li>
+<li>TCC(Try-Confirm-Cancel)</li>
+<li>异步确保型</li>
+<li>最大努力通知型</li>
+</ul>
+</blockquote>
+<h4 id="两阶段提交"><a href="#两阶段提交" class="headerlink" title="两阶段提交"></a>两阶段提交</h4><h4 id="TCC"><a href="#TCC" class="headerlink" title="TCC"></a>TCC</h4><p>适用场景：</p>
+<blockquote>
+<ul>
+<li>严格一致性</li>
+<li>执行时间较短</li>
+<li>实时性要求高</li>
+</ul>
+</blockquote>
+<h4 id="异步确保型"><a href="#异步确保型" class="headerlink" title="异步确保型"></a>异步确保型</h4><p>消息可靠、消息重复消费<br>适用场景：</p>
+<blockquote>
+<ul>
+<li>执行周期较长</li>
+<li>实时性要求不高</li>
+</ul>
+</blockquote>
+<h4 id="最大努力通知型"><a href="#最大努力通知型" class="headerlink" title="最大努力通知型"></a>最大努力通知型</h4>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/27/Dubbo/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1828,409 +2308,6 @@ top -stats pid,command,cpu,th,pstate,time
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/多线程/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="changfeng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/shortfeng/2018/03/12/多线程/" itemprop="url">多线程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-12T19:51:15+08:00">
-                2018-03-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="多线程"><a href="#多线程" class="headerlink" title="##多线程"></a>##多线程</h2><p>三种来实现线程安全的手段:</p>
-<blockquote>
-<ul>
-<li>互斥同步<br>通过加锁来实现对临界资源的访问限制。加锁方式有Synchorized和Lock</li>
-<li>非阻塞同步<br>前面提到的互斥同步属于一种悲观锁机制，非阻塞同步属于乐观锁机制。典型的实现方式就是CAS操 作</li>
-<li>无同步方案<br>要保证线程安全，并不是一定就需要同步，两者没有因果关系，同步只是保证共享数据征用时正确性的手段，如果一个方法本来就不涉及共享数据，那它就不需要任何同步措施去保证正确性。ThreadLocal就是这张实现方案</li>
-</ul>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/ThreadLocal/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="changfeng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/shortfeng/2018/03/12/ThreadLocal/" itemprop="url">ThreadLocal</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-12T17:36:17+08:00">
-                2018-03-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h2><hr>
-<blockquote>
-<ul>
-<li>synchronized 以时间换空间</li>
-<li>ThreadLocal 以空间换时间</li>
-</ul>
-</blockquote>
-<p>Thread类保存了ThreadLocalMap类型的变量, ThreadLocalMap的key为ThreadLoacal对象</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ThreadLocal.ThreadLocalMap threadLocals = <span class="keyword">null</span>;</span><br></pre></td></tr></table></figure>
-<p>ThreadLocal类，支持范型</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>) &#123;</span><br><span class="line">        ThreadLocalMap.Entry e = map.getEntry(<span class="keyword">this</span>);</span><br><span class="line">        <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">            T result = (T)e.value;</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> setInitialValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(T value)</span> </span>&#123;</span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>)</span><br><span class="line">        map.set(<span class="keyword">this</span>, value);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        createMap(t, value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ThreadLocalMap <span class="title">getMap</span><span class="params">(Thread t)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> t.threadLocals;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> T <span class="title">setInitialValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    T value = initialValue();</span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>)</span><br><span class="line">        map.set(<span class="keyword">this</span>, value);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        createMap(t, value);</span><br><span class="line">    <span class="keyword">return</span> value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.sql.Connection;</span><br><span class="line"><span class="keyword">import</span> java.sql.DriverManager;</span><br><span class="line"><span class="keyword">import</span> java.sql.SQLException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConnectionManager</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> ThreadLocal&lt;Connection&gt; connectionHolder = <span class="keyword">new</span> ThreadLocal&lt;Connection&gt;() &#123;</span><br><span class="line">		<span class="meta">@Override</span></span><br><span class="line">		<span class="function"><span class="keyword">protected</span> Connection <span class="title">initialValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			Connection conn = <span class="keyword">null</span>;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				conn = DriverManager.getConnection(</span><br><span class="line">						<span class="string">"jdbc:mysql://localhost:3306/test"</span>, <span class="string">"username"</span>,</span><br><span class="line">						<span class="string">"password"</span>);</span><br><span class="line">			&#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">return</span> conn;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Connection <span class="title">getConnection</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> connectionHolder.get();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setConnection</span><span class="params">(Connection conn)</span> </span>&#123;</span><br><span class="line">		connectionHolder.set(conn);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以创建不同的ThreadLocal实例来实现多个变量在不同线程间的访问隔离，为什么可以这么做？因为不同的ThreadLocal对象作为不同键，当然也可以在线程的ThreadLocalMap对象中设置不同的值了。通过ThreadLocal对象，在多线程中共享一个值和多个值的区别，就像你在一个HashMap对象中存储一个键值对和多个键值对一样，仅此而已</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/11/spring aop/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="changfeng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/shortfeng/2018/03/11/spring aop/" itemprop="url">spring aop</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-11T23:08:14+08:00">
-                2018-03-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="spring-aop"><a href="#spring-aop" class="headerlink" title="spring aop"></a>spring aop</h2><hr>
-<h3 id="Transactional"><a href="#Transactional" class="headerlink" title="@Transactional"></a>@Transactional</h3><hr>
-<blockquote>
-<ul>
-<li><p>在需要事务管理的地方加@Transactional 注解。@Transactional 注解可以被应用于接口定义和接口方法、类定义和类的 public 方法上。</p>
-</li>
-<li><p>@Transactional 注解只能应用到 public 可见度的方法上。 如果你在 protected、private 或者 package-visible 的方法上使用 @Transactional 注解，它也不会报错， 但是这个被注解的方法将不会展示已配置的事务设置。</p>
-</li>
-<li><p>注意仅仅 @Transactional 注解的出现不足于开启事务行为，它仅仅 是一种元数据。必须在配置文件中使用配置元素，才真正开启了事务行为。</p>
-</li>
-<li><p>通过 元素的 “proxy-target-class” 属性值来控制是基于接口的还是基于类的代理被创建。如果 “proxy-target-class” 属值被设置为 “true”，那么基于类的代理将起作用（这时需要CGLIB库cglib.jar在CLASSPATH中）。如果 “proxy-target-class” 属值被设置为 “false” 或者这个属性被省略，那么标准的JDK基于接口的代理将起作用。</p>
-</li>
-<li><p>Spring团队建议在具体的类（或类的方法）上使用 @Transactional 注解，而不要使用在类所要实现的任何接口上。在接口上使用 @Transactional 注解，只能当你设置了基于接口的代理时它才生效。因为注解是 不能继承 的，这就意味着如果正在使用基于类的代理时，那么事务的设置将不能被基于类的代理所识别，而且对象也将不会被事务代理所包装。</p>
-</li>
-<li><p>@Transactional 的事务开启 ，或者是基于接口的 或者是基于类的代理被创建。所以在同一个类中一个方法调用另一个方法有事务的方法，事务是不会起作用的。</p>
-</li>
-</ul>
-</blockquote>
-<p>1、@Transactional 只能应用到 public 方法才有效</p>
-<p>2、避免 Spring 的 AOP 的自调用问题</p>
-<p>在 Spring 的 AOP 代理下，只有目标方法由外部调用，目标方法才由 Spring 生成的代理对象来管理，这会造成自调用问题。若同一类中的其他没有@Transactional 注解的方法内部调用有@Transactional 注解的方法，有@Transactional 注解的方法的事务被忽略，不会发生回滚。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderService</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">insert</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		insertOrder();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Transactional</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insertOrder</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//insert log info</span></span><br><span class="line">        <span class="comment">//insertOrder</span></span><br><span class="line">        <span class="comment">//updateAccount</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2281,7 +2358,7 @@ top -stats pid,command,cpu,th,pstate,time
           
             <div class="site-state-item site-state-posts">
               <a href="/shortfeng/archives/">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
