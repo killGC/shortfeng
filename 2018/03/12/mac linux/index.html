@@ -94,17 +94,17 @@
 
 
 
-<meta name="description" content="##多线程三种来实现线程安全的手段:   互斥同步通过加锁来实现对临界资源的访问限制。加锁方式有Synchorized和Lock 非阻塞同步前面提到的互斥同步属于一种悲观锁机制，非阻塞同步属于乐观锁机制。典型的实现方式就是CAS操 作 无同步方案要保证线程安全，并不是一定就需要同步，两者没有因果关系，同步只是保证共享数据征用时正确性的手段，如果一个方法本来就不涉及共享数据，那它就不需要任何同步措施">
+<meta name="description" content="linux 1、端口占用及杀死占用进程sudo lsof -i:8080sudo kill -9 2123 2、搜索日志，并打印前后100行的内容cat jetty_stdout.log | grep -C 100 注意接受到流程消息">
 <meta property="og:type" content="article">
-<meta property="og:title" content="多线程">
-<meta property="og:url" content="https://killgc.github.io/shortfeng/2018/03/12/多线程/index.html">
+<meta property="og:title" content="mac linux">
+<meta property="og:url" content="https://killgc.github.io/shortfeng/2018/03/12/mac linux/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="##多线程三种来实现线程安全的手段:   互斥同步通过加锁来实现对临界资源的访问限制。加锁方式有Synchorized和Lock 非阻塞同步前面提到的互斥同步属于一种悲观锁机制，非阻塞同步属于乐观锁机制。典型的实现方式就是CAS操 作 无同步方案要保证线程安全，并不是一定就需要同步，两者没有因果关系，同步只是保证共享数据征用时正确性的手段，如果一个方法本来就不涉及共享数据，那它就不需要任何同步措施">
+<meta property="og:description" content="linux 1、端口占用及杀死占用进程sudo lsof -i:8080sudo kill -9 2123 2、搜索日志，并打印前后100行的内容cat jetty_stdout.log | grep -C 100 注意接受到流程消息">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-12T11:54:36.000Z">
+<meta property="og:updated_time" content="2018-06-12T13:57:02.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="多线程">
-<meta name="twitter:description" content="##多线程三种来实现线程安全的手段:   互斥同步通过加锁来实现对临界资源的访问限制。加锁方式有Synchorized和Lock 非阻塞同步前面提到的互斥同步属于一种悲观锁机制，非阻塞同步属于乐观锁机制。典型的实现方式就是CAS操 作 无同步方案要保证线程安全，并不是一定就需要同步，两者没有因果关系，同步只是保证共享数据征用时正确性的手段，如果一个方法本来就不涉及共享数据，那它就不需要任何同步措施">
+<meta name="twitter:title" content="mac linux">
+<meta name="twitter:description" content="linux 1、端口占用及杀死占用进程sudo lsof -i:8080sudo kill -9 2123 2、搜索日志，并打印前后100行的内容cat jetty_stdout.log | grep -C 100 注意接受到流程消息">
 
 
 
@@ -133,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="https://killgc.github.io/shortfeng/2018/03/12/多线程/"/>
+  <link rel="canonical" href="https://killgc.github.io/shortfeng/2018/03/12/mac linux/"/>
 
 
 
 
 
-  <title>多线程 | Hexo</title>
+  <title>mac linux | Hexo</title>
   
 
 
@@ -262,7 +262,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/多线程/">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/mac linux/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="changfeng">
@@ -279,7 +279,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">多线程</h1>
+          <h1 class="post-title" itemprop="name headline">mac linux</h1>
         
 
         <div class="post-meta">
@@ -291,7 +291,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-12T19:51:15+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-12T17:36:17+08:00">
                 2018-03-12
               </time>
             
@@ -329,14 +329,9 @@
       
 
       
-        <h2 id="多线程"><a href="#多线程" class="headerlink" title="##多线程"></a>##多线程</h2><p>三种来实现线程安全的手段:</p>
-<blockquote>
-<ul>
-<li>互斥同步<br>通过加锁来实现对临界资源的访问限制。加锁方式有Synchorized和Lock</li>
-<li>非阻塞同步<br>前面提到的互斥同步属于一种悲观锁机制，非阻塞同步属于乐观锁机制。典型的实现方式就是CAS操 作</li>
-<li>无同步方案<br>要保证线程安全，并不是一定就需要同步，两者没有因果关系，同步只是保证共享数据征用时正确性的手段，如果一个方法本来就不涉及共享数据，那它就不需要任何同步措施去保证正确性。ThreadLocal就是这张实现方案</li>
-</ul>
-</blockquote>
+        <h2 id="linux"><a href="#linux" class="headerlink" title="linux"></a>linux</h2><hr>
+<p>1、端口占用及杀死占用进程<br>sudo lsof -i:8080<br>sudo kill -9 2123</p>
+<p>2、搜索日志，并打印前后100行的内容<br>cat jetty_stdout.log | grep -C 100 注意接受到流程消息 </p>
 
       
     </div>
@@ -361,8 +356,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/shortfeng/2018/03/12/OLTP、OLAP/" rel="next" title="OLTP、OLAP">
-                <i class="fa fa-chevron-left"></i> OLTP、OLAP
+              <a href="/shortfeng/2018/03/12/ThreadLocal/" rel="next" title="ThreadLocal">
+                <i class="fa fa-chevron-left"></i> ThreadLocal
               </a>
             
           </div>
@@ -371,8 +366,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/shortfeng/2018/03/13/性能优化相关linux命令/" rel="prev" title="性能优化相关linux命令">
-                性能优化相关linux命令 <i class="fa fa-chevron-right"></i>
+              <a href="/shortfeng/2018/03/12/java lambda/" rel="prev" title="mysql常用">
+                mysql常用 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -489,7 +484,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#多线程"><span class="nav-number">1.</span> <span class="nav-text">##多线程</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#linux"><span class="nav-number">1.</span> <span class="nav-text">linux</span></a></li></ol></div>
             
 
           </div>

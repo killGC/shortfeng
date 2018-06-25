@@ -260,6 +260,458 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/06/25/java性能优化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/shortfeng/2018/06/25/java性能优化/" itemprop="url">java性能优化</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-25T11:08:00+08:00">
+                2018-06-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="java性能优化"><a href="#java性能优化" class="headerlink" title="java性能优化"></a>java性能优化</h2><hr>
+<p>1、随机访问使用for循环，顺序访问使用Iterator或foreach<br>实现RandomAccess接口的类实例比如ArrayList，假如是随机访问的，使用普通for循环效率将高于使用foreach循环；反过来，如果是顺序访问的，则使用Iterator会效率更高</p>
+<p>foreach循环的底层实现原理就是迭代器Iterator</p>
+<p>2、循环内不要不断创建对象引用</p>
+<p>例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= count; i++)</span><br><span class="line">&#123;</span><br><span class="line">    Object obj = <span class="keyword">new</span> Object();    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种做法会导致内存中有count份Object对象引用存在，count很大的话，就耗费内存了，建议为改为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Object obj = null;</span><br><span class="line">for (int i = 0; i &lt;= count; i++)</span><br><span class="line">&#123;</span><br><span class="line">    obj = new Object();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样的话，内存中只有一份Object对象引用，每次new Object()的时候，Object对象引用指向不同的Object罢了，但是内存中只有一份，这样就大大节省了内存空间了</p>
+<p>3、尽量减少对变量的重复计算</p>
+<p>明确一个概念，对方法的调用，即使方法中只有一句语句，也是有消耗的，包括创建栈帧、调用方法时保护现场、调用方法完毕时恢复现场等。所以例如下面的操作：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; list.size(); i++)</span><br><span class="line">&#123;...&#125;</span><br><span class="line">建议替换为：</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, length = list.size(); i &lt; length; i++)</span><br><span class="line">&#123;...&#125;</span><br><span class="line">这样，在list.size()很大的时候，就减少了很多的消耗</span><br></pre></td></tr></table></figure>
+<p>4、如果能估计到待添加的内容长度，为底层以数组方式实现的集合、工具类指定初始长度</p>
+<p>比如ArrayList、LinkedLlist、StringBuilder、StringBuffer、HashMap、HashSet等等</p>
+<p>5、把一个基本数据类型转为字符串，基本数据类型.toString()是最快的方式、String.valueOf(数据)次之、数据+””最慢</p>
+<p>（1）、String.valueOf()方法底层调用了Integer.toString()方法，但是会在调用前做空判断</p>
+<p>（2）、Integer.toString()方法就不说了，直接调用了</p>
+<p>（3）、i + “”底层使用了StringBuilder实现，先用append方法拼接，再用toString()方法获取字符串</p>
+<p> 三者对比下来，明显是2最快、1次之、3最慢</p>
+<p>6、对资源的close()建议分开操作</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">    XXX.close();</span><br><span class="line">    YYY.close();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (Exception e)</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">建议修改为：</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">    XXX.close();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (Exception e)</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">    YYY.close();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (Exception e)</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>7、对于ThreadLocal使用前或者使用后一定要先remove</p>
+<p>当前基本所有的项目都使用了线程池技术，这非常好，可以动态配置线程数、可以重用线程。</p>
+<p>然而，如果你在项目中使用到了ThreadLocal，一定要记得使用前或者使用后remove一下。这是因为上面提到了线程池技术做的是一个线程重用，这意味着代码运行过程中，一条线程使用完毕，并不会被销毁而是等待下一次的使用。我们看一下Thread类中，持有ThreadLocal.ThreadLocalMap的引用：</p>
+<p>1<br>2<br>3<br>/* ThreadLocal values pertaining to this thread. This map is maintained</p>
+<ul>
+<li>by the ThreadLocal class. */<br>ThreadLocal.ThreadLocalMap threadLocals = null;<br>线程不销毁意味着上条线程set的ThreadLocal.ThreadLocalMap中的数据依然存在，那么在下一条线程重用这个Thread的时候，很可能get到的是上条线程set的数据而不是自己想要的内容。</li>
+</ul>
+<p>这个问题非常隐晦，一旦出现这个原因导致的错误，没有相关经验或者没有扎实的基础非常难发现这个问题，因此在写代码的时候就要注意这一点，这将给你后续减少很多的工作量。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/06/22/Comparable接口与Comparator/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/shortfeng/2018/06/22/Comparable接口与Comparator/" itemprop="url">Comparable接口、Comparator接口</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-22T17:36:17+08:00">
+                2018-06-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Comparable接口、Comparator接口"><a href="#Comparable接口、Comparator接口" class="headerlink" title="Comparable接口、Comparator接口"></a>Comparable接口、Comparator接口</h2><hr>
+<p>1、元素自身具备比较性</p>
+<p>元素自身具备比较性，需要元素实现Comparable接口，重写compareTo方法，也就是让元素自身具备比较性，这种方式叫做元素的自然排序也叫做默认排序</p>
+<p>2、容器具备比较性</p>
+<p>当元素自身不具备比较性，或者自身具备的比较性不是所需要的。那么此时可以让容器自身具备。需要定义一个类实现接口Comparator，重写compare方法，并将该接口的子类实例对象作为参数传递给TreeMap集合的构造方法。</p>
+<p>注意：当Comparable比较方式和Comparator比较方式同时存在时，以Comparator的比较方式为主；</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/04/04/跨域问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/shortfeng/2018/04/04/跨域问题/" itemprop="url">跨域问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-04T10:48:32+08:00">
+                2018-04-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="跨域问题"><a href="#跨域问题" class="headerlink" title="跨域问题"></a>跨域问题</h2><hr>
+<h4 id="同源"><a href="#同源" class="headerlink" title="同源"></a>同源</h4><p>同源政策的目的，是为了保证用户信息的安全，防止恶意的网站窃取数据</p>
+<p>同源是指以下三个信息都必须相同：</p>
+<blockquote>
+<ul>
+<li>协议相同</li>
+<li>域名相同</li>
+<li>端口相同</li>
+</ul>
+</blockquote>
+<p>如果非同源，共有三种行为受到限制：</p>
+<blockquote>
+<ul>
+<li>Cookie、LocalStorage 和 IndexDB 无法读取</li>
+<li>DOM 无法获得</li>
+<li>AJAX 请求不能发送</li>
+</ul>
+</blockquote>
+<p>虽然这些限制是必要的，但是有时很不方便，合理的用途也受到影响。如何规避上面三种限制</p>
+<h5 id="设置document-domain"><a href="#设置document-domain" class="headerlink" title="设置document.domain"></a>设置document.domain</h5><p>这种方案只适用Cookie与iframe</p>
+<p>A网页是<a href="http://w1.example.com/a.html，B网页是http://w2.example.com/b.html，那么只要设置相同的document.domain，两个网页就可以共享Cookie" target="_blank" rel="noopener">http://w1.example.com/a.html，B网页是http://w2.example.com/b.html，那么只要设置相同的document.domain，两个网页就可以共享Cookie</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">document.domain = <span class="string">'example.com'</span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li>Cookie 是服务器写入浏览器的一小段信息，只有同源的网页才能共享。但是，两个网页一级域名相同，只是二级域名不同，浏览器允许通过设置document.domain共享 Cookie</li>
+<li>如果两个网页不同源，就无法拿到对方的DOM。典型的例子是iframe窗口和window.open方法打开的窗口，它们与父窗口无法通信</li>
+</ul>
+</blockquote>
+<h5 id="完全不同源"><a href="#完全不同源" class="headerlink" title="完全不同源"></a>完全不同源</h5><blockquote>
+<ul>
+<li>window.name</li>
+<li>window.postMessage：HTML5为了解决这个问题，引入了一个全新的API：跨文档通信 API（Cross-document messaging）。<br>这个API为window对象新增了一个window.postMessage方法，允许跨窗口通信，不论这两个窗口是否同源</li>
+</ul>
+</blockquote>
+<p>AJAX：</p>
+<blockquote>
+<ul>
+<li><p>JSONP ： 简单适用，老式浏览器全部支持，服务器改造非常小;网页通过添加一个script元素，向服务器请求JSON数据，这种做法不受同源政策限制；服务器收到请求后，将数据放在一个指定名字的回调函数里传回来</p>
+</li>
+<li><p>WebSocket：WebSocket是一种通信协议，使用ws://（非加密）和wss://（加密）作为协议前缀。该协议不实行同源政策，只要服务器支持，就可以通过它进行跨源通信</p>
+</li>
+<li>CORS：跨源资源分享（Cross-Origin Resource Sharing）的缩写。它是W3C标准，是跨源AJAX请求的根本解决方法。相比JSONP只能发GET请求，CORS允许任何类型的请求</li>
+</ul>
+</blockquote>
+<p>JSONP例子:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">function <span class="title">addScriptTag</span><span class="params">(src)</span> </span>&#123;</span><br><span class="line">  var script = document.createElement(<span class="string">'script'</span>);</span><br><span class="line">  script.setAttribute(<span class="string">"type"</span>,<span class="string">"text/javascript"</span>);</span><br><span class="line">  script.src = src;</span><br><span class="line">  document.body.appendChild(script);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">window.onload = function () &#123;</span><br><span class="line">  addScriptTag(<span class="string">'http://example.com/ip?callback=foo'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">function <span class="title">foo</span><span class="params">(data)</span> </span>&#123;</span><br><span class="line">  console.log(<span class="string">'Your public IP address is: '</span> + data.ip);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="X-Frame-Options"><a href="#X-Frame-Options" class="headerlink" title="X-Frame-Options"></a>X-Frame-Options</h4><p>nginx中设置X-Frame-Options ，防止网站被别人用iframe嵌入使用</p>
+<p>X-Frame-Options 响应头</p>
+<p>X-Frame-Options HTTP 响应头是用来给浏览器指示允许一个页面可否在 iframe 或者 object标签中展现的标记。网站可以使用此功能，来确保自己网站的内容没有被嵌到别人的网站中去，也从而避免了点击劫持 (clickjacking) 的攻击。</p>
+<p>X-Frame-Options 有三个值:</p>
+<blockquote>
+<ul>
+<li><p>DENY<br>表示该页面不允许在 frame 中展示，即便是在相同域名的页面中嵌套也不允许。</p>
+</li>
+<li><p>SAMEORIGIN<br>表示该页面可以在相同域名页面的 frame 中展示。</p>
+</li>
+<li><p>ALLOW-FROM uri<br>表示该页面可以在指定来源的 frame 中展示。<br>换一句话说，如果设置为 DENY，不光在别人的网站 frame 嵌入时会无法加载，在同域名页面中同样会无法加载。另一方面，如果设置为 SAMEORIGIN，那么页面就可以在同域名页面的 frame 中嵌套。</p>
+</li>
+</ul>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/04/04/支付/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1630,689 +2082,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/18/mysql/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="changfeng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/shortfeng/2018/03/18/mysql/" itemprop="url">mysql</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-18T16:23:56+08:00">
-                2018-03-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="并发控制"><a href="#并发控制" class="headerlink" title="并发控制"></a>并发控制</h4><p>mysql通过加锁进行并发控制。mysql有两种锁，分别是共享锁和排它锁，也叫读锁和写锁。读锁是共享的，写锁是排它的。多个读锁可以同时存在，但是写锁不能和读锁和写锁共存。在读多写少的场景比较适合读写锁。</p>
-<p>按锁的粒度，分为表级锁和行级锁。</p>
-<h4 id="Myisam与InnoDB区别"><a href="#Myisam与InnoDB区别" class="headerlink" title="Myisam与InnoDB区别"></a>Myisam与InnoDB区别</h4><blockquote>
-<ul>
-<li>InnoDB支持事务，Myisam不支持</li>
-<li>InnoDB支持外键，Myisam不支持</li>
-<li>InnoDB是聚集索引，数据文件和索引绑在一起，必须要主键索引；Myisam是非聚集索引，数据文件是分离的，索引保存的是数据文件的指针，主键索引和辅助索引是独立的</li>
-<li>InnoDB不保存表的具体行数，执行select count(*) from table是需要全表扫描；而Myisam用一个变量保存整个表的行数，执行上述语句只需要读出该变量即可，速度很快。</li>
-<li>InnoDB不支持全文索引，而Myisam支持全文索引。</li>
-<li>InnoDB支持行级锁，而Myisam只支持表级锁</li>
-</ul>
-</blockquote>
-<h4 id="聚簇索引和非聚簇索引"><a href="#聚簇索引和非聚簇索引" class="headerlink" title="聚簇索引和非聚簇索引"></a>聚簇索引和非聚簇索引</h4><p>myisam的主键索引和其它索引没有什么不同，都只是存储了数据的物理位置指针，innoDB的聚簇索引和非聚簇索引很不相同。</p>
-<h5 id="聚簇索引："><a href="#聚簇索引：" class="headerlink" title="聚簇索引："></a>聚簇索引：</h5><p>InnoDB一定会建立聚簇索引，把实际数据行与相关的键值保存在一起。</p>
-<blockquote>
-<ul>
-<li>一个表只能有一个聚簇索引</li>
-<li>有主键时，根据主键创建聚簇索引</li>
-<li>没有主键时，会用一个唯一且不为空的索引列作为主键创建聚簇索引</li>
-<li>以上都不满足，隐式定义一个主键作为聚簇索引</li>
-<li>主键不能太大</li>
-</ul>
-</blockquote>
-<p>按主键顺序插入行<br>对应高并发，按主键顺序插入行可能会造成主键争用，主键的上限会成为热点，并发插入会导致间隙锁经侦；另外一个热点是auto_increment锁机制</p>
-<h5 id="非聚簇索引："><a href="#非聚簇索引：" class="headerlink" title="非聚簇索引："></a>非聚簇索引：</h5><p>非聚簇索引（二级索引），也称为辅助索引</p>
-<blockquote>
-<ul>
-<li>叶子节点保存的不是行的物理位置指针，而是是主键值，当行移动或数据页分裂时无需更新二级索引的物理位置指针。</li>
-<li>访问数据需要两次索引查找</li>
-</ul>
-</blockquote>
-<h4 id="B树、B-树、B-树"><a href="#B树、B-树、B-树" class="headerlink" title="B树、B+树、B*树"></a>B树、B+树、B*树</h4><p>InnoDB使用的是B+树。</p>
-<h5 id="B树-B-Tree）："><a href="#B树-B-Tree）：" class="headerlink" title="B树(B-Tree）："></a>B树(B-Tree）：</h5><p>B树作为一种多路搜索树（并不是二叉的）</p>
-<blockquote>
-<ul>
-<li>定义任意非叶子结点最多只有M个儿子；且M&gt;2；</li>
-<li>根结点的儿子数为[2, M]；</li>
-<li>除根结点以外的非叶子结点的儿子数为[M/2, M]；</li>
-<li>每个结点存放至少M/2-1（取上整）和至多M-1个关键字；(至少2个关键字）</li>
-<li>非叶子结点的关键字个数=指向儿子的指针个数-1；</li>
-<li>非叶子结点的关键字：K[1], K[2], …, K[M-1]；且K[i] &lt; K[i+1]；&gt; * v非叶子结点的指针：P[1], P[2], …, P[M]；其中P[1]指向关键字小于K[1]的子树，P[M]指向关键字大于K[M-1]的子树，其它P[i]指向关键字属于(K[i-1], K[i])的子树；</li>
-<li>所有叶子结点位于同一层；</li>
-</ul>
-</blockquote>
-<p><img src="http://omu7tit09.bkt.clouddn.com/15005176551496.jpg" alt="cmd-markdown-logo"></p>
-<h5 id="B-树-B-tree-："><a href="#B-树-B-tree-：" class="headerlink" title="B+树(B+tree)："></a>B+树(B+tree)：</h5><p>B+树是B树的变体，也是一种多路搜索树，其定义基本与B-树相同，除了：</p>
-<blockquote>
-<ul>
-<li>非叶子结点的子树指针与关键字个数相同；</li>
-<li>非叶子结点的子树指针P[i]，指向关键字值属于[K[i], K[i+1])的子树（B-树是开区间）；</li>
-<li>为所有叶子结点增加一个链指针；</li>
-<li>所有关键字都在叶子结点出现；</li>
-</ul>
-</blockquote>
-<p>B+树性质：</p>
-<blockquote>
-<ul>
-<li>所有关键字都出现在叶子结点的链表中（稠密索引），且链表中的关键字恰好是有序的；</li>
-<li>不可能在非叶子结点命中；</li>
-<li>非叶子结点相当于是叶子结点的索引（稀疏索引），叶子结点相当于是存储（关键字）数据的数据层；</li>
-<li>更适合文件索引系统。</li>
-</ul>
-</blockquote>
-<p><img src="http://omu7tit09.bkt.clouddn.com/15005182105086.jpg" alt="cmd-markdown-logo"></p>
-<h5 id="B∗树："><a href="#B∗树：" class="headerlink" title="B∗树："></a>B∗树：</h5><p>B*树是B+树的变体，在B+树的非根和非叶子结点再增加指向兄弟的指针，将结点的最低利用率从1/2提高到2/3</p>
-<p><img src="http://omu7tit09.bkt.clouddn.com/15005180938867.jpg" alt="cmd-markdown-logo"></p>
-<p>B∗树定义了非叶子结点关键字个数至少为23M，即块的最低使用率为2/3（代替B+树的1/2）；</p>
-<p>B+树的分裂：当一个结点满时，分配一个新的结点，并将原结点中1/2的数据复制到新结点，最后在父结点中增加新结点的指针；B+树的分裂只影响原结点和父结点，而不会影响兄弟结点，所以它不需要指向兄弟的指针；</p>
-<p>B∗树的分裂：当一个结点满时，如果它的下一个兄弟结点未满，那么将一部分数据移到兄弟结点中，再在原结点插入关键字，最后修改父结点中兄弟结点的关键字（因为兄弟结点的关键字范围改变了）；如果兄弟也满了，则在原结点与兄弟结点之间增加新结点，并各复制1/3的数据到新结点，最后在父结点增加新结点的指针；</p>
-<p>所以，B∗树分配新结点的概率比B+树要低，空间使用率更高。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/15/spring事务传播机制和隔离级别/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="changfeng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/shortfeng/2018/03/15/spring事务传播机制和隔离级别/" itemprop="url">spring事务传播机制和隔离级别</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-15T23:24:57+08:00">
-                2018-03-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="spring事务传播机制和隔离级别"><a href="#spring事务传播机制和隔离级别" class="headerlink" title="spring事务传播机制和隔离级别"></a>spring事务传播机制和隔离级别</h2><h4 id="事务传播机制"><a href="#事务传播机制" class="headerlink" title="事务传播机制"></a>事务传播机制</h4><hr>
-<blockquote>
-<ul>
-<li>propagation_required 支持当前事务，如果不存在事务，则新建一个事务</li>
-<li>propagation_supports 支持当前事务，如果不存在事务，则以非事务方式执行</li>
-<li>propagation_mandatory 支持当前事务，如果不存在事务，则抛出异常</li>
-<li>propagation_required_new 新建事务，如果当前存在事务，则挂起当前事务</li>
-<li>propagation_not_supported 以非事务方式执行，如果当前存在事务，则把当前事务挂起</li>
-<li>propagation_never 以非事务方式执行，如果当前存在事务，则抛出异常</li>
-<li>propagation_nested 如果当前存在事务，则在嵌套事务内执行，如果当前没有事务，则其行为与propagation_required一样。嵌套的事务可以独立于当前事务进行单独的提交或回滚。内部事务的回滚不会对外部事务造成影响，如果外部事务commit, 嵌套事务也会被commit, 这个规则同样适用于 roll back</li>
-</ul>
-</blockquote>
-<h4 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h4><hr>
-<p>数据库事务并发的三个问题：</p>
-<blockquote>
-<ul>
-<li>脏读 脏读发生在一个事务读取另外一个事务改写未提交的数据，如果改写在稍后被回滚，就有可能出现数据不一致。</li>
-<li>不可重复读 一个事务执行相同的查询两次或两次以上，每次得到不同的数据，通常是由于另外一个事务在两次查询期间进行更新。通过锁住满足条件的记录来解决。重点在于update和delete</li>
-<li>幻读 一个事务读取了几行数据，另外一个事务插入了一些数据，在后面的查询，第一个事务会发现多了一些原本不存在的记录。通过锁住满足条件及其相近的记录。重点在于insert</li>
-</ul>
-</blockquote>
-<p>spring中对应数据库的隔离级别：</p>
-<blockquote>
-<ul>
-<li>isolation_default 使用数据库默认的隔离级别</li>
-<li>isolation_read_uncommited 读未提交，可能出现脏读、不可重复读、幻读</li>
-<li>isolation_read_commited 读已提交，避免了脏读，可能会出现不可重复读、幻读</li>
-<li>isolation_repeatable_read 可重复读，避免了脏读、不可重复读，可能出现幻读</li>
-<li>isolation_seriablizable 串行访问，避免脏读、不可重复读、幻读。读加共享锁，写加排他锁，读写互斥</li>
-</ul>
-</blockquote>
-<p>数据库隔离级别：</p>
-<blockquote>
-<ul>
-<li>mysql数据库的默认隔离级别为repeatable_read，并且解决了幻读问题。</li>
-<li>oracle数据库的默认隔离级别为read_commited</li>
-</ul>
-</blockquote>
-<h4 id="回滚机制"><a href="#回滚机制" class="headerlink" title="回滚机制"></a>回滚机制</h4><p>回滚规则用于定义哪些异常会导致回滚，哪些异常不会导致回滚<br>默认情况下，只有遇到运行时异常才会回滚，遇到受检异常不回滚。</p>
-<h2 id="MVCC-多版本并发控制"><a href="#MVCC-多版本并发控制" class="headerlink" title="MVCC(多版本并发控制)"></a>MVCC(多版本并发控制)</h2><p>全称为Multi-Version Currency Control，为了查询一些正在被另外事务更新的行，并且可以看到它们被更新之前的值。可以增强并发，实现查询不用等待另外事务释放锁。</p>
-<p>在InnoDB中,给每行增加两个隐藏字段来实现mvcc，一个用来记录行的创建时间，一个用了记录行的过期时间（删除时间）。在实际实现中，存储的并不是时间，而是事务版本号，每开启一个新的事务，事务的版本号就会递增。<br>mysql的默认隔离级别repeatable read下，增删查改的实现为：</p>
-<blockquote>
-<ul>
-<li>select 读取创建版本号小于或等于当前事务版本号，且删除版本号为空或大于当前事务版本号的记录，这样可以保证在读取之前记录是存在的</li>
-<li>insert 创建版本号为当前事务版本号</li>
-<li>update 插入一条新记录，新记录的创建版本号为当前事务版本号，原记录的删除版本号为当前事务版本号</li>
-<li>delete 删除版本号为当前事务版本号</li>
-</ul>
-</blockquote>
-<p>Mvcc只支持repeatable read和read commited隔离级别。read uncommited与Mvcc不兼容，因为不能找到适合它们事务版本的行版本，每次读取都是最新版本。serailizable与Mvcc也不兼容，因为每次读操作都会锁定它们返回的每一行数据</p>
-<p>快照读和当前读：</p>
-<blockquote>
-<ul>
-<li>快照读 读取的快照版本，也就是历史版本。普通的select是快照读</li>
-<li>当前读 读取的是最新版本。update、insert、delete、select .. for update、select .. lock in share mode是当前读</li>
-</ul>
-</blockquote>
-<p>锁定读和一致性非锁定读：</p>
-<blockquote>
-<ul>
-<li>锁定读 事务中标准的select语句是不会加锁的，select .. for update（与update加锁一样）、select .. lock in share mode（加共享锁，其它事务只读不能修改，直到当前事务提交）两种除外。</li>
-<li>一致性非锁定读  简称一致性读，读的是数据库某个时间点的快照。如果隔离级别是repeatable_read，同一个事务中的所有一致性非锁定读都读的是事务中第一个读读到的快照版，如果隔离级别为read_commited，那么事务的每一个一致性非锁定读都会读到自己刷新的快照版本。一致性非锁定读不会给它访问的表加任何形式的锁，因此其它事务可以并发的修改它们。</li>
-</ul>
-</blockquote>
-<p>悲观锁和乐观锁：</p>
-<blockquote>
-<ul>
-<li>悲观锁 数据库总是认为别人会修改它所操作的数据，因此在操作数据过程中将数据加锁</li>
-<li>乐观锁 总是认为别人不会修改，通过版本来实现</li>
-</ul>
-</blockquote>
-<p>锁：</p>
-<blockquote>
-<ul>
-<li>record lock（记录锁） 在索引记录上加锁</li>
-<li>grap locks（间隙锁） 在索引记录之间加锁，或者在第一个索引记录之前加锁，或者在最后一个索引记录之后加锁</li>
-<li>next key lock 在索引记录上加锁，并且在索引记录之间的间隙加锁，相当于record lock与grap locks的结合</li>
-</ul>
-</blockquote>
-<p>一致性读保证了可重复读，间隙锁防止了幻读。</p>
-<h4 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h4><p>同一service两个方法之间调用，被调用方法的@Transaction配置会被忽略</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">migration方法调用singleProcess方法singleProcess方法的</span><br><span class="line">事务配置会被忽略</span><br><span class="line">出现的结果是两个方法执行的数据库操作都成功了</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Transactional</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">migration</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        B2bPartnerTmpDO record = <span class="keyword">new</span> B2bPartnerTmpDO();</span><br><span class="line">        record.setId(<span class="number">100008001L</span>);</span><br><span class="line">        record.setCorpDescription(<span class="string">"22"</span>);</span><br><span class="line">        partnerTmpManager.updateByPrimaryKeySelective(record);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            singleProcess();<span class="comment">//调用目标对象的方法，不能触发对singleProcess方法的事务增强</span></span><br><span class="line">        &#125;<span class="keyword">catch</span> (Exception ex)&#123;</span><br><span class="line">            log.error(<span class="string">"出现异常:"</span>+ex.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Transactional</span>(propagation=Propagation.REQUIRES_NEW)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">singleProcess</span><span class="params">()</span></span>&#123;</span><br><span class="line">        B2bPartnerTmpDO record = <span class="keyword">new</span> B2bPartnerTmpDO();</span><br><span class="line">        record.setId(<span class="number">100008002L</span>);</span><br><span class="line">        record.setCorpDescription(<span class="string">"33"</span>);</span><br><span class="line">        partnerTmpManager.updateByPrimaryKeySelective(record);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"singleProcess出现异常"</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">migration方法调用singleProcess方法，singleProcess方法的</span><br><span class="line">事务配置会被忽略</span><br><span class="line">出现的结果是两个方法的代码合并在一起了，执行的数据库操作都回滚了</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Transactional</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">migration</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        B2bPartnerTmpDO record = <span class="keyword">new</span> B2bPartnerTmpDO();</span><br><span class="line">        record.setId(<span class="number">100008001L</span>);</span><br><span class="line">        record.setCorpDescription(<span class="string">"22"</span>);</span><br><span class="line">        partnerTmpManager.updateByPrimaryKeySelective(record);</span><br><span class="line"></span><br><span class="line">        singleProcess();<span class="comment">//调用目标对象的方法，不能触发对singleProcess方法的事务增强</span></span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"migration出现异常"</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Transactional</span>(propagation=Propagation.REQUIRES_NEW)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">singleProcess</span><span class="params">()</span></span>&#123;</span><br><span class="line">        B2bPartnerTmpDO record = <span class="keyword">new</span> B2bPartnerTmpDO();</span><br><span class="line">        record.setId(<span class="number">100008002L</span>);</span><br><span class="line">        record.setCorpDescription(<span class="string">"33"</span>);</span><br><span class="line">        partnerTmpManager.updateByPrimaryKeySelective(record);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">结果是migration的sql执行成功，singleProcess方法是新启一个事务，</span><br><span class="line">事务出现异常进行回滚，singleProcess方法sql执行回滚了。</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> MigrationService migrationService;<span class="comment">//引用代理自身的代理对象</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Transactional</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">migration</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        B2bPartnerTmpDO record = <span class="keyword">new</span> B2bPartnerTmpDO();</span><br><span class="line">        record.setId(<span class="number">100008001L</span>);</span><br><span class="line">        record.setCorpDescription(<span class="string">"22"</span>);</span><br><span class="line">        partnerTmpManager.updateByPrimaryKeySelective(record);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//调用代理对象的方法，能触发对singleProcess方法的事务增强</span></span><br><span class="line">            migrationService.singleProcess();</span><br><span class="line">        &#125;<span class="keyword">catch</span> (Exception ex)&#123;</span><br><span class="line">            log.error(<span class="string">"出现异常:"</span>+ex.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Transactional</span>(propagation=Propagation.REQUIRES_NEW)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">singleProcess</span><span class="params">()</span></span>&#123;</span><br><span class="line">        B2bPartnerTmpDO record = <span class="keyword">new</span> B2bPartnerTmpDO();</span><br><span class="line">        record.setId(<span class="number">100008002L</span>);</span><br><span class="line">        record.setCorpDescription(<span class="string">"33"</span>);</span><br><span class="line">        partnerTmpManager.updateByPrimaryKeySelective(record);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"singleProcess出现异常"</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">虽然在migration方法中对singleProcess方法出现的异常进行<span class="keyword">catch</span>了，</span><br><span class="line"><span class="keyword">catch</span>后面的sql语句也能执行下去，但是最终的结果是所有数据库操作都回滚了。</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> MigrationService migrationService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Transactional</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">migration</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        B2bPartnerTmpDO record = <span class="keyword">new</span> B2bPartnerTmpDO();</span><br><span class="line">        record.setId(<span class="number">100008001L</span>);</span><br><span class="line">        record.setCorpDescription(<span class="string">"22"</span>);</span><br><span class="line">        partnerTmpManager.updateByPrimaryKeySelective(record);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//migrationService.singleProcess();</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            migrationService.singleProcess();</span><br><span class="line">        &#125;<span class="keyword">catch</span> (Exception ex)&#123;</span><br><span class="line">            log.error(<span class="string">"出现异常:"</span>+ex.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        B2bPartnerTmpDO record2 = <span class="keyword">new</span> B2bPartnerTmpDO();</span><br><span class="line">        record2.setId(<span class="number">100008003L</span>);</span><br><span class="line">        record2.setCorpDescription(<span class="string">"44"</span>);</span><br><span class="line">        partnerTmpManager.updateByPrimaryKeySelective(record2);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Transactional</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">singleProcess</span><span class="params">()</span></span>&#123;</span><br><span class="line">        B2bPartnerTmpDO record = <span class="keyword">new</span> B2bPartnerTmpDO();</span><br><span class="line">        record.setId(<span class="number">100008002L</span>);</span><br><span class="line">        record.setCorpDescription(<span class="string">"33"</span>);</span><br><span class="line">        partnerTmpManager.updateByPrimaryKeySelective(record);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"singleProcess出现异常"</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/13/性能优化相关linux命令/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="changfeng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/shortfeng/2018/03/13/性能优化相关linux命令/" itemprop="url">性能优化相关linux命令</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-13T16:48:10+08:00">
-                2018-03-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="性能优化相关linux命令"><a href="#性能优化相关linux命令" class="headerlink" title="性能优化相关linux命令"></a>性能优化相关linux命令</h2><hr>
-<h4 id="top命令"><a href="#top命令" class="headerlink" title="top命令"></a>top命令</h4><p>top命令是Linux下常用的性能分析工具，能够实时显示系统中各个进程的资源占用状况，类似于Windows的任务管理器，查看系统平均负载和 CPU 使用率</p>
-<p>平均负载有三个数字：63.66，58.39，57.18，分别表示过去 1 分钟、5 分钟、15 分钟机器的负载。按照经验，若数值小于 0.7*CPU 个数，则系统工作正常；若超过这个值，甚至达到 CPU 核数的四五倍，则系统的负载就明显偏高</p>
-<p>命令格式：<br>top [参数]</p>
-<p>命令功能：<br>显示当前系统正在执行的进程的相关信息，包括进程ID、内存占用率、CPU占用率等</p>
-<p>默认以pid倒序排序<br>命令参数：</p>
-<pre><code>top    [-a | -d | -e | -c &lt;mode&gt;]
-       [-F | -f]
-       [-h]
-       [-i &lt;interval&gt;]
-       [-l &lt;samples&gt;]
-       [-ncols &lt;columns&gt;]
-       [-o &lt;key&gt;] [-O &lt;skey&gt;]
-       [-R | -r]
-       [-S]
-       [-s &lt;delay&gt;]
-       [-n &lt;nprocs&gt;]
-       [-stats &lt;keys&gt;]
-       [-pid &lt;processid&gt;]
-       [-user &lt;username&gt;]
-       [-U &lt;username&gt;]
-       [-u]
-
- [-a | -d | -e | -c &lt;mode&gt;] 
- -c &lt;mode&gt;
-    a 累积模式,从top命令执行开始计算
-    d delta模式
-    e 绝对模式，计算事件的绝对数量
-    n 无事件模式，为默认模式
- -a 等同与-c a，类似的-d、-e 分别等同与-c d、-c e
-
- [-F | -f]
- -F 不计算共享内存
- -f 计算共享内存，默认
-
- [-h] 打印信息并退出 **这个参数执行不了**
- [-i &lt;interval&gt;] 每隔多少秒更新信息
- [-l &lt;samples&gt;]
- [-ncols &lt;columns&gt;]
- [-o &lt;key&gt;] [-O &lt;secondaryKey&gt;]
- -o &lt;key&gt; 第一排序字段
- -O &lt;secondaryKey&gt; 第二排序字段
- 支持以下key，key前面可以带上+或-，用于说明倒序还是正序：
- pid 默认
- cpu cpu_me CPU time charged to me by other processes.
- cpu_others  CPU time charged to other processes by me
- csw 上下文切换次数
- time 执行时间
- threads 别名为th，线程数量（总的线程数/运行中线程数）
- ports 别名prt，机器端口数量
- mregion 别名mreg, reg，内存区数量
- mem 内存大小
- rprvt 常驻私有地址空间大小
- purg 可移除内存大小
- vsize  Total memory size.
- vprvt  Private address space size.
- kprvt  Private kernel memory size.
- kshrd  Shared kernel memory size.
- pgrp   Process group id.
- ppid   Parent process id.
- state  alias: pstate Process state.
- uid    User ID.
- wq     alias: #wq, workqueue
-              The workqueue total/running.
-
- faults alias: fault
-              The number of page faults.
-
- cow    alias: cow_faults
-              The copy-on-write faults.
-
- user   alias: username Username.
-
- msgsent Total number of mach messages sent.
-
- msgrecv Total number of mach messages received.
-
- sysbsd Total BSD syscalls.
-
- sysmach Total Mach syscalls.
-
-
- -R     Do not traverse and  report  the  memory  object  map  for  each
-       process.
-
--r     Traverse  and report the memory object map for each process (de-
-       fault).
-
--S     Display the global statistics for swap and purgeable memory.
-
--s &lt;delay&gt; 每隔多少秒更新显示
-       Set the delay between updates to &lt;delay&gt; seconds.   The  default delay between updates is 1 second.
-
--stats &lt;keys&gt;
-       Only  display  the  comma separated statistics.  See the -o flag
-       for the valid &lt;keys&gt;.
-
--pid &lt;processid&gt;
-       Only display &lt;processid&gt; in top.  This option may  be  specified
-       multiple times.
-
--user &lt;user&gt;
-       Only display processes owned by &lt;user&gt;.
-
--U &lt;user&gt;
-       This is an alias for -user.
-
--u     This is an alias equivalent to: -o cpu -O time.
-</code></pre><p>交互式命令：</p>
-<pre><code>?      Display the help screen.  Any character exits help screen  mode.
-       This command always works, even in the middle of a command.
-
-^L     Redraw the screen.
-
-c&lt;mode&gt;
-       Set output mode to &lt;mode&gt;.  The supported modes are:
-
-       a      Accumulative mode.
-
-       d      Delta mode.
-
-       e      Event mode.
-
-       n      Non-event mode.
-
-O&lt;skey&gt;
-       Use &lt;skey&gt; as a secondary key when ordering the process display.
-       See the -o option for key names.
-
-o&lt;key&gt;
-       Order the process display by sorting on &lt;key&gt; in descending  or-
-       der.   A  +  or - can be prefixed to the key name to specify as-
-       cending or descending order, respectively.  The  supported  keys
-       and alises are listed with the -o option above.
-
-q      Quit.
-
-r      Toggle traversal and reporting of the memory object map for each
-       process.
-
-S&lt;signal&gt;&lt;pid&gt;
-       Send &lt;sig&gt; to &lt;pid&gt;.  &lt;sig&gt; can be specified either as a  number
-       or  as a name (for example, HUP).  The default signal starts out
-       as TERM.  Each time a signal is successfully sent,  the  default
-       signal is updated to be that signal.  &lt;pid&gt; is a process id.
-
-s&lt;delay&gt;
-       Set the delay between updates to &lt;delay&gt; seconds.
-U&lt;user&gt;
-       Only  display processes owned by &lt;user&gt;.  Either the username or
-       uid number can be specified.  To display  all  processes,  press
-       enter without entering a username or uid number.
-</code></pre><p>示例：</p>
-<pre><code>top -o cpu -O +rsize -s 5 -n 20
-       Sort the processes according to CPU usage (descending) and resi-
-       dent memory size (ascending), sample and update the display at 5
-       second intervals, and limit the display to 20 processes.
-
-top -c d
-       Run top in delta mode.
-
-top -stats pid,command,cpu,th,pstate,time
-       Display  only the specified statistics, regardless of any growth
-       of the terminal.  If the terminal is too small, only the statis-
-       tics that fit will be displayed.
-</code></pre><p>相关命令：</p>
-<p>kill(2), vm_stat(1), signal(3), vmmap(1)</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/shortfeng/page/2/">2</a><a class="extend next" rel="next" href="/shortfeng/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/shortfeng/page/2/">2</a><a class="page-number" href="/shortfeng/page/3/">3</a><a class="extend next" rel="next" href="/shortfeng/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2358,7 +2132,7 @@ top -stats pid,command,cpu,th,pstate,time
           
             <div class="site-state-item site-state-posts">
               <a href="/shortfeng/archives/">
-                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-count">27</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

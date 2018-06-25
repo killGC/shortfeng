@@ -94,17 +94,17 @@
 
 
 
-<meta name="description" content="##多线程三种来实现线程安全的手段:   互斥同步通过加锁来实现对临界资源的访问限制。加锁方式有Synchorized和Lock 非阻塞同步前面提到的互斥同步属于一种悲观锁机制，非阻塞同步属于乐观锁机制。典型的实现方式就是CAS操 作 无同步方案要保证线程安全，并不是一定就需要同步，两者没有因果关系，同步只是保证共享数据征用时正确性的手段，如果一个方法本来就不涉及共享数据，那它就不需要任何同步措施">
+<meta name="description" content="跨域问题 同源同源政策的目的，是为了保证用户信息的安全，防止恶意的网站窃取数据 同源是指以下三个信息都必须相同：   协议相同 域名相同 端口相同   如果非同源，共有三种行为受到限制：   Cookie、LocalStorage 和 IndexDB 无法读取 DOM 无法获得 AJAX 请求不能发送   虽然这些限制是必要的，但是有时很不方便，合理的用途也受到影响。如何规避上面三种限制 设置do">
 <meta property="og:type" content="article">
-<meta property="og:title" content="多线程">
-<meta property="og:url" content="https://killgc.github.io/shortfeng/2018/03/12/多线程/index.html">
+<meta property="og:title" content="跨域问题">
+<meta property="og:url" content="https://killgc.github.io/shortfeng/2018/04/04/跨域问题/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="##多线程三种来实现线程安全的手段:   互斥同步通过加锁来实现对临界资源的访问限制。加锁方式有Synchorized和Lock 非阻塞同步前面提到的互斥同步属于一种悲观锁机制，非阻塞同步属于乐观锁机制。典型的实现方式就是CAS操 作 无同步方案要保证线程安全，并不是一定就需要同步，两者没有因果关系，同步只是保证共享数据征用时正确性的手段，如果一个方法本来就不涉及共享数据，那它就不需要任何同步措施">
+<meta property="og:description" content="跨域问题 同源同源政策的目的，是为了保证用户信息的安全，防止恶意的网站窃取数据 同源是指以下三个信息都必须相同：   协议相同 域名相同 端口相同   如果非同源，共有三种行为受到限制：   Cookie、LocalStorage 和 IndexDB 无法读取 DOM 无法获得 AJAX 请求不能发送   虽然这些限制是必要的，但是有时很不方便，合理的用途也受到影响。如何规避上面三种限制 设置do">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-12T11:54:36.000Z">
+<meta property="og:updated_time" content="2018-04-04T15:01:36.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="多线程">
-<meta name="twitter:description" content="##多线程三种来实现线程安全的手段:   互斥同步通过加锁来实现对临界资源的访问限制。加锁方式有Synchorized和Lock 非阻塞同步前面提到的互斥同步属于一种悲观锁机制，非阻塞同步属于乐观锁机制。典型的实现方式就是CAS操 作 无同步方案要保证线程安全，并不是一定就需要同步，两者没有因果关系，同步只是保证共享数据征用时正确性的手段，如果一个方法本来就不涉及共享数据，那它就不需要任何同步措施">
+<meta name="twitter:title" content="跨域问题">
+<meta name="twitter:description" content="跨域问题 同源同源政策的目的，是为了保证用户信息的安全，防止恶意的网站窃取数据 同源是指以下三个信息都必须相同：   协议相同 域名相同 端口相同   如果非同源，共有三种行为受到限制：   Cookie、LocalStorage 和 IndexDB 无法读取 DOM 无法获得 AJAX 请求不能发送   虽然这些限制是必要的，但是有时很不方便，合理的用途也受到影响。如何规避上面三种限制 设置do">
 
 
 
@@ -133,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="https://killgc.github.io/shortfeng/2018/03/12/多线程/"/>
+  <link rel="canonical" href="https://killgc.github.io/shortfeng/2018/04/04/跨域问题/"/>
 
 
 
 
 
-  <title>多线程 | Hexo</title>
+  <title>跨域问题 | Hexo</title>
   
 
 
@@ -262,7 +262,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/多线程/">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/04/04/跨域问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="changfeng">
@@ -279,7 +279,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">多线程</h1>
+          <h1 class="post-title" itemprop="name headline">跨域问题</h1>
         
 
         <div class="post-meta">
@@ -291,8 +291,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-12T19:51:15+08:00">
-                2018-03-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-04T10:48:32+08:00">
+                2018-04-04
               </time>
             
 
@@ -329,12 +329,64 @@
       
 
       
-        <h2 id="多线程"><a href="#多线程" class="headerlink" title="##多线程"></a>##多线程</h2><p>三种来实现线程安全的手段:</p>
+        <h2 id="跨域问题"><a href="#跨域问题" class="headerlink" title="跨域问题"></a>跨域问题</h2><hr>
+<h4 id="同源"><a href="#同源" class="headerlink" title="同源"></a>同源</h4><p>同源政策的目的，是为了保证用户信息的安全，防止恶意的网站窃取数据</p>
+<p>同源是指以下三个信息都必须相同：</p>
 <blockquote>
 <ul>
-<li>互斥同步<br>通过加锁来实现对临界资源的访问限制。加锁方式有Synchorized和Lock</li>
-<li>非阻塞同步<br>前面提到的互斥同步属于一种悲观锁机制，非阻塞同步属于乐观锁机制。典型的实现方式就是CAS操 作</li>
-<li>无同步方案<br>要保证线程安全，并不是一定就需要同步，两者没有因果关系，同步只是保证共享数据征用时正确性的手段，如果一个方法本来就不涉及共享数据，那它就不需要任何同步措施去保证正确性。ThreadLocal就是这张实现方案</li>
+<li>协议相同</li>
+<li>域名相同</li>
+<li>端口相同</li>
+</ul>
+</blockquote>
+<p>如果非同源，共有三种行为受到限制：</p>
+<blockquote>
+<ul>
+<li>Cookie、LocalStorage 和 IndexDB 无法读取</li>
+<li>DOM 无法获得</li>
+<li>AJAX 请求不能发送</li>
+</ul>
+</blockquote>
+<p>虽然这些限制是必要的，但是有时很不方便，合理的用途也受到影响。如何规避上面三种限制</p>
+<h5 id="设置document-domain"><a href="#设置document-domain" class="headerlink" title="设置document.domain"></a>设置document.domain</h5><p>这种方案只适用Cookie与iframe</p>
+<p>A网页是<a href="http://w1.example.com/a.html，B网页是http://w2.example.com/b.html，那么只要设置相同的document.domain，两个网页就可以共享Cookie" target="_blank" rel="noopener">http://w1.example.com/a.html，B网页是http://w2.example.com/b.html，那么只要设置相同的document.domain，两个网页就可以共享Cookie</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">document.domain = <span class="string">'example.com'</span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li>Cookie 是服务器写入浏览器的一小段信息，只有同源的网页才能共享。但是，两个网页一级域名相同，只是二级域名不同，浏览器允许通过设置document.domain共享 Cookie</li>
+<li>如果两个网页不同源，就无法拿到对方的DOM。典型的例子是iframe窗口和window.open方法打开的窗口，它们与父窗口无法通信</li>
+</ul>
+</blockquote>
+<h5 id="完全不同源"><a href="#完全不同源" class="headerlink" title="完全不同源"></a>完全不同源</h5><blockquote>
+<ul>
+<li>window.name</li>
+<li>window.postMessage：HTML5为了解决这个问题，引入了一个全新的API：跨文档通信 API（Cross-document messaging）。<br>这个API为window对象新增了一个window.postMessage方法，允许跨窗口通信，不论这两个窗口是否同源</li>
+</ul>
+</blockquote>
+<p>AJAX：</p>
+<blockquote>
+<ul>
+<li><p>JSONP ： 简单适用，老式浏览器全部支持，服务器改造非常小;网页通过添加一个script元素，向服务器请求JSON数据，这种做法不受同源政策限制；服务器收到请求后，将数据放在一个指定名字的回调函数里传回来</p>
+</li>
+<li><p>WebSocket：WebSocket是一种通信协议，使用ws://（非加密）和wss://（加密）作为协议前缀。该协议不实行同源政策，只要服务器支持，就可以通过它进行跨源通信</p>
+</li>
+<li>CORS：跨源资源分享（Cross-Origin Resource Sharing）的缩写。它是W3C标准，是跨源AJAX请求的根本解决方法。相比JSONP只能发GET请求，CORS允许任何类型的请求</li>
+</ul>
+</blockquote>
+<p>JSONP例子:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">function <span class="title">addScriptTag</span><span class="params">(src)</span> </span>&#123;</span><br><span class="line">  var script = document.createElement(<span class="string">'script'</span>);</span><br><span class="line">  script.setAttribute(<span class="string">"type"</span>,<span class="string">"text/javascript"</span>);</span><br><span class="line">  script.src = src;</span><br><span class="line">  document.body.appendChild(script);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">window.onload = function () &#123;</span><br><span class="line">  addScriptTag(<span class="string">'http://example.com/ip?callback=foo'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">function <span class="title">foo</span><span class="params">(data)</span> </span>&#123;</span><br><span class="line">  console.log(<span class="string">'Your public IP address is: '</span> + data.ip);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="X-Frame-Options"><a href="#X-Frame-Options" class="headerlink" title="X-Frame-Options"></a>X-Frame-Options</h4><p>nginx中设置X-Frame-Options ，防止网站被别人用iframe嵌入使用</p>
+<p>X-Frame-Options 响应头</p>
+<p>X-Frame-Options HTTP 响应头是用来给浏览器指示允许一个页面可否在 iframe 或者 object标签中展现的标记。网站可以使用此功能，来确保自己网站的内容没有被嵌到别人的网站中去，也从而避免了点击劫持 (clickjacking) 的攻击。</p>
+<p>X-Frame-Options 有三个值:</p>
+<blockquote>
+<ul>
+<li><p>DENY<br>表示该页面不允许在 frame 中展示，即便是在相同域名的页面中嵌套也不允许。</p>
+</li>
+<li><p>SAMEORIGIN<br>表示该页面可以在相同域名页面的 frame 中展示。</p>
+</li>
+<li><p>ALLOW-FROM uri<br>表示该页面可以在指定来源的 frame 中展示。<br>换一句话说，如果设置为 DENY，不光在别人的网站 frame 嵌入时会无法加载，在同域名页面中同样会无法加载。另一方面，如果设置为 SAMEORIGIN，那么页面就可以在同域名页面的 frame 中嵌套。</p>
+</li>
 </ul>
 </blockquote>
 
@@ -361,8 +413,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/shortfeng/2018/03/12/OLTP、OLAP/" rel="next" title="OLTP、OLAP">
-                <i class="fa fa-chevron-left"></i> OLTP、OLAP
+              <a href="/shortfeng/2018/04/04/支付/" rel="next" title="支付">
+                <i class="fa fa-chevron-left"></i> 支付
               </a>
             
           </div>
@@ -371,8 +423,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/shortfeng/2018/03/13/性能优化相关linux命令/" rel="prev" title="性能优化相关linux命令">
-                性能优化相关linux命令 <i class="fa fa-chevron-right"></i>
+              <a href="/shortfeng/2018/06/22/Comparable接口与Comparator/" rel="prev" title="Comparable接口、Comparator接口">
+                Comparable接口、Comparator接口 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -489,7 +541,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#多线程"><span class="nav-number">1.</span> <span class="nav-text">##多线程</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#跨域问题"><span class="nav-number">1.</span> <span class="nav-text">跨域问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#同源"><span class="nav-number">1.0.1.</span> <span class="nav-text">同源</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#设置document-domain"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">设置document.domain</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#完全不同源"><span class="nav-number">1.0.1.2.</span> <span class="nav-text">完全不同源</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#X-Frame-Options"><span class="nav-number">1.0.2.</span> <span class="nav-text">X-Frame-Options</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

@@ -94,17 +94,17 @@
 
 
 
-<meta name="description" content="##多线程三种来实现线程安全的手段:   互斥同步通过加锁来实现对临界资源的访问限制。加锁方式有Synchorized和Lock 非阻塞同步前面提到的互斥同步属于一种悲观锁机制，非阻塞同步属于乐观锁机制。典型的实现方式就是CAS操 作 无同步方案要保证线程安全，并不是一定就需要同步，两者没有因果关系，同步只是保证共享数据征用时正确性的手段，如果一个方法本来就不涉及共享数据，那它就不需要任何同步措施">
+<meta name="description" content="dubbo服务被调用三次的问题 该服务为涉及新增操作的服务，服务调用多次，导致数据保存了多条相同数据出现该问题，排查过程：1、通过查看数据库数据，发现有三条一样的数据，调试服务方代码，发现也进入了三次。最终在服务方打印调用日志，结果为打印了三次 2、是否消费方也请求了三次，消费方打印日志，消费方且只调用了一次，消费方只调用了一次，服务方且执行了三次，有点摸不到头脑了 3、百度搜索“dubbo服务莫">
 <meta property="og:type" content="article">
-<meta property="og:title" content="多线程">
-<meta property="og:url" content="https://killgc.github.io/shortfeng/2018/03/12/多线程/index.html">
+<meta property="og:title" content="mysql常用">
+<meta property="og:url" content="https://killgc.github.io/shortfeng/2018/03/12/dubbo服务调用三次的问题/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="##多线程三种来实现线程安全的手段:   互斥同步通过加锁来实现对临界资源的访问限制。加锁方式有Synchorized和Lock 非阻塞同步前面提到的互斥同步属于一种悲观锁机制，非阻塞同步属于乐观锁机制。典型的实现方式就是CAS操 作 无同步方案要保证线程安全，并不是一定就需要同步，两者没有因果关系，同步只是保证共享数据征用时正确性的手段，如果一个方法本来就不涉及共享数据，那它就不需要任何同步措施">
+<meta property="og:description" content="dubbo服务被调用三次的问题 该服务为涉及新增操作的服务，服务调用多次，导致数据保存了多条相同数据出现该问题，排查过程：1、通过查看数据库数据，发现有三条一样的数据，调试服务方代码，发现也进入了三次。最终在服务方打印调用日志，结果为打印了三次 2、是否消费方也请求了三次，消费方打印日志，消费方且只调用了一次，消费方只调用了一次，服务方且执行了三次，有点摸不到头脑了 3、百度搜索“dubbo服务莫">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-12T11:54:36.000Z">
+<meta property="og:updated_time" content="2018-05-25T16:52:55.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="多线程">
-<meta name="twitter:description" content="##多线程三种来实现线程安全的手段:   互斥同步通过加锁来实现对临界资源的访问限制。加锁方式有Synchorized和Lock 非阻塞同步前面提到的互斥同步属于一种悲观锁机制，非阻塞同步属于乐观锁机制。典型的实现方式就是CAS操 作 无同步方案要保证线程安全，并不是一定就需要同步，两者没有因果关系，同步只是保证共享数据征用时正确性的手段，如果一个方法本来就不涉及共享数据，那它就不需要任何同步措施">
+<meta name="twitter:title" content="mysql常用">
+<meta name="twitter:description" content="dubbo服务被调用三次的问题 该服务为涉及新增操作的服务，服务调用多次，导致数据保存了多条相同数据出现该问题，排查过程：1、通过查看数据库数据，发现有三条一样的数据，调试服务方代码，发现也进入了三次。最终在服务方打印调用日志，结果为打印了三次 2、是否消费方也请求了三次，消费方打印日志，消费方且只调用了一次，消费方只调用了一次，服务方且执行了三次，有点摸不到头脑了 3、百度搜索“dubbo服务莫">
 
 
 
@@ -133,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="https://killgc.github.io/shortfeng/2018/03/12/多线程/"/>
+  <link rel="canonical" href="https://killgc.github.io/shortfeng/2018/03/12/dubbo服务调用三次的问题/"/>
 
 
 
 
 
-  <title>多线程 | Hexo</title>
+  <title>mysql常用 | Hexo</title>
   
 
 
@@ -262,7 +262,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/多线程/">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/dubbo服务调用三次的问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="changfeng">
@@ -279,7 +279,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">多线程</h1>
+          <h1 class="post-title" itemprop="name headline">mysql常用</h1>
         
 
         <div class="post-meta">
@@ -291,7 +291,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-12T19:51:15+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-12T17:36:17+08:00">
                 2018-03-12
               </time>
             
@@ -329,14 +329,22 @@
       
 
       
-        <h2 id="多线程"><a href="#多线程" class="headerlink" title="##多线程"></a>##多线程</h2><p>三种来实现线程安全的手段:</p>
-<blockquote>
-<ul>
-<li>互斥同步<br>通过加锁来实现对临界资源的访问限制。加锁方式有Synchorized和Lock</li>
-<li>非阻塞同步<br>前面提到的互斥同步属于一种悲观锁机制，非阻塞同步属于乐观锁机制。典型的实现方式就是CAS操 作</li>
-<li>无同步方案<br>要保证线程安全，并不是一定就需要同步，两者没有因果关系，同步只是保证共享数据征用时正确性的手段，如果一个方法本来就不涉及共享数据，那它就不需要任何同步措施去保证正确性。ThreadLocal就是这张实现方案</li>
-</ul>
-</blockquote>
+        <h2 id="dubbo服务被调用三次的问题"><a href="#dubbo服务被调用三次的问题" class="headerlink" title="dubbo服务被调用三次的问题"></a>dubbo服务被调用三次的问题</h2><hr>
+<p>该服务为涉及新增操作的服务，服务调用多次，导致数据保存了多条相同数据<br>出现该问题，排查过程：<br>1、通过查看数据库数据，发现有三条一样的数据，调试服务方代码，发现也进入了三次。<br>最终在服务方打印调用日志，结果为打印了三次</p>
+<p>2、是否消费方也请求了三次，消费方打印日志，消费方且只调用了一次，消费方只调用了一次，服务方且执行了三次，有点摸不到头脑了</p>
+<p>3、百度搜索“dubbo服务莫名调用多次”,发现有人遇到相同问题，网上说有两种情况会导致服务调用多次，一是dubbo架包存在多个，二是服务超时重试导致的</p>
+<p>4、网上说的原因给我提供思路，我就去检查项目中是否存在多个dubbo架包，发现存在两个不同版本的架包，我试着删除其中一个依赖其中一个版本dubbo架包的依赖配置，但是发现不管用，服务方还是调用三次；换另外一种解决方法，在服务提供方配置的暴露的服务地方设置retries属性为0，发现起作用了</p>
+<p>检查修改服务方retries属性为0时</p>
+<p>1、消费方日志：</p>
+<p>org.springframework.web.util.NestedServletException: Request processing failed; nested exception is com.alibaba.dubbo.rpc.RpcException: Failed to invoke the method commitApply in the service com.mhc.spyker.api.service.AdmittanceApplyFacade. Tried 1 times of the providers [192.168.0.105:20882] (1/1) from the registry 172.21.10.42:2181 on the consumer 192.168.0.105 using the dubbo version 2.5.3. Last error is: Invoke remote method timeout. method: commitApply</p>
+<p>Caused by: com.alibaba.dubbo.rpc.RpcException: Failed to invoke the method commitApply in the service com.mhc.spyker.api.service.AdmittanceApplyFacade. Tried 1 times of the providers [192.168.0.105:20882] (1/1) from the registry 172.21.10.42:2181 on the consumer 192.168.0.105 using the dubbo version 2.5.3. Last error is: Invoke remote method timeout. method: commitApply, </p>
+<p>Caused by: com.alibaba.dubbo.remoting.TimeoutException: Waiting server-side response timeout by scan timer. start time: 2018-05-26 00:38:45.035, end time: 2018-05-26 00:38:46.044, client elapsed: 11 ms, server elapsed: 998 ms, timeout: 1000 ms, </p>
+<p>2、服务方日志,打印服务方执行时间，结果为1684ms<br>2018-05-26 00:38:46.697 DEBUG 5913 — [:20882-thread-2] c.m.s.d.d.A.updateById                   : ==&gt; Parameters: 4268340(String), 111(Long)<br>2018-05-26 00:38:46.721 DEBUG 5913 — [:20882-thread-2] c.m.s.d.d.A.updateById                   : &lt;==    Updates: 1<br> Time：24 ms - ID：com.mhc.spyker.dal.dao.AdmittanceApplyRecordDao.updateById<br> Execute SQL： UPDATE b2b_admittance_apply_record SET process_InstanceId=’4268340’ WHERE id=111</p>
+<p>时间：1684<br>2018-05-26 00:39:45.878  INFO 5913 — [dTimer-thread-1] c.a.dubbo.monitor.dubbo.DubboMonitor     :  [DUBBO] Send statistics to monitor zookeeper://172.21.10.42:2181/com.alibaba.dubbo.monitor.MonitorService?dubbo=2.6.0&amp;interface=com.alibaba.dubbo.monitor.MonitorService&amp;pid=5913&amp;timestamp=1527265217854, dubbo version: 2.6.0, current host: 192.168.0.105<br>2018-05-26 00:39:45.880 ERROR 5913 — [dTimer-thread-1] c.a.dubbo.monitor.dubbo.DubboMonitor     :  [DUBBO] Unexpected error occur at send statistic, cause: No provider available from registry 172.21.10.42:2181 for service com.alibaba.dubbo.monitor.MonitorService on consumer 192.168.0.105 use dubbo version 2.6.0, may be providers disabled or not registered ?, dubbo version: 2.6.0, current host: 192.168.0.105</p>
+<p>通过日志能看出服务默认超时时间timeout为1000ms，超时默认最多重试两次，导致该问题的原因服务方的执行时间大于超时时间1000ms，导致重试了两次</p>
+<p>涉及修改操作：</p>
+<p>1、需要把retries设置为0，建议在服务消费方设置</p>
+<p>2、需要在服务方设置timeout属性，建议在服务提供方设置（服务提供方了解服务执行时间）</p>
 
       
     </div>
@@ -361,8 +369,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/shortfeng/2018/03/12/OLTP、OLAP/" rel="next" title="OLTP、OLAP">
-                <i class="fa fa-chevron-left"></i> OLTP、OLAP
+              <a href="/shortfeng/2018/03/12/java lambda/" rel="next" title="mysql常用">
+                <i class="fa fa-chevron-left"></i> mysql常用
               </a>
             
           </div>
@@ -371,8 +379,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/shortfeng/2018/03/13/性能优化相关linux命令/" rel="prev" title="性能优化相关linux命令">
-                性能优化相关linux命令 <i class="fa fa-chevron-right"></i>
+              <a href="/shortfeng/2018/03/12/ json序列化、反序列化/" rel="prev" title="json序列化、反序列化">
+                json序列化、反序列化 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -489,7 +497,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#多线程"><span class="nav-number">1.</span> <span class="nav-text">##多线程</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#dubbo服务被调用三次的问题"><span class="nav-number">1.</span> <span class="nav-text">dubbo服务被调用三次的问题</span></a></li></ol></div>
             
 
           </div>
