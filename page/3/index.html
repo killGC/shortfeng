@@ -398,7 +398,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/ json序列化、反序列化/">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/ThreadLocal/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="changfeng">
@@ -417,7 +417,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/shortfeng/2018/03/12/ json序列化、反序列化/" itemprop="url">json序列化、反序列化</a></h1>
+                <a class="post-title-link" href="/shortfeng/2018/03/12/ThreadLocal/" itemprop="url">ThreadLocal</a></h1>
         
 
         <div class="post-meta">
@@ -469,10 +469,22 @@
       
         
           
-            <h2 id="json序列化、反序列化"><a href="#json序列化、反序列化" class="headerlink" title="json序列化、反序列化"></a>json序列化、反序列化</h2><hr>
-<p>fastjson：<br>1、序列化 设置某些字段不需要序列化<br>在属性上面加@JSONField(serialize = false)注解</p>
-<p>2、</p>
-<p>Gson:</p>
+            <h2 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h2><hr>
+<blockquote>
+<ul>
+<li>synchronized 以时间换空间</li>
+<li>ThreadLocal 以空间换时间</li>
+</ul>
+</blockquote>
+<p>Thread类保存了ThreadLocalMap类型的变量, ThreadLocalMap的key为ThreadLoacal对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ThreadLocal.ThreadLocalMap threadLocals = <span class="keyword">null</span>;</span><br></pre></td></tr></table></figure>
+<p>ThreadLocal类，支持范型</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>) &#123;</span><br><span class="line">        ThreadLocalMap.Entry e = map.getEntry(<span class="keyword">this</span>);</span><br><span class="line">        <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">            T result = (T)e.value;</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> setInitialValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(T value)</span> </span>&#123;</span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>)</span><br><span class="line">        map.set(<span class="keyword">this</span>, value);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        createMap(t, value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ThreadLocalMap <span class="title">getMap</span><span class="params">(Thread t)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> t.threadLocals;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> T <span class="title">setInitialValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    T value = initialValue();</span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>)</span><br><span class="line">        map.set(<span class="keyword">this</span>, value);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        createMap(t, value);</span><br><span class="line">    <span class="keyword">return</span> value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.sql.Connection;</span><br><span class="line"><span class="keyword">import</span> java.sql.DriverManager;</span><br><span class="line"><span class="keyword">import</span> java.sql.SQLException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConnectionManager</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> ThreadLocal&lt;Connection&gt; connectionHolder = <span class="keyword">new</span> ThreadLocal&lt;Connection&gt;() &#123;</span><br><span class="line">		<span class="meta">@Override</span></span><br><span class="line">		<span class="function"><span class="keyword">protected</span> Connection <span class="title">initialValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			Connection conn = <span class="keyword">null</span>;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				conn = DriverManager.getConnection(</span><br><span class="line">						<span class="string">"jdbc:mysql://localhost:3306/test"</span>, <span class="string">"username"</span>,</span><br><span class="line">						<span class="string">"password"</span>);</span><br><span class="line">			&#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">return</span> conn;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Connection <span class="title">getConnection</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> connectionHolder.get();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setConnection</span><span class="params">(Connection conn)</span> </span>&#123;</span><br><span class="line">		connectionHolder.set(conn);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以创建不同的ThreadLocal实例来实现多个变量在不同线程间的访问隔离，为什么可以这么做？因为不同的ThreadLocal对象作为不同键，当然也可以在线程的ThreadLocalMap对象中设置不同的值了。通过ThreadLocal对象，在多线程中共享一个值和多个值的区别，就像你在一个HashMap对象中存储一个键值对和多个键值对一样，仅此而已</p>
 
           
         
@@ -598,6 +610,385 @@
 <p>可以通过以下的构建命令来跳过单元测试</p>
 <p>mvn install -Dmaven.test.skip</p>
 
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/ json序列化、反序列化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/shortfeng/2018/03/12/ json序列化、反序列化/" itemprop="url">json序列化、反序列化</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-12T17:36:17+08:00">
+                2018-03-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="json序列化、反序列化"><a href="#json序列化、反序列化" class="headerlink" title="json序列化、反序列化"></a>json序列化、反序列化</h2><hr>
+<p>fastjson：<br>1、序列化 设置某些字段不需要序列化<br>在属性上面加@JSONField(serialize = false)注解</p>
+<p>2、</p>
+<p>Gson:</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/dubbo服务调用三次的问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/shortfeng/2018/03/12/dubbo服务调用三次的问题/" itemprop="url">mysql常用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-12T17:36:17+08:00">
+                2018-03-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="dubbo服务被调用三次的问题"><a href="#dubbo服务被调用三次的问题" class="headerlink" title="dubbo服务被调用三次的问题"></a>dubbo服务被调用三次的问题</h2><hr>
+<p>该服务为涉及新增操作的服务，服务调用多次，导致数据保存了多条相同数据<br>出现该问题，排查过程：<br>1、通过查看数据库数据，发现有三条一样的数据，调试服务方代码，发现也进入了三次。<br>最终在服务方打印调用日志，结果为打印了三次</p>
+<p>2、是否消费方也请求了三次，消费方打印日志，消费方且只调用了一次，消费方只调用了一次，服务方且执行了三次，有点摸不到头脑了</p>
+<p>3、百度搜索“dubbo服务莫名调用多次”,发现有人遇到相同问题，网上说有两种情况会导致服务调用多次，一是dubbo架包存在多个，二是服务超时重试导致的</p>
+<p>4、网上说的原因给我提供思路，我就去检查项目中是否存在多个dubbo架包，发现存在两个不同版本的架包，我试着删除其中一个依赖其中一个版本dubbo架包的依赖配置，但是发现不管用，服务方还是调用三次；换另外一种解决方法，在服务提供方配置的暴露的服务地方设置retries属性为0，发现起作用了</p>
+<p>检查修改服务方retries属性为0时</p>
+<p>1、消费方日志：</p>
+<p>org.springframework.web.util.NestedServletException: Request processing failed; nested exception is com.alibaba.dubbo.rpc.RpcException: Failed to invoke the method commitApply in the service com.mhc.spyker.api.service.AdmittanceApplyFacade. Tried 1 times of the providers [192.168.0.105:20882] (1/1) from the registry 172.21.10.42:2181 on the consumer 192.168.0.105 using the dubbo version 2.5.3. Last error is: Invoke remote method timeout. method: commitApply</p>
+<p>Caused by: com.alibaba.dubbo.rpc.RpcException: Failed to invoke the method commitApply in the service com.mhc.spyker.api.service.AdmittanceApplyFacade. Tried 1 times of the providers [192.168.0.105:20882] (1/1) from the registry 172.21.10.42:2181 on the consumer 192.168.0.105 using the dubbo version 2.5.3. Last error is: Invoke remote method timeout. method: commitApply, </p>
+<p>Caused by: com.alibaba.dubbo.remoting.TimeoutException: Waiting server-side response timeout by scan timer. start time: 2018-05-26 00:38:45.035, end time: 2018-05-26 00:38:46.044, client elapsed: 11 ms, server elapsed: 998 ms, timeout: 1000 ms, </p>
+<p>2、服务方日志,打印服务方执行时间，结果为1684ms<br>2018-05-26 00:38:46.697 DEBUG 5913 — [:20882-thread-2] c.m.s.d.d.A.updateById                   : ==&gt; Parameters: 4268340(String), 111(Long)<br>2018-05-26 00:38:46.721 DEBUG 5913 — [:20882-thread-2] c.m.s.d.d.A.updateById                   : &lt;==    Updates: 1<br> Time：24 ms - ID：com.mhc.spyker.dal.dao.AdmittanceApplyRecordDao.updateById<br> Execute SQL： UPDATE b2b_admittance_apply_record SET process_InstanceId=’4268340’ WHERE id=111</p>
+<p>时间：1684<br>2018-05-26 00:39:45.878  INFO 5913 — [dTimer-thread-1] c.a.dubbo.monitor.dubbo.DubboMonitor     :  [DUBBO] Send statistics to monitor zookeeper://172.21.10.42:2181/com.alibaba.dubbo.monitor.MonitorService?dubbo=2.6.0&amp;interface=com.alibaba.dubbo.monitor.MonitorService&amp;pid=5913&amp;timestamp=1527265217854, dubbo version: 2.6.0, current host: 192.168.0.105<br>2018-05-26 00:39:45.880 ERROR 5913 — [dTimer-thread-1] c.a.dubbo.monitor.dubbo.DubboMonitor     :  [DUBBO] Unexpected error occur at send statistic, cause: No provider available from registry 172.21.10.42:2181 for service com.alibaba.dubbo.monitor.MonitorService on consumer 192.168.0.105 use dubbo version 2.6.0, may be providers disabled or not registered ?, dubbo version: 2.6.0, current host: 192.168.0.105</p>
+<p>通过日志能看出服务默认超时时间timeout为1000ms，超时默认最多重试两次，导致该问题的原因服务方的执行时间大于超时时间1000ms，导致重试了两次</p>
+<p>涉及修改操作：</p>
+<p>1、需要把retries设置为0，建议在服务消费方设置</p>
+<p>2、需要在服务方设置timeout属性，建议在服务提供方设置（服务提供方了解服务执行时间）</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/mysql总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/shortfeng/2018/03/12/mysql总结/" itemprop="url">mysql常用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-12T17:36:17+08:00">
+                2018-03-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="mysql常用"><a href="#mysql常用" class="headerlink" title="mysql常用"></a>mysql常用</h2><hr>
+<p>1、查找子字符串在字符串中的位置，类似oracle的indexof方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">LOCATE(substr,str), LOCATE(substr,str,pos)</span><br><span class="line"></span><br><span class="line">         第一个语法返回substr在字符串str 的第一个出现的位置。</span><br><span class="line"></span><br><span class="line">         第二个语法返回子符串 substr 在字符串str，从pos处开始的第一次出现的位置。如果substr 不在str 中，则返回值为0 。</span><br></pre></td></tr></table></figure>
           
         
       
@@ -1277,7 +1668,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/shortfeng/archives/">
-                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-count">30</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
