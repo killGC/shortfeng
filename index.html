@@ -260,6 +260,151 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/07/03/Java-Map/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/shortfeng/2018/07/03/Java-Map/" itemprop="url">Java-Map</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-03T00:32:48+08:00">
+                2018-07-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h2><h3 id="一、LinkedHashMap"><a href="#一、LinkedHashMap" class="headerlink" title="一、LinkedHashMap"></a>一、LinkedHashMap</h3><p>通过维护一个运行于所有条目的双向链表，LinkedHashMap保证了元素迭代的顺序。该迭代顺序可以是插入顺序或者是访问顺序</p>
+<p>HashMap + LinkedList，以LinkedList维护插入或访问的顺序，默认都采用插入顺序来维持取出键值对的次序</p>
+<p>1、特点：</p>
+<blockquote>
+<ul>
+<li><p>非线程安全</p>
+</li>
+<li><p>Key和Value都允许空</p>
+</li>
+<li><p>有序</p>
+</li>
+</ul>
+</blockquote>
+<p>2、底层结构</p>
+<p>LinkedHashMap只定义了两个属性:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * The head of the doubly linked list.</span></span><br><span class="line"><span class="comment"> * 双向链表的头节点</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">private</span> <span class="keyword">transient</span> Entry&lt;K,V&gt; header;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * The iteration ordering method for this linked hash map: true</span></span><br><span class="line"><span class="comment"> * for access-order, false for insertion-order.</span></span><br><span class="line"><span class="comment"> * true表示最近最少使用次序，false表示插入顺序</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">boolean</span> accessOrder;</span><br></pre></td></tr></table></figure>
+<p>Entry的属性：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">1</span>、K key</span><br><span class="line"></span><br><span class="line"><span class="number">2</span>、V value</span><br><span class="line"></span><br><span class="line"><span class="number">3</span>、Entry&lt;K, V&gt; next</span><br><span class="line"></span><br><span class="line"><span class="number">4</span>、<span class="keyword">int</span> hash</span><br><span class="line"></span><br><span class="line"><span class="number">5</span>、Entry&lt;K, V&gt; before</span><br><span class="line"></span><br><span class="line"><span class="number">6</span>、Entry&lt;K, V&gt; after</span><br></pre></td></tr></table></figure>
+<p><img src="https://images2015.cnblogs.com/blog/249993/201612/249993-20161213140338917-602479781.png" alt="cmd-markdown-logo"></p>
+<p><img src="https://images2015.cnblogs.com/blog/249993/201612/249993-20161215143120620-1544337380.png" alt="cmd-markdown-logo"></p>
+<p><img src="https://images2015.cnblogs.com/blog/249993/201612/249993-20161215143544401-1850524627.jpg" alt="cmd-markdown-logo"></p>
+<p>注意该循环双向链表的头部存放的是最久访问的节点或最先插入的节点，尾部为最近访问的或最近插入的节点，迭代器遍历方向是从链表的头部开始到链表尾部结束，在链表尾部有一个空的header节点，该节点不存放key-value内容，为LinkedHashMap类的成员属性，循环双向链表的入口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">LinkedHashMap</span><span class="params">(<span class="keyword">int</span> initialCapacity,</span></span></span><br><span class="line"><span class="function"><span class="params">         <span class="keyword">float</span> loadFactor,</span></span></span><br><span class="line"><span class="function"><span class="params">                     <span class="keyword">boolean</span> accessOrder)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>(initialCapacity, loadFactor);</span><br><span class="line">    <span class="keyword">this</span>.accessOrder = accessOrder;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">accessOrder，它表示：</span><br><span class="line"></span><br><span class="line">（<span class="number">1</span>）<span class="keyword">false</span>，所有的Entry按照插入的顺序排列</span><br><span class="line"></span><br><span class="line">（<span class="number">2</span>）<span class="keyword">true</span>，所有的Entry按照访问的顺序排列</span><br><span class="line"></span><br><span class="line"><span class="string">"访问"</span>，这个词有两层意思：</span><br><span class="line"></span><br><span class="line"><span class="number">1</span>、根据Key拿到Value，也就是get方法</span><br><span class="line"></span><br><span class="line"><span class="number">2</span>、修改Key对应的Value，也就是put方法</span><br></pre></td></tr></table></figure>
+<p>3、读取</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 通过key获取value，与HashMap的区别是：当LinkedHashMap按访问顺序排序的时候，会将访问的当前节点移到链表尾部(头结点的前一个节点)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> V <span class="title">get</span><span class="params">(Object key)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 调用父类HashMap的getEntry()方法，取得要查找的元素。  </span></span><br><span class="line">    Entry&lt;K,V&gt; e = (Entry&lt;K,V&gt;)getEntry(key);</span><br><span class="line">    <span class="keyword">if</span> (e == <span class="keyword">null</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    <span class="comment">// 记录访问顺序。</span></span><br><span class="line">    e.recordAccess(<span class="keyword">this</span>);</span><br><span class="line">    <span class="keyword">return</span> e.value;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 在HashMap的put和get方法中，会调用该方法，在HashMap中该方法为空</span></span><br><span class="line"><span class="comment"> * 在LinkedHashMap中，当按访问顺序排序时，该方法会将当前节点插入到链表尾部(头结点的前一个节点)，否则不做任何事</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">recordAccess</span><span class="params">(HashMap&lt;K,V&gt; m)</span> </span>&#123;</span><br><span class="line">    LinkedHashMap&lt;K,V&gt; lm = (LinkedHashMap&lt;K,V&gt;)m;</span><br><span class="line">    <span class="comment">//当LinkedHashMap按访问排序时</span></span><br><span class="line">    <span class="keyword">if</span> (lm.accessOrder) &#123;</span><br><span class="line">        lm.modCount++;</span><br><span class="line">        <span class="comment">//移除当前节点</span></span><br><span class="line">        remove();</span><br><span class="line">        <span class="comment">//将当前节点插入到头结点前面</span></span><br><span class="line">        addBefore(lm.header);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 移除节点，并修改前后引用</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    before.after = after;</span><br><span class="line">    after.before = before;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addBefore</span><span class="params">(Entry&lt;K,V&gt; existingEntry)</span> </span>&#123;</span><br><span class="line">    after  = existingEntry;</span><br><span class="line">    before = existingEntry.before;</span><br><span class="line">    before.after = <span class="keyword">this</span>;</span><br><span class="line">    after.before = <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>4、put</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> V <span class="title">put</span><span class="params">(K key, V value)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (key == <span class="keyword">null</span>)</span><br><span class="line">        <span class="keyword">return</span> putForNullKey(value);</span><br><span class="line">    <span class="keyword">int</span> hash = hash(key.hashCode());</span><br><span class="line">    <span class="keyword">int</span> i = indexFor(hash, table.length);</span><br><span class="line">    <span class="keyword">for</span> (Entry&lt;K,V&gt; e = table[i]; e != <span class="keyword">null</span>; e = e.next) &#123;</span><br><span class="line">        Object k;</span><br><span class="line">        <span class="keyword">if</span> (e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k))) &#123;</span><br><span class="line">            V oldValue = e.value;</span><br><span class="line">            e.value = value;</span><br><span class="line">            e.recordAccess(<span class="keyword">this</span>);</span><br><span class="line">            <span class="keyword">return</span> oldValue;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    modCount++;</span><br><span class="line">    addEntry(hash, key, value, i);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/07/01/spring-cloud/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1560,276 +1705,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/27/Dubbo/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="changfeng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/shortfeng/2018/03/27/Dubbo/" itemprop="url">Dubbo</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-27T23:00:36+08:00">
-                2018-03-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="dubbo"><a href="#dubbo" class="headerlink" title="dubbo"></a>dubbo</h2><hr>
-<h4 id="循环依赖问题"><a href="#循环依赖问题" class="headerlink" title="循环依赖问题"></a>循环依赖问题</h4><p>1、check属性 </p>
-<blockquote>
-<ul>
-<li>默认check=true：dubbo缺省会在启动时检查依赖的服务是否可用（是否有提供者），不可用时会抛出异常，阻止Spring初始化完成，以便上线时，能及早发现问题</li>
-<li>check=false：关闭检查依赖的服务是否可用</li>
-</ul>
-</blockquote>
-<p>以下场景需关闭检查：</p>
-<p>出现循环依赖，必须有一方先启动时；或者测试时，有些服务不关心；Spring容器是懒加载或者通过API编程延迟引用服务</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">关闭某个服务的启动检查：</span><br><span class="line">&lt;dubbo:reference</span><br><span class="line"><span class="class"><span class="keyword">interface</span></span>=<span class="string">"com.foo.BarService"</span></span><br><span class="line">check=<span class="string">"false"</span>/&gt;</span><br><span class="line"></span><br><span class="line">关闭所有服务的启动时检查：</span><br><span class="line">&lt;dubbo:consumer</span><br><span class="line">check=<span class="string">"false"</span>/&gt;</span><br><span class="line"></span><br><span class="line">关闭注册中心启动时检查：(注册订阅失败时报错)</span><br><span class="line">&lt;dubbo:registry</span><br><span class="line">check=<span class="string">"false"</span>/&gt;</span><br><span class="line"></span><br><span class="line">java -D参数：</span><br><span class="line">dubbo.reference.com.foo.BarService.check=<span class="keyword">false</span></span><br><span class="line">dubbo.reference.check=<span class="keyword">false</span></span><br><span class="line">dubbo.consumer.check=<span class="keyword">false</span></span><br><span class="line">dubbo.registry.check=<span class="keyword">false</span></span><br><span class="line"></span><br><span class="line">dubbo.properties配置：</span><br><span class="line">dubbo.reference.com.foo.BarService.check=<span class="keyword">false</span></span><br><span class="line">dubbo.reference.check=<span class="keyword">false</span></span><br><span class="line">dubbo.consumer.check=<span class="keyword">false</span></span><br><span class="line">dubbo.registry.check=<span class="keyword">false</span></span><br></pre></td></tr></table></figure>
-<p>区别：</p>
-<blockquote>
-<ul>
-<li><p>dubbo.reference.check=false，强制改变所有reference的check值，就算配置中有声明，也会被覆盖。</p>
-</li>
-<li><p>dubbo.consumer.check=false，是设置check的缺省值，如果配置中有显式的声明，如：<dubbo:reference check="true">，不会受影响。</dubbo:reference></p>
-</li>
-<li><p>dubbo.registry.check=false，前面两个都是指订阅成功，但提供者列表是否为空是否报错，如果注册订阅失败时，也允许启动，需使用此选项，将在后台定时重试。</p>
-</li>
-</ul>
-</blockquote>
-<p>2、init属性</p>
-<p>如果需要饥饿加载，即没有人引用也立即生成动态代理，可用配置：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;dubbo:reference </span><br><span class="line"><span class="class"><span class="keyword">interface</span></span>=<span class="string">"com.foo.BarService"</span> init=<span class="string">"true"</span>/&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="集群容错"><a href="#集群容错" class="headerlink" title="集群容错"></a>集群容错</h4><p>集群调用失败时，dubbo提供了多种容错方案，默认为failover重试</p>
-<p><img src="http://www.uml.org.cn/zjjs/images/2015091041.jpg" alt="cmd-markdown-logo"></p>
-<h5 id="各节点关系："><a href="#各节点关系：" class="headerlink" title="各节点关系："></a>各节点关系：</h5><blockquote>
-<ul>
-<li><p>这里的Invoker是Provider的一个可调用Service的抽象，Invoker封装了Provider地址及Service接口信息。</p>
-</li>
-<li><p>Directory代表多个Invoker，可以把它看成List<invoker>，但与List不同的是，它的值可能是动态变化的，比如注册中心推送变更。</invoker></p>
-</li>
-<li><p>Cluster将Directory中的多个Invoker伪装成一个Invoker，对上层透明，伪装过程包含了容错逻辑，调用失败后，重试另一个。</p>
-</li>
-<li><p>Router负责从多个Invoker中按路由规则选出子集，比如读写分离，应用隔离等。</p>
-</li>
-<li><p>LoadBalance负责从多个Invoker中选出具体的一个用于本次调用，选的过程包含了负载均衡算法，调用失败后，需要重选。</p>
-</li>
-</ul>
-</blockquote>
-<h5 id="集群容错模式："><a href="#集群容错模式：" class="headerlink" title="集群容错模式："></a>集群容错模式：</h5><blockquote>
-<ul>
-<li><p>Failover Cluster：失败自动切换，当出现失败，重试其它服务器。(缺省)，通常用于读操作，但重试会带来更长延迟。可通过retries=”2”来设置重试次数(不含第一次)。</p>
-</li>
-<li><p>Failfast Cluster：快速失败，只发起一次调用，失败立即报错。<br>通常用于非幂等性的写操作，比如新增记录。</p>
-</li>
-<li><p>Failsafe Cluster：失败安全，出现异常时，直接忽略。通常用于写入审计日志等操作。</p>
-</li>
-<li><p>Failback Cluster：失败自动恢复，后台记录失败请求，定时重发。<br>通常用于消息通知操作。</p>
-</li>
-<li><p>Forking Cluster：并行调用多个服务器，只要一个成功即返回。<br>通常用于实时性要求较高的读操作，但需要浪费更多服务资源。可通过forks=”2”来设置最大并行数。</p>
-</li>
-<li><p>Broadcast Cluster：广播调用所有提供者，逐个调用，任意一台报错则报错。(2.1.0开始支持)，通常用于通知所有提供者更新缓存或日志等本地资源信息。</p>
-</li>
-</ul>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">重试次数配置（failover集群模式生效）：</span><br><span class="line">&lt;dubbo:service</span><br><span class="line">retries=<span class="string">"2"</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;dubbo:reference</span><br><span class="line">retries=<span class="string">"2"</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;dubbo:reference&gt;</span><br><span class="line"></span><br><span class="line">&lt;dubbo:method</span><br><span class="line">name=<span class="string">"findFoo"</span></span><br><span class="line">retries=<span class="string">"2"</span>/&gt;</span><br><span class="line">&lt;/dubbo:reference&gt;</span><br><span class="line"></span><br><span class="line">集群模式配置：</span><br><span class="line">&lt;dubbo:service</span><br><span class="line">cluster=<span class="string">"failsafe"</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;dubbo:reference</span><br><span class="line">cluster=<span class="string">"failsafe"</span>/&gt;</span><br></pre></td></tr></table></figure>
-<h5 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h5><p>在集群负载均衡时，Dubbo提供了多种均衡策略，缺省为random随机调用。</p>
-<blockquote>
-<ul>
-<li><p>Random LoadBalance：随机，按权重设置随机概率。<br>在一个截面上碰撞的概率高，但调用量越大分布越均匀，而且按概率使用权重后也比较均匀，有利于动态调整提供者权重。</p>
-</li>
-<li><p>RoundRobin LoadBalance<br>轮循，按公约后的权重设置轮循比率。<br>存在慢的提供者累积请求问题，比如：第二台机器很慢，但没挂，当请求调到第二台时就卡在那，久而久之，所有请求都卡在调到第二台上。</p>
-</li>
-<li><p>LeastActive LoadBalance<br>最少活跃调用数，相同活跃数的随机，活跃数指调用前后计数差。<br>使慢的提供者收到更少请求，因为越慢的提供者的调用前后计数差会越大。</p>
-</li>
-<li><p>ConsistentHash LoadBalance<br>一致性Hash，相同参数的请求总是发到同一提供者。<br>当某一台提供者挂时，原本发往该提供者的请求，基于虚拟节点，平摊到其它提供者，不会引起剧烈变动。</p>
-</li>
-</ul>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">缺省只对第一个参数Hash，如果要修改，请配置</span><br><span class="line">&lt;dubbo:parameter key=<span class="string">"hash.arguments"</span> value=<span class="string">"0,1"</span> /&gt;</span><br><span class="line">缺省用<span class="number">160</span>份虚拟节点，如果要修改，请配置</span><br><span class="line">&lt;dubbo:parameter key=<span class="string">"hash.nodes"</span> value=<span class="string">"320"</span> /&gt;</span><br></pre></td></tr></table></figure>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;dubbo:service <span class="class"><span class="keyword">interface</span></span>=<span class="string">"..."</span> </span><br><span class="line">loadbalance=<span class="string">"roundrobin"</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;dubbo:reference</span><br><span class="line"><span class="class"><span class="keyword">interface</span></span>=<span class="string">"..."</span></span><br><span class="line">loadbalance=<span class="string">"roundrobin"</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;dubbo:service</span><br><span class="line"><span class="class"><span class="keyword">interface</span></span>=<span class="string">"..."</span>&gt;</span><br><span class="line"></span><br><span class="line">&lt;dubbo:service <span class="class"><span class="keyword">interface</span></span>=<span class="string">"..."</span>&gt;</span><br><span class="line">	&lt;dubbo:method name=<span class="string">"..."</span> loadbalance=<span class="string">"roundrobin"</span>/&gt;</span><br><span class="line">&lt;/dubbo:service&gt;</span><br><span class="line"></span><br><span class="line">&lt;dubbo:reference <span class="class"><span class="keyword">interface</span></span>=<span class="string">"..."</span>&gt;</span><br><span class="line">&lt;dubbo:method name=<span class="string">"..."</span> loadbalance=<span class="string">"roundrobin"</span>/&gt;</span><br><span class="line">&lt;/dubbo:reference&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="线程模型"><a href="#线程模型" class="headerlink" title="线程模型"></a>线程模型</h4><p><img src="http://www.uml.org.cn/zjjs/images/2015091042.jpg" alt="cmd-markdown-logo"></p>
-<p>如果事件处理的逻辑能迅速完成，并且不会发起新的IO请求，比如只是在内存中记个标识，则直接在IO线程上处理更快，因为减少了线程池调度。</p>
-<p>但如果事件处理逻辑较慢，或者需要发起新的IO请求，比如需要查询数据库，则必须派发到线程池，否则IO线程阻塞，将导致不能接收其它请求。</p>
-<p>如果用IO线程处理事件，又在事件处理过程中发起新的IO请求，比如在连接事件中发起登录请求，会报“可能引发死锁”异常，但不会真死锁。</p>
-<h5 id="Dispatcher"><a href="#Dispatcher" class="headerlink" title="Dispatcher"></a>Dispatcher</h5><blockquote>
-<ul>
-<li><p>all 所有消息都派发到线程池，包括请求，响应，连接事件，断开事件，心跳等。</p>
-</li>
-<li><p>direct 所有消息都不派发到线程池，全部在IO线程上直接执行。</p>
-</li>
-<li><p>message 只有请求响应消息派发到线程池，其它连接断开事件，心跳等消息，直接在IO线程上执行。</p>
-</li>
-<li><p>execution 只请求消息派发到线程池，不含响应，响应和其它连接断开事件，心跳等消息，直接在IO线程上执行。</p>
-</li>
-<li><p>connection 在IO线程上，将连接断开事件放入队列，有序逐个执行，其它消息派发到线程池。</p>
-</li>
-</ul>
-</blockquote>
-<h5 id="ThreadPool"><a href="#ThreadPool" class="headerlink" title="ThreadPool"></a>ThreadPool</h5><blockquote>
-<ul>
-<li><p>fixed 固定大小线程池，启动时建立线程，不关闭，一直持有。(缺省)</p>
-</li>
-<li><p>cached 缓存线程池，空闲一分钟自动删除，需要时重建。</p>
-</li>
-<li><p>limited 可伸缩线程池，但池中的线程数只会增长不会收缩。(为避免收缩时突然来了大流量引起的性能问题)。</p>
-</li>
-</ul>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dubbo:protocol name=<span class="string">"dubbo"</span></span><br><span class="line">dispatcher=<span class="string">"all"</span></span><br><span class="line">threadpool=<span class="string">"fixed"</span></span><br><span class="line">threads=<span class="string">"100"</span>/&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="直连提供者"><a href="#直连提供者" class="headerlink" title="直连提供者"></a>直连提供者</h4><p>在开发及测试环境下，经常需要绕过注册中心，只测试指定服务提供者，这时候可能需要点对点直连，点对点直联方式，将以服务接口为单位，忽略注册中心的提供者列表</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">配置url指向提供者，将绕过注册中心，多个地址用分号隔开</span><br><span class="line">&lt;dubbo:reference</span><br><span class="line">id=<span class="string">"xxxService"</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span></span>=<span class="string">"com.alibaba.xxx.XxxService"</span></span><br><span class="line">url=<span class="string">"dubbo://localhost:20890"</span>/&gt;</span><br><span class="line"></span><br><span class="line">在JVM启动参数中加入-D参数映射服务地址，此配置优先级最高</span><br><span class="line">java</span><br><span class="line"> -Dcom.alibaba.xxx.XxxService=dubbo:<span class="comment">//localhost:20890</span></span><br><span class="line"> </span><br><span class="line"> 如果服务比较多，也可以用文件映射</span><br><span class="line"> 用-Ddubbo.resolve.file指定映射文件路径，</span><br><span class="line"> 此配置优先级高于&lt;dubbo:reference&gt;中的配置</span><br><span class="line"> 如：</span><br><span class="line"> java</span><br><span class="line"> -Ddubbo.resolve.file=xxx.properties</span><br><span class="line"> </span><br><span class="line"> 然后在映射文件xxx.properties中加入：</span><br><span class="line"> com.alibaba.xxx.XxxService=dubbo:<span class="comment">//localhost:20890</span></span><br></pre></td></tr></table></figure>
-<h5 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h5><p>为了避免复杂化线上环境，不要在线上使用这个功能，只应在测试阶段使用</p>
-<h4 id="只订阅"><a href="#只订阅" class="headerlink" title="只订阅"></a>只订阅</h4><h5 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h5><p>为方便开发测试，经常会在线下共用一个所有服务可用的注册中心，这时，如果一个正在开发中的服务提供者注册，可能会影响消费者不能正常运行。</p>
-<h5 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h5><p>可以让服务提供者开发方，只订阅服务(开发的服务可能依赖其它服务)，而不注册正在开发的服务，通过直连测试正在开发的服务。</p>
-<p><img src="http://www.uml.org.cn/zjjs/images/2015091044.jpg" alt="cmd-markdown-logo"></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">禁用注册配置：</span><br><span class="line">&lt;dubbo:registry</span><br><span class="line">address=<span class="string">"10.20.153.10:9090"</span></span><br><span class="line">register=<span class="string">"false"</span></span><br><span class="line">/&gt;</span><br><span class="line">或者</span><br><span class="line">&lt;dubbo:registry</span><br><span class="line">address=<span class="string">"10.20.153.10:9090?register=false"</span></span><br><span class="line">/&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="只注册"><a href="#只注册" class="headerlink" title="只注册"></a>只注册</h4><h5 id="问题-1"><a href="#问题-1" class="headerlink" title="问题"></a>问题</h5><p>如果有两个镜像环境，两个注册中心，有一个服务只在其中一个注册中心有部署，另一个注册中心还没来得及部署，而两个注册中心的其它应用都需要依赖此服务，所以需要将服务同时注册到两个注册中心，但却不能让此服务同时依赖两个注册中心的其它服务。</p>
-<h5 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h5><p>可以让服务提供者方，只注册服务到另一注册中心，而不从另一注册中心订阅服务</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;dubbo:registry</span><br><span class="line">id=<span class="string">"hzRegistry"</span></span><br><span class="line">address=<span class="string">"10.20.153.10:9090"</span></span><br><span class="line">/&gt;</span><br><span class="line">&lt;dubbo:registry</span><br><span class="line">id=<span class="string">"qdRegistry"</span></span><br><span class="line">address=<span class="string">"10.20.141.150:9090"</span></span><br><span class="line">subscribe=<span class="string">"false"</span></span><br><span class="line">/&gt;</span><br><span class="line"></span><br><span class="line">或者</span><br><span class="line"></span><br><span class="line">&lt;dubbo:registry</span><br><span class="line">id=<span class="string">"hzRegistry"</span></span><br><span class="line">address=<span class="string">"10.20.153.10:9090"</span></span><br><span class="line">/&gt;</span><br><span class="line">&lt;dubbo:registry</span><br><span class="line">id=<span class="string">"qdRegistry"</span></span><br><span class="line">address=<span class="string">"10.20.141.150:9090?subscribe=false"</span></span><br><span class="line">/&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="静态服务"><a href="#静态服务" class="headerlink" title="静态服务"></a>静态服务</h4><p>有时候希望人工管理服务提供者的上线和下线，此时需将注册中心标识为非动态管理模式</p>
-<p>服务提供者初次注册时为禁用状态，需人工启用，断线时，将不会被自动删除，需人工禁用</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;dubbo:registry</span><br><span class="line">address=<span class="string">"10.20.141.150:9090"</span></span><br><span class="line">dynamic=<span class="string">"false"</span></span><br><span class="line">/&gt;</span><br><span class="line"></span><br><span class="line">或者</span><br><span class="line">&lt;dubbo:registry</span><br><span class="line">address=<span class="string">"10.20.141.150:9090?dynamic=false"</span></span><br><span class="line">/&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="多协议"><a href="#多协议" class="headerlink" title="多协议"></a>多协议</h4><p>(1) 不同服务不同协议</p>
-<p>不同服务在性能上适用不同协议进行传输，比如大数据用短连接协议，小数据大并发用长连接协议</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span>?&gt;</span><br><span class="line">&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span></span><br><span class="line">    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span><br><span class="line">    xmlns:dubbo=<span class="string">"http://code.alibabatech.com/schema/dubbo"</span></span><br><span class="line">    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans</span></span><br><span class="line"><span class="string">http://www.springframework.org/schema/beans/spring-beans.xsd</span></span><br><span class="line"><span class="string">http://code.alibabatech.com/schema/dubbohttp://code.alibabatech.com/schema/dubbo/dubbo.xsd"</span>&gt;</span><br><span class="line"> </span><br><span class="line">    &lt;dubbo:application name=<span class="string">"world"</span>  /&gt;</span><br><span class="line">    &lt;dubbo:registry id=<span class="string">"registry"</span> address=<span class="string">"10.20.141.150:9090"</span> username=<span class="string">"admin"</span> password=<span class="string">"hello1234"</span> /&gt;</span><br><span class="line"> </span><br><span class="line">    &lt;!-- 多协议配置 --&gt;</span><br><span class="line">    &lt;dubbo:protocol name=<span class="string">"dubbo"</span> port=<span class="string">"20880"</span> /&gt;</span><br><span class="line">    &lt;dubbo:protocol name=<span class="string">"rmi"</span> port=<span class="string">"1099"</span> /&gt;</span><br><span class="line"> </span><br><span class="line">    &lt;!-- 使用dubbo协议暴露服务 --&gt;</span><br><span class="line">    &lt;dubbo:service <span class="class"><span class="keyword">interface</span></span>=<span class="string">"com.alibaba.hello.api.HelloService"</span> version=<span class="string">"1.0.0"</span> ref=<span class="string">"helloService"</span> protocol=<span class="string">"dubbo"</span> /&gt;</span><br><span class="line">    &lt;!-- 使用rmi协议暴露服务 --&gt;</span><br><span class="line">    &lt;dubbo:service <span class="class"><span class="keyword">interface</span></span>=<span class="string">"com.alibaba.hello.api.DemoService"</span> version=<span class="string">"1.0.0"</span> ref=<span class="string">"demoService"</span> protocol=<span class="string">"rmi"</span> /&gt;</span><br><span class="line"> </span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
-<p>(2) 多协议暴露服务</p>
-<p>consumer.xml</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span>?&gt;</span><br><span class="line">&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span></span><br><span class="line">    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span><br><span class="line">    xmlns:dubbo=<span class="string">"http://code.alibabatech.com/schema/dubbo"</span></span><br><span class="line">    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans</span></span><br><span class="line"><span class="string">http://www.springframework.org/schema/beans/spring-beans.xsd</span></span><br><span class="line"><span class="string">http://code.alibabatech.com/schema/dubbohttp://code.alibabatech.com/schema/dubbo/dubbo.xsd"</span>&gt;</span><br><span class="line">&lt;dubbo:application name=<span class="string">"world"</span>  /&gt;</span><br><span class="line">    &lt;dubbo:registry id=<span class="string">"registry"</span> address=<span class="string">"10.20.141.150:9090"</span> username=<span class="string">"admin"</span> password=<span class="string">"hello1234"</span> /&gt;</span><br><span class="line"> </span><br><span class="line">    &lt;!-- 多协议配置 --&gt;</span><br><span class="line">    &lt;dubbo:protocol name=<span class="string">"dubbo"</span> port=<span class="string">"20880"</span> /&gt;</span><br><span class="line">    &lt;dubbo:protocol name=<span class="string">"hessian"</span> port=<span class="string">"8080"</span> /&gt;</span><br><span class="line"> </span><br><span class="line">    &lt;!-- 使用多个协议暴露服务 --&gt;</span><br><span class="line">    &lt;dubbo:service id=<span class="string">"helloService"</span> <span class="class"><span class="keyword">interface</span></span>=<span class="string">"com.alibaba.hello.api.HelloService"</span> </span><br><span class="line">version=<span class="string">"1.0.0"</span> protocol=<span class="string">"dubbo,hessian"</span> /&gt;</span><br><span class="line"> </span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="多注册中心"><a href="#多注册中心" class="headerlink" title="多注册中心"></a>多注册中心</h4><p>(1) 多注册中心注册</p>
-<p>比如：中文站有些服务来不及在青岛部署，只在杭州部署，而青岛的其它应用需要引用此服务，就可以将服务同时注册到两个注册中心。</p>
-<p>consumer.xml</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span>?&gt;</span><br><span class="line">&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span></span><br><span class="line">    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span><br><span class="line">    xmlns:dubbo=<span class="string">"http://code.alibabatech.com/schema/dubbo"</span></span><br><span class="line">    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans</span></span><br><span class="line"><span class="string">http://www.springframework.org/schema/beans/spring-beans.xsd</span></span><br><span class="line"><span class="string">http://code.alibabatech.com/schema/dubbohttp://code.alibabatech.com/schema/dubbo/dubbo.xsd"</span>&gt;</span><br><span class="line">&lt;dubbo:application name=<span class="string">"world"</span>  /&gt;</span><br><span class="line"> </span><br><span class="line">    &lt;!-- 多注册中心配置 --&gt;</span><br><span class="line">    &lt;dubbo:registry id=<span class="string">"hangzhouRegistry"</span> address=<span class="string">"10.20.141.150:9090"</span> /&gt;</span><br><span class="line">    &lt;dubbo:registry id=<span class="string">"qingdaoRegistry"</span> address=<span class="string">"10.20.141.151:9010"</span> <span class="keyword">default</span>=<span class="string">"false"</span> /&gt;</span><br><span class="line"> </span><br><span class="line">    &lt;!-- 向多个注册中心注册 --&gt;</span><br><span class="line">    &lt;dubbo:service <span class="class"><span class="keyword">interface</span></span>=<span class="string">"com.alibaba.hello.api.HelloService"</span> </span><br><span class="line">version=<span class="string">"1.0.0"</span> ref=<span class="string">"helloService"</span> registry=<span class="string">"hangzhouRegistry,qingdaoRegistry"</span> /&gt;</span><br><span class="line"> </span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
-<p>(2) 不同服务使用不同注册中心</p>
-<p>比如：CRM有些服务是专门为国际站设计的，有些服务是专门为中文站设计的。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span>?&gt;</span><br><span class="line">&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span></span><br><span class="line">    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span><br><span class="line">    xmlns:dubbo=<span class="string">"http://code.alibabatech.com/schema/dubbo"</span></span><br><span class="line">    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans</span></span><br><span class="line"><span class="string">http://www.springframework.org/schema/beans/spring-beans.xsd</span></span><br><span class="line"><span class="string">http://code.alibabatech.com/schema/dubbohttp://code.alibabatech.com/schema/dubbo/dubbo.xsd"</span>&gt;</span><br><span class="line"> &lt;dubbo:application name=<span class="string">"world"</span>  /&gt;</span><br><span class="line"> </span><br><span class="line">    &lt;!-- 多注册中心配置 --&gt;</span><br><span class="line">    &lt;dubbo:registry id=<span class="string">"chinaRegistry"</span> address=<span class="string">"10.20.141.150:9090"</span> /&gt;</span><br><span class="line">    &lt;dubbo:registry id=<span class="string">"intlRegistry"</span> address=<span class="string">"10.20.154.177:9010"</span> <span class="keyword">default</span>=<span class="string">"false"</span> /&gt;</span><br><span class="line"> </span><br><span class="line">    &lt;!-- 向中文站注册中心注册 --&gt;</span><br><span class="line">    &lt;dubbo:service <span class="class"><span class="keyword">interface</span></span>=<span class="string">"com.alibaba.hello.api.HelloService"</span> version=<span class="string">"1.0.0"</span> ref=<span class="string">"helloService"</span> registry=<span class="string">"chinaRegistry"</span> /&gt;</span><br><span class="line"> </span><br><span class="line">    &lt;!-- 向国际站注册中心注册 --&gt;</span><br><span class="line">    &lt;dubbo:service <span class="class"><span class="keyword">interface</span></span>=<span class="string">"com.alibaba.hello.api.DemoService"</span> version=<span class="string">"1.0.0"</span> ref=<span class="string">"demoService"</span> registry=<span class="string">"intlRegistry"</span> /&gt;</span><br><span class="line"> </span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
-<p>(3) 多注册中心引用</p>
-<p>比如：CRM需同时调用中文站和国际站的PC2服务，PC2在中文站和国际站均有部署，接口及版本号都一样，但连的数据库不一样。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span>?&gt;</span><br><span class="line">&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span></span><br><span class="line">    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span><br><span class="line">    xmlns:dubbo=<span class="string">"http://code.alibabatech.com/schema/dubbo"</span></span><br><span class="line">    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans</span></span><br><span class="line"><span class="string">http://www.springframework.org/schema/beans/spring-beans.xsdhttp://code.alibabatech.com/schema/dubbo</span></span><br><span class="line"><span class="string">http://code.alibabatech.com/schema/dubbo/dubbo.xsd"</span>&gt;</span><br><span class="line">&lt;dubbo:application name=<span class="string">"world"</span>  /&gt;</span><br><span class="line"> </span><br><span class="line">    &lt;!-- 多注册中心配置 --&gt;</span><br><span class="line">    &lt;dubbo:registry id=<span class="string">"chinaRegistry"</span> address=<span class="string">"10.20.141.150:9090"</span> /&gt;</span><br><span class="line">    &lt;dubbo:registry id=<span class="string">"intlRegistry"</span> address=<span class="string">"10.20.154.177:9010"</span> <span class="keyword">default</span>=<span class="string">"false"</span> /&gt;</span><br><span class="line"> </span><br><span class="line">    &lt;!-- 引用中文站服务 --&gt;</span><br><span class="line">    &lt;dubbo:reference id=<span class="string">"chinaHelloService"</span> </span><br><span class="line"><span class="class"><span class="keyword">interface</span></span>=<span class="string">"com.alibaba.hello.api.HelloService"</span> version=<span class="string">"1.0.0"</span> registry=<span class="string">"chinaRegistry"</span> /&gt;</span><br><span class="line"> </span><br><span class="line">    &lt;!-- 引用国际站站服务 --&gt;</span><br><span class="line">    &lt;dubbo:reference id=<span class="string">"intlHelloService"</span> </span><br><span class="line"><span class="class"><span class="keyword">interface</span></span>=<span class="string">"com.alibaba.hello.api.HelloService"</span> version=<span class="string">"1.0.0"</span> registry=<span class="string">"intlRegistry"</span> /&gt;</span><br><span class="line"> </span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
-<p>如果只是测试环境临时需要连接两个不同注册中心，使用竖号分隔多个不同注册中心地址：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span>?&gt;</span><br><span class="line">&lt;beans xmlns=<span class="string">"http://www.springframework.org/schema/beans"</span></span><br><span class="line">    xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span><br><span class="line">    xmlns:dubbo=<span class="string">"http://code.alibabatech.com/schema/dubbo"</span></span><br><span class="line">    xsi:schemaLocation=<span class="string">"http://www.springframework.org/schema/beans</span></span><br><span class="line"><span class="string">http://www.springframework.org/schema/beans/spring-beans.xsd</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">http://code.alibabatech.com/schema/dubbohttp://code.alibabatech.com/schema/dubbo/dubbo.xsd"</span>&gt;</span><br><span class="line"> </span><br><span class="line">    &lt;dubbo:application name=<span class="string">"world"</span>  /&gt;</span><br><span class="line"> </span><br><span class="line">    &lt;!-- 多注册中心配置，竖号分隔表示同时连接多个不同注册中心，</span><br><span class="line">同一注册中心的多个集群地址用逗号分隔 --&gt;</span><br><span class="line">    &lt;dubbo:registry address=<span class="string">"10.20.141.150:9090|10.20.154.177:9010"</span> /&gt;</span><br><span class="line"> </span><br><span class="line">    &lt;!-- 引用服务 --&gt;</span><br><span class="line">    &lt;dubbo:reference id=<span class="string">"helloService"</span> <span class="class"><span class="keyword">interface</span></span>=<span class="string">"com.alibaba.hello.api.HelloService"</span> version=<span class="string">"1.0.0"</span> /&gt;</span><br><span class="line"> </span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="服务分组"><a href="#服务分组" class="headerlink" title="服务分组"></a>服务分组</h4><p>当一个接口有多种实现时，可以用group区分。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;dubbo:service</span><br><span class="line">group=<span class="string">"feedback"</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span></span>=<span class="string">"com.xxx.IndexService"</span></span><br><span class="line">/&gt;</span><br><span class="line"></span><br><span class="line">&lt;dubbo:service</span><br><span class="line">group=<span class="string">"member"</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span></span>=<span class="string">"com.xxx.IndexService"</span></span><br><span class="line">/&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;dubbo:reference</span><br><span class="line">id=<span class="string">"feedbackIndexService"</span></span><br><span class="line">group=<span class="string">"feedback"</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span></span>=<span class="string">"com.xxx.IndexService"</span></span><br><span class="line">/&gt;</span><br><span class="line"></span><br><span class="line">&lt;dubbo:reference</span><br><span class="line">id=<span class="string">"memberIndexService"</span></span><br><span class="line">group=<span class="string">"member"</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span></span>=<span class="string">"com.xxx.IndexService"</span></span><br><span class="line">/&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="多版本"><a href="#多版本" class="headerlink" title="多版本"></a>多版本</h4><p>当一个接口实现，出现不兼容升级时，可以用版本号过渡，版本号不同的服务相互间不引用。</p>
-<p>在低压力时间段，先升级一半提供者为新版本<br>再将所有消费者升级为新版本<br>然后将剩下的一半提供者升级为新版本</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&lt;dubbo:service</span><br><span class="line"><span class="class"><span class="keyword">interface</span></span>=<span class="string">"com.foo.BarService"</span></span><br><span class="line">version=<span class="string">"1.0.0"</span></span><br><span class="line">/&gt;</span><br><span class="line"></span><br><span class="line">&lt;dubbo:service</span><br><span class="line"><span class="class"><span class="keyword">interface</span></span>=<span class="string">"com.foo.BarService"</span></span><br><span class="line">version=<span class="string">"2.0.0"</span></span><br><span class="line">/&gt;</span><br><span class="line"></span><br><span class="line">&lt;dubbo:reference</span><br><span class="line">id=<span class="string">"barService"</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span></span>=<span class="string">"com.foo.BarService"</span></span><br><span class="line">version=<span class="string">"1.0.0"</span></span><br><span class="line">/&gt;</span><br><span class="line"></span><br><span class="line">&lt;dubbo:reference</span><br><span class="line">id=<span class="string">"barService"</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span></span>=<span class="string">"com.foo.BarService"</span></span><br><span class="line">version=<span class="string">"2.0.0"</span></span><br><span class="line">/&gt;</span><br><span class="line"></span><br><span class="line">不区分版本</span><br><span class="line">&lt;dubbo:reference</span><br><span class="line">id=<span class="string">"barService"</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span></span>=<span class="string">"com.foo.BarService"</span></span><br><span class="line">version=<span class="string">"*"</span></span><br><span class="line">/&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="分组聚合"><a href="#分组聚合" class="headerlink" title="分组聚合"></a>分组聚合</h4><p>按组合并返回结果，比如菜单服务，接口一样，但有多种实现，用group区分，现在消费方需从每种group中调用一次返回结果，合并结果返回，这样就可以实现聚合菜单项。</p>
-<p>从2.1.0版本开始支持</p>
-<p><img src="http://www.uml.org.cn/zjjs/images/2015091045.jpg" alt="cmd-markdown-logo"></p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">搜索所有分组：</span><br><span class="line">&lt;dubbo:reference</span><br><span class="line"><span class="class"><span class="keyword">interface</span></span>=<span class="string">"com.xxx.MenuService"</span></span><br><span class="line">group=<span class="string">"*"</span></span><br><span class="line">merger=<span class="string">"true"</span></span><br><span class="line">/&gt;</span><br><span class="line"></span><br><span class="line">合并指定分组：</span><br><span class="line">&lt;dubbo:reference</span><br><span class="line"><span class="class"><span class="keyword">interface</span></span>=<span class="string">"com.xxx.MenuService"</span></span><br><span class="line">group=<span class="string">"aaa,bbb"</span></span><br><span class="line">merger=<span class="string">"true"</span></span><br><span class="line">/&gt;</span><br><span class="line"></span><br><span class="line">指定方法合并结果，其它未指定的方法，将只调用一个Group：</span><br><span class="line">&lt;dubbo:reference</span><br><span class="line"><span class="class"><span class="keyword">interface</span></span>=<span class="string">"com.xxx.MenuService"</span></span><br><span class="line">group=<span class="string">"*"</span>&gt;</span><br><span class="line">	&lt;dubbo:method</span><br><span class="line">	name=<span class="string">"getMenuItems"</span></span><br><span class="line">	merger=<span class="string">"true"</span></span><br><span class="line">	/&gt;</span><br><span class="line">&lt;/dubbo:service&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">某个方法不合并结果，其它都合并结果：</span><br><span class="line">&lt;dubbo:reference</span><br><span class="line"><span class="class"><span class="keyword">interface</span></span>=<span class="string">"com.xxx.MenuService"</span></span><br><span class="line">group=<span class="string">"*"</span></span><br><span class="line">merger=<span class="string">"true"</span>&gt;</span><br><span class="line">	&lt;dubbo:method</span><br><span class="line">	name=<span class="string">"getMenuItems"</span></span><br><span class="line">	merger=<span class="string">"false"</span></span><br><span class="line">	/&gt;</span><br><span class="line">&lt;/dubbo:service&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="参数验证"><a href="#参数验证" class="headerlink" title="参数验证"></a>参数验证</h4><p>参数验证功能是基于JSR303实现的，用户只需标识JSR303标准的验证Annotation，并通过声明filter来实现验证。</p>
-<p>2.1.0以上版本支持</p>
-<p>完整示例代码参见：<a href="https://github.com/alibaba/dubbo/tree/master/dubbo-test/dubbo-test-examples/src/main/java/com/alibaba/dubbo/examples/validation" target="_blank" rel="noopener">https://github.com/alibaba/dubbo/tree/master/dubbo-test/dubbo-test-examples/src/main/java/com/alibaba/dubbo/examples/validation</a></p>
-<p>验证方式可扩展，参见：Validation扩展点</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/shortfeng/page/2/">2</a><a class="page-number" href="/shortfeng/page/3/">3</a><a class="extend next" rel="next" href="/shortfeng/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/shortfeng/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/shortfeng/page/4/">4</a><a class="extend next" rel="next" href="/shortfeng/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1875,7 +1755,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/shortfeng/archives/">
-                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-count">31</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
