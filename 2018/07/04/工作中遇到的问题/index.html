@@ -101,7 +101,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="工作中遇到的问题1、架包冲突（经常出现）今天遇到了很奇葩的问题，应用部署到预发环境，报mybatis的某个类的方法不存在，检查应用中的mybatis依赖包中是有该方法的，后面尝试用线上的部署应用程序包部署到预发环境，还是报相同的问题；后面检查mvn依赖包关系图，也没有发现有mybatis的包有多个版本，后面实在没有办法，把应用程序包从服务器上下载下来，检查程序包中lib下面有哪些架包，发现myba">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-04T15:50:50.000Z">
+<meta property="og:updated_time" content="2018-07-04T16:20:27.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="工作中遇到的问题">
 <meta name="twitter:description" content="工作中遇到的问题1、架包冲突（经常出现）今天遇到了很奇葩的问题，应用部署到预发环境，报mybatis的某个类的方法不存在，检查应用中的mybatis依赖包中是有该方法的，后面尝试用线上的部署应用程序包部署到预发环境，还是报相同的问题；后面检查mvn依赖包关系图，也没有发现有mybatis的包有多个版本，后面实在没有办法，把应用程序包从服务器上下载下来，检查程序包中lib下面有哪些架包，发现myba">
@@ -334,6 +334,8 @@
 <p>从下面两个方面规避架包冲突：</p>
 <p>a、不引入api的snapshot版本</p>
 <p>b、本地mvn设置每次获取最新的snapshot架包，这样在本地环境启动就能发现。这次在本地环境启动过没有报该错误，是因为没有重新获取snapshot架包对应版本的最新文件，而是使用的之前获取的架包，导致本地未出现该问题。</p>
+<p>设置snapshot架包实时更新</p>
+<p><updatepolicy>always</updatepolicy>  always(实时更新) </p>
 <p>2、大视频文件通过dubbo接口传输的问题</p>
 <p>大视频文件通过dubbo接口的byte类型参数把文件字节流传到服务，发现会报dubbo最大只支持发送8M数据的错误；dubbo协议是长连接，适合发送小数据，不适合传输大数据</p>
 <p>换一种思路解决，先把文件传输到七牛云上，再把七牛云上文件的url地址传入dubbo接口，dubbo接口里面通过url从七牛云中获取，再处理，这样就避免了文件字节流之间在dubbo接口之间传输</p>
