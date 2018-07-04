@@ -94,17 +94,17 @@
 
 
 
-<meta name="description" content="Redis Redis持久化  RDB持久化：在指定的时间间隔内生成数据集的时间点快照  AOF持久化：记录服务器执行的所有写操作命令，并在服务器启动时，通过重新执行这些命令来还原数据集。 AOF 文件中的命令全部以 Redis 协议的格式来保存，新命令会被追加到文件的末尾    RDB优点：   适合用于备份 适用于灾难恢复 父进程在保存RDB文件时唯一要做的就是fork出一个子进程，然后这个子">
+<meta name="description" content="工作中遇到的问题1、架包冲突（经常出现）今天遇到了很奇葩的问题，应用部署到预发环境，报mybatis的某个类的方法不存在，检查应用中的mybatis依赖包中是有该方法的，后面尝试用线上的部署应用程序包部署到预发环境，还是报相同的问题；后面检查mvn依赖包关系图，也没有发现有mybatis的包有多个版本，后面实在没有办法，把应用程序包从服务器上下载下来，检查程序包中lib下面有哪些架包，发现myba">
 <meta property="og:type" content="article">
-<meta property="og:title" content="redis">
-<meta property="og:url" content="https://killgc.github.io/shortfeng/2018/04/01/redis/index.html">
+<meta property="og:title" content="工作中遇到的问题">
+<meta property="og:url" content="https://killgc.github.io/shortfeng/2018/07/04/工作中遇到的问题/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Redis Redis持久化  RDB持久化：在指定的时间间隔内生成数据集的时间点快照  AOF持久化：记录服务器执行的所有写操作命令，并在服务器启动时，通过重新执行这些命令来还原数据集。 AOF 文件中的命令全部以 Redis 协议的格式来保存，新命令会被追加到文件的末尾    RDB优点：   适合用于备份 适用于灾难恢复 父进程在保存RDB文件时唯一要做的就是fork出一个子进程，然后这个子">
+<meta property="og:description" content="工作中遇到的问题1、架包冲突（经常出现）今天遇到了很奇葩的问题，应用部署到预发环境，报mybatis的某个类的方法不存在，检查应用中的mybatis依赖包中是有该方法的，后面尝试用线上的部署应用程序包部署到预发环境，还是报相同的问题；后面检查mvn依赖包关系图，也没有发现有mybatis的包有多个版本，后面实在没有办法，把应用程序包从服务器上下载下来，检查程序包中lib下面有哪些架包，发现myba">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-01T13:05:09.000Z">
+<meta property="og:updated_time" content="2018-07-04T15:50:50.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="redis">
-<meta name="twitter:description" content="Redis Redis持久化  RDB持久化：在指定的时间间隔内生成数据集的时间点快照  AOF持久化：记录服务器执行的所有写操作命令，并在服务器启动时，通过重新执行这些命令来还原数据集。 AOF 文件中的命令全部以 Redis 协议的格式来保存，新命令会被追加到文件的末尾    RDB优点：   适合用于备份 适用于灾难恢复 父进程在保存RDB文件时唯一要做的就是fork出一个子进程，然后这个子">
+<meta name="twitter:title" content="工作中遇到的问题">
+<meta name="twitter:description" content="工作中遇到的问题1、架包冲突（经常出现）今天遇到了很奇葩的问题，应用部署到预发环境，报mybatis的某个类的方法不存在，检查应用中的mybatis依赖包中是有该方法的，后面尝试用线上的部署应用程序包部署到预发环境，还是报相同的问题；后面检查mvn依赖包关系图，也没有发现有mybatis的包有多个版本，后面实在没有办法，把应用程序包从服务器上下载下来，检查程序包中lib下面有哪些架包，发现myba">
 
 
 
@@ -133,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="https://killgc.github.io/shortfeng/2018/04/01/redis/"/>
+  <link rel="canonical" href="https://killgc.github.io/shortfeng/2018/07/04/工作中遇到的问题/"/>
 
 
 
 
 
-  <title>redis | Hexo</title>
+  <title>工作中遇到的问题 | Hexo</title>
   
 
 
@@ -262,7 +262,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/04/01/redis/">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/07/04/工作中遇到的问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="changfeng">
@@ -279,7 +279,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">redis</h1>
+          <h1 class="post-title" itemprop="name headline">工作中遇到的问题</h1>
         
 
         <div class="post-meta">
@@ -291,8 +291,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-01T19:58:26+08:00">
-                2018-04-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-04T23:15:35+08:00">
+                2018-07-04
               </time>
             
 
@@ -329,63 +329,16 @@
       
 
       
-        <h2 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h2><hr>
-<h4 id="Redis持久化"><a href="#Redis持久化" class="headerlink" title="Redis持久化"></a>Redis持久化</h4><blockquote>
-<ul>
-<li><p>RDB持久化：在指定的时间间隔内生成数据集的时间点快照</p>
-</li>
-<li><p>AOF持久化：记录服务器执行的所有写操作命令，并在服务器启动时，通过重新执行这些命令来还原数据集。 AOF 文件中的命令全部以 Redis 协议的格式来保存，新命令会被追加到文件的末尾</p>
-</li>
-</ul>
-</blockquote>
-<h5 id="RDB"><a href="#RDB" class="headerlink" title="RDB"></a>RDB</h5><p>优点：</p>
-<blockquote>
-<ul>
-<li>适合用于备份</li>
-<li>适用于灾难恢复</li>
-<li>父进程在保存RDB文件时唯一要做的就是fork出一个子进程，然后这个子进程就会处理接下来的所有保存工作，父进程无须执行任何磁盘I/O操作</li>
-<li>RDB 在恢复大数据集时的速度比 AOF 的恢复速度要快</li>
-</ul>
-</blockquote>
-<p>缺点：</p>
-<blockquote>
-<ul>
-<li><p>如果你需要尽量避免在服务器故障时丢失数据，那么 RDB 不适合你。 虽然 Redis 允许你设置不同的保存点（save point）来控制保存 RDB 文件的频率， 但是， 因为RDB 文件需要保存整个数据集的状态， 所以它并不是一个轻松的操作。 因此你可能会至少 5 分钟才保存一次 RDB 文件。 在这种情况下， 一旦发生故障停机， 你就可能会丢失好几分钟的数据</p>
-</li>
-<li><p>每次保存 RDB 的时候，Redis 都要 fork() 出一个子进程，并由子进程来进行实际的持久化工作。 在数据集比较庞大时， fork() 可能会非常耗时，造成服务器在某某毫秒内停止处理客户端； 如果数据集非常巨大，并且 CPU 时间非常紧张的话，那么这种停止时间甚至可能会长达整整一秒。 虽然 AOF 重写也需要进行 fork() ，但无论 AOF 重写的执行间隔有多长，数据的耐久性都不会有任何损失</p>
-</li>
-</ul>
-</blockquote>
-<h5 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h5><p>append-only file，AOF</p>
-<p>优点：</p>
-<blockquote>
-<ul>
-<li><p>使用 AOF 持久化会让 Redis 变得非常耐久，AOF 的默认策略为每秒钟 fsync 一次</p>
-</li>
-<li><p>redis-check-aof 工具也可以轻易地修复因为某些原因而包含了未写入完整的命令</p>
-</li>
-<li><p>Redis 可以在 AOF 文件体积变得过大时，自动地在后台对 AOF 进行重写，整个重写操作是绝对安全的</p>
-</li>
-<li><p>AOF 文件有序地保存了对数据库执行的所有写入操作，容易被人读懂</p>
-</li>
-</ul>
-</blockquote>
-<p>缺点：</p>
-<blockquote>
-<ul>
-<li>对于相同的数据集来说，AOF 文件的体积通常要大于 RDB 文件的体积</li>
-<li>根据所使用的 fsync 策略，AOF 的速度可能会慢于 RDB</li>
-</ul>
-</blockquote>
-<p>修改配置文件来打开 AOF 功能：appendonly yes </p>
-<p>配置 Redis 多久才将数据 fsync 到磁盘一次。有三个选项：</p>
-<blockquote>
-<ul>
-<li>每次有新命令追加到 AOF 文件时就执行一次 fsync ：非常慢，也非常安全。</li>
-<li>每秒 fsync 一次：足够快（和使用 RDB 持久化差不多），并且在故障时只会丢失 1 秒钟的数据。</li>
-<li>从不 fsync ：将数据交给操作系统来处理。更快，也更不安全的选择。<br>推荐（并且也是默认）的措施为每秒 fsync 一次， 这种 fsync 策略可以兼顾速度和安全性</li>
-</ul>
-</blockquote>
+        <h3 id="工作中遇到的问题"><a href="#工作中遇到的问题" class="headerlink" title="工作中遇到的问题"></a>工作中遇到的问题</h3><p>1、架包冲突（经常出现）<br>今天遇到了很奇葩的问题，应用部署到预发环境，报mybatis的某个类的方法不存在，检查应用中的mybatis依赖包中是有该方法的，后面尝试用线上的部署应用程序包部署到预发环境，还是报相同的问题；后面检查mvn依赖包关系图，也没有发现有mybatis的包有多个版本，后面实在没有办法，把应用程序包从服务器上下载下来，检查程序包中lib下面有哪些架包，发现mybatis架包版本是低版本的，后面最终定位是应用依赖的api包中也引入mybatis架包并且版本就是这个低版本。本来线上运行的程序包是好的，后面部署到什么环境都是报相同的错误，最终定位到本应用依赖的api版本是snapshot，该snapshot版本被重新打过，引发该问题。</p>
+<p>环境上的各种奇葩的问题，大多数时候可以从架包冲突方面入手</p>
+<p>从下面两个方面规避架包冲突：</p>
+<p>a、不引入api的snapshot版本</p>
+<p>b、本地mvn设置每次获取最新的snapshot架包，这样在本地环境启动就能发现。这次在本地环境启动过没有报该错误，是因为没有重新获取snapshot架包对应版本的最新文件，而是使用的之前获取的架包，导致本地未出现该问题。</p>
+<p>2、大视频文件通过dubbo接口传输的问题</p>
+<p>大视频文件通过dubbo接口的byte类型参数把文件字节流传到服务，发现会报dubbo最大只支持发送8M数据的错误；dubbo协议是长连接，适合发送小数据，不适合传输大数据</p>
+<p>换一种思路解决，先把文件传输到七牛云上，再把七牛云上文件的url地址传入dubbo接口，dubbo接口里面通过url从七牛云中获取，再处理，这样就避免了文件字节流之间在dubbo接口之间传输</p>
+<p>3、事务问题</p>
+<p>某个带Transactional注解的方法里面有个代码块，通过try catch包入，但是该代码块抛出的异常还是会使整个方法的事物回滚。在方法中的代码有抛出异常，不管有没有做异常处理，都会回滚方法的事务。</p>
 
       
     </div>
@@ -410,8 +363,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/shortfeng/2018/03/30/分布式事务/" rel="next" title="分布式事务">
-                <i class="fa fa-chevron-left"></i> 分布式事务
+              <a href="/shortfeng/2018/07/03/Java-Map/" rel="next" title="Java-Map">
+                <i class="fa fa-chevron-left"></i> Java-Map
               </a>
             
           </div>
@@ -419,10 +372,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/shortfeng/2018/04/04/支付/" rel="prev" title="支付">
-                支付 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -538,7 +487,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis"><span class="nav-number">1.</span> <span class="nav-text">Redis</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis持久化"><span class="nav-number">1.0.1.</span> <span class="nav-text">Redis持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#RDB"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">RDB</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AOF"><span class="nav-number">1.0.1.2.</span> <span class="nav-text">AOF</span></a></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#工作中遇到的问题"><span class="nav-number">1.</span> <span class="nav-text">工作中遇到的问题</span></a></li></ol></div>
             
 
           </div>
