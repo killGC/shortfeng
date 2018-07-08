@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/shortfeng/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/shortfeng/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/shortfeng/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/shortfeng/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="java面试题第一套一、基础篇 1.1、Java基础  面向对象的特征：继承、封装和多态 final, finally, finalize 的区别 Exception、Error、运行时异常与一般异常有何异同 请写出5种常见到的runtime exception int 和 Integer 有什么区别，Integer的值缓存范围 包装类，装箱和拆箱 String、StringBuilder、Str">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java面试题第一套">
+<meta property="og:url" content="https://killgc.github.io/shortfeng/2018/07/08/java面试题第一套/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="java面试题第一套一、基础篇 1.1、Java基础  面向对象的特征：继承、封装和多态 final, finally, finalize 的区别 Exception、Error、运行时异常与一般异常有何异同 请写出5种常见到的runtime exception int 和 Integer 有什么区别，Integer的值缓存范围 包装类，装箱和拆箱 String、StringBuilder、Str">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-07-08T14:01:44.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java面试题第一套">
+<meta name="twitter:description" content="java面试题第一套一、基础篇 1.1、Java基础  面向对象的特征：继承、封装和多态 final, finally, finalize 的区别 Exception、Error、运行时异常与一般异常有何异同 请写出5种常见到的runtime exception int 和 Integer 有什么区别，Integer的值缓存范围 包装类，装箱和拆箱 String、StringBuilder、Str">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/shortfeng/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://killgc.github.io/shortfeng/2018/07/08/java面试题第一套/"/>
+
+
+
+
+
+  <title>java面试题第一套 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/shortfeng/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/shortfeng/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/shortfeng/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/shortfeng/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/07/08/java面试题第一套/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">java面试题第一套</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-08T21:54:34+08:00">
+                2018-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="java面试题第一套"><a href="#java面试题第一套" class="headerlink" title="java面试题第一套"></a>java面试题第一套</h3><p>一、基础篇</p>
+<p>1.1、Java基础 </p>
+<p>面向对象的特征：继承、封装和多态</p>
+<p>final, finally, finalize 的区别</p>
+<p>Exception、Error、运行时异常与一般异常有何异同</p>
+<p>请写出5种常见到的runtime exception</p>
+<p>int 和 Integer 有什么区别，Integer的值缓存范围</p>
+<p>包装类，装箱和拆箱</p>
+<p>String、StringBuilder、StringBuffer</p>
+<p>重载和重写的区别</p>
+<p>抽象类和接口有什么区别</p>
+<p>说说反射的用途及实现</p>
+<p>说说自定义注解的场景及实现</p>
+<p>HTTP请求的GET与POST方式的区别</p>
+<p>Session与Cookie区别</p>
+<p>列出自己常用的JDK包</p>
+<p>MVC设计思想</p>
+<p>equals与==的区别</p>
+<p>hashCode和equals方法的区别与联系</p>
+<p>什么是Java序列化和反序列化，如何实现Java序列化？或者请解释Serializable 接口的作用</p>
+<p>Object类中常见的方法，为什么wait  notify会放在Object里边？</p>
+<p>Java的平台无关性如何体现出来的</p>
+<p>JDK和JRE的区别</p>
+<p>Java 8有哪些新特性</p>
+<p>1.2、Java常见集合</p>
+<p>List 和 Set 区别</p>
+<p>Set和hashCode以及equals方法的联系</p>
+<p>List 和 Map 区别</p>
+<p>Arraylist 与 LinkedList 区别</p>
+<p>ArrayList 与 Vector 区别</p>
+<p>HashMap 和 Hashtable 的区别</p>
+<p>HashSet 和 HashMap 区别</p>
+<p>HashMap 和 ConcurrentHashMap 的区别</p>
+<p>HashMap 的工作原理及代码实现，什么时候用到红黑树</p>
+<p>多线程情况下HashMap死循环的问题</p>
+<p>HashMap出现Hash DOS攻击的问题</p>
+<p>ConcurrentHashMap 的工作原理及代码实现，如何统计所有的元素个数</p>
+<p>手写简单的HashMap</p>
+<p>看过那些Java集合类的源码</p>
+<p>1.3、进程和线程</p>
+<p>线程和进程的概念、并行和并发的概念</p>
+<p>创建线程的方式及实现</p>
+<p>进程间通信的方式</p>
+<p>说说 CountDownLatch、CyclicBarrier 原理和区别</p>
+<p>说说 Semaphore 原理</p>
+<p>说说 Exchanger 原理</p>
+<p>ThreadLocal 原理分析，ThreadLocal为什么会出现OOM，出现的深层次原理</p>
+<p>讲讲线程池的实现原理</p>
+<p>线程池的几种实现方式</p>
+<p>线程的生命周期，状态是如何转移的</p>
+<p>可参考：《Java多线程编程核心技术》<br>1.4、锁机制</p>
+<p>说说线程安全问题，什么是线程安全，如何保证线程安全</p>
+<p>重入锁的概念，重入锁为什么可以防止死锁</p>
+<p>产生死锁的四个条件（互斥、请求与保持、不剥夺、循环等待）</p>
+<p>如何检查死锁（通过jConsole检查死锁）</p>
+<p>volatile 实现原理（禁止指令重排、刷新内存）</p>
+<p>synchronized 实现原理（对象监视器）</p>
+<p>synchronized 与 lock 的区别</p>
+<p>AQS同步队列</p>
+<p>CAS无锁的概念、乐观锁和悲观锁</p>
+<p>常见的原子操作类</p>
+<p>什么是ABA问题，出现ABA问题JDK是如何解决的</p>
+<p>乐观锁的业务场景及实现方式</p>
+<p>Java 8并法包下常见的并发类</p>
+<p>偏向锁、轻量级锁、重量级锁、自旋锁的概念</p>
+<p>可参考：《Java多线程编程核心技术》</p>
+<p>1.5、JVM</p>
+<p>JVM运行时内存区域划分</p>
+<p>内存溢出OOM和堆栈溢出SOE的示例及原因、如何排查与解决</p>
+<p>如何判断对象是否可以回收或存活</p>
+<p>常见的GC回收算法及其含义</p>
+<p>常见的JVM性能监控和故障处理工具类：jps、jstat、jmap、jinfo、jconsole等</p>
+<p>JVM如何设置参数</p>
+<p>JVM性能调优</p>
+<p>类加载器、双亲委派模型、一个类的生命周期、类是如何加载到JVM中的</p>
+<p>类加载的过程：加载、验证、准备、解析、初始化</p>
+<p>强引用、软引用、弱引用、虚引用</p>
+<p>Java内存模型JMM</p>
+<p>1.6、设计模式</p>
+<p>常见的设计模式</p>
+<p>设计模式的的六大原则及其含义</p>
+<p>常见的单例模式以及各种实现方式的优缺点，哪一种最好，手写常见的单利模式</p>
+<p>设计模式在实际场景中的应用</p>
+<p>Spring中用到了哪些设计模式</p>
+<p>MyBatis中用到了哪些设计模式</p>
+<p>你项目中有使用哪些设计模式</p>
+<p>说说常用开源框架中设计模式使用分析</p>
+<p>动态代理很重要！！！</p>
+<p>1.7、数据结构</p>
+<p>树（二叉查找树、平衡二叉树、红黑树、B树、B+树）</p>
+<p>深度有限算法、广度优先算法</p>
+<p>克鲁斯卡尔算法、普林母算法、迪克拉斯算法</p>
+<p>什么是一致性Hash及其原理、Hash环问题</p>
+<p>常见的排序算法和查找算法：快排、折半查找、堆排序等</p>
+<p>1.8、网络/IO基础</p>
+<p>BIO、NIO、AIO的概念</p>
+<p>什么是长连接和短连接</p>
+<p>Http1.0和2.0相比有什么区别，可参考《Http 2.0》</p>
+<p>Https的基本概念</p>
+<p>三次握手和四次挥手、为什么挥手需要四次</p>
+<p>从游览器中输入URL到页面加载的发生了什么？可参考《从输入URL到页面加载发生了什么》</p>
+<p>二、数据存储和消息队列</p>
+<p>2.1、数据库</p>
+<p>MySQL 索引使用的注意事项</p>
+<p>DDL、DML、DCL分别指什么</p>
+<p>explain命令</p>
+<p>left join，right join，inner join</p>
+<p>数据库事物ACID（原子性、一致性、隔离性、持久性）</p>
+<p>事物的隔离级别（读未提交、读以提交、可重复读、可序列化读）</p>
+<p>脏读、幻读、不可重复读</p>
+<p>数据库的几大范式</p>
+<p>数据库常见的命令</p>
+<p>说说分库与分表设计</p>
+<p>分库与分表带来的分布式困境与应对之策（如何解决分布式下的分库分表，全局表？）</p>
+<p>说说 SQL 优化之道</p>
+<p>MySQL遇到的死锁问题、如何排查与解决</p>
+<p>存储引擎的 InnoDB与MyISAM区别，优缺点，使用场景</p>
+<p>索引类别（B+树索引、全文索引、哈希索引）、索引的原理</p>
+<p>什么是自适应哈希索引（AHI）</p>
+<p>为什么要用 B+tree作为MySQL索引的数据结构</p>
+<p>聚集索引与非聚集索引的区别</p>
+<p>遇到过索引失效的情况没，什么时候可能会出现，如何解决</p>
+<p>limit 20000 加载很慢怎么解决</p>
+<p>如何选择合适的分布式主键方案</p>
+<p>选择合适的数据存储方案</p>
+<p>常见的几种分布式ID的设计方案</p>
+<p>常见的数据库优化方案，在你的项目中数据库如何进行优化的</p>
+<p>2.2、Redis</p>
+<p>Redis 有哪些数据类型，可参考《Redis常见的5种不同的数据类型详解》</p>
+<p>Redis 内部结构</p>
+<p>Redis 使用场景</p>
+<p>Redis 持久化机制，可参考《使用快照和AOF将Redis数据持久化到硬盘中》</p>
+<p>Redis 集群方案与实现</p>
+<p>Redis 为什么是单线程的？</p>
+<p>缓存雪崩、缓存穿透、缓存预热、缓存更新、缓存降级</p>
+<p>使用缓存的合理性问题</p>
+<p>Redis常见的回收策略</p>
+<p>2.3、消息队列</p>
+<p>消息队列的使用场景</p>
+<p>消息的重发补偿解决思路</p>
+<p>消息的幂等性解决思路</p>
+<p>消息的堆积解决思路</p>
+<p>自己如何实现消息队列</p>
+<p>如何保证消息的有序性</p>
+<p>三、开源框架和容器</p>
+<p>3.1、SSM/Servlet</p>
+<p>Servlet的生命周期</p>
+<p>转发与重定向的区别</p>
+<p>BeanFactory 和 ApplicationContext 有什么区别</p>
+<p>Spring Bean 的生命周期</p>
+<p>Spring IOC 如何实现</p>
+<p>Spring中Bean的作用域，默认的是哪一个</p>
+<p>说说 Spring AOP、Spring AOP 实现原理</p>
+<p>动态代理（CGLib 与 JDK）、优缺点、性能对比、如何选择</p>
+<p>Spring 事务实现方式、事务的传播机制、默认的事务类别</p>
+<p>Spring 事务底层原理</p>
+<p>Spring事务失效（事务嵌套），JDK动态代理给Spring事务埋下的坑，可参考《JDK动态代理给Spring事务埋下的坑！》</p>
+<p>如何自定义注解实现功能</p>
+<p>Spring MVC 运行流程</p>
+<p>Spring MVC 启动流程</p>
+<p>Spring 的单例实现原理</p>
+<p>Spring 框架中用到了哪些设计模式</p>
+<p>Spring 其他产品（Srping Boot、Spring Cloud、Spring Secuirity、Spring Data、Spring AMQP 等）</p>
+<p>有没有用到Spring Boot，Spring Boot的认识、原理</p>
+<p>MyBatis的原理</p>
+<p>可参考《为什么会有Spring》</p>
+<p>可参考《为什么会有Spring AOP》</p>
+<p>3.2、Netty</p>
+<p>为什么选择 Netty</p>
+<p>说说业务中，Netty 的使用场景</p>
+<p>原生的 NIO 在 JDK 1.7 版本存在 epoll bug</p>
+<p>什么是TCP 粘包/拆包</p>
+<p>TCP粘包/拆包的解决办法</p>
+<p>Netty 线程模型</p>
+<p>说说 Netty 的零拷贝</p>
+<p>Netty 内部执行流程</p>
+<p>Netty 重连实现</p>
+<p>3.3、Tomcat</p>
+<p>Tomcat的基础架构（Server、Service、Connector、Container）</p>
+<p>Tomcat如何加载Servlet的</p>
+<p>Pipeline-Valve机制</p>
+<p>可参考：《四张图带你了解Tomcat系统架构！》</p>
+<p>四、分布式</p>
+<p>4.1、Nginx</p>
+<p>请解释什么是C10K问题或者知道什么是C10K问题吗？</p>
+<p>Nginx简介，可参考《Nginx简介》</p>
+<p>正向代理和反向代理.</p>
+<p>Nginx几种常见的负载均衡策略</p>
+<p>Nginx服务器上的Master和Worker进程分别是什么</p>
+<p>使用“反向代理服务器”的优点是什么?</p>
+<p>4.2、分布式其他</p>
+<p>谈谈业务中使用分布式的场景</p>
+<p>Session 分布式方案</p>
+<p>Session 分布式处理</p>
+<p>分布式锁的应用场景、分布式锁的产生原因、基本概念</p>
+<p>分布是锁的常见解决方案</p>
+<p>分布式事务的常见解决方案</p>
+<p>集群与负载均衡的算法与实现</p>
+<p>说说分库与分表设计，可参考《数据库分库分表策略的具体实现方案》</p>
+<p>分库与分表带来的分布式困境与应对之策</p>
+<p>4.3、Dubbo</p>
+<p>什么是Dubbo，可参考《Dubbo入门》</p>
+<p>什么是RPC、如何实现RPC、RPC 的实现原理，可参考《基于HTTP的RPC实现》</p>
+<p>Dubbo中的SPI是什么概念</p>
+<p>Dubbo的基本原理、执行流程</p>
+<p>五、微服务</p>
+<p>5.1、微服务</p>
+<p>前后端分离是如何做的？</p>
+<p>微服务哪些框架</p>
+<p>Spring Could的常见组件有哪些？可参考《Spring Cloud概述》</p>
+<p>领域驱动有了解吗？什么是领域驱动模型？充血模型、贫血模型</p>
+<p>JWT有了解吗，什么是JWT，可参考《前后端分离利器之JWT》</p>
+<p>你怎么理解 RESTful</p>
+<p>说说如何设计一个良好的 API</p>
+<p>如何理解 RESTful API 的幂等性</p>
+<p>如何保证接口的幂等性</p>
+<p>说说 CAP 定理、BASE 理论</p>
+<p>怎么考虑数据一致性问题</p>
+<p>说说最终一致性的实现方案</p>
+<p>微服务的优缺点，可参考《微服务批判》</p>
+<p>微服务与 SOA 的区别</p>
+<p>如何拆分服务、水平分割、垂直分割</p>
+<p>如何应对微服务的链式调用异常</p>
+<p>如何快速追踪与定位问题</p>
+<p>如何保证微服务的安全、认证</p>
+<p>5.2、安全问题</p>
+<p>如何防范常见的Web攻击、如何方式SQL注入</p>
+<p>服务端通信安全攻防</p>
+<p>HTTPS原理剖析、降级攻击、HTTP与HTTPS的对比</p>
+<p>5.3、性能优化</p>
+<p>性能指标有哪些</p>
+<p>如何发现性能瓶颈</p>
+<p>性能调优的常见手段</p>
+<p>说说你在项目中如何进行性能调优</p>
+<p>六、其他</p>
+<p>6.1、设计能力</p>
+<p>说说你在项目中使用过的UML图</p>
+<p>你如何考虑组件化、服务化、系统拆分</p>
+<p>秒杀场景如何设计</p>
+<p>可参考：《秒杀系统的技术挑战、应对策略以及架构设计总结一二！》<br>6.2、业务工程</p>
+<p>说说你的开发流程、如何进行自动化部署的</p>
+<p>你和团队是如何沟通的</p>
+<p>你如何进行代码评审</p>
+<p>说说你对技术与业务的理解</p>
+<p>说说你在项目中遇到感觉最难Bug，是如何解决的</p>
+<p>介绍一下工作中的一个你认为最有价值的项目，以及在这个过程中的角色、解决的问题、你觉得你们项目还有哪些不足的地方</p>
+<p>6.3、软实力</p>
+<p>说说你的优缺点、亮点</p>
+<p>说说你最近在看什么书、什么博客、在研究什么新技术、再看那些开源项目的源代码</p>
+<p>说说你觉得最有意义的技术书籍</p>
+<p>工作之余做什么事情、平时是如何学习的，怎样提升自己的能力</p>
+<p>说说个人发展方向方面的思考</p>
+<p>说说你认为的服务端开发工程师应该具备哪些能力</p>
+<p>说说你认为的架构师是什么样的，架构师主要做什么</p>
+<p>如何看待加班的问题</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/shortfeng/2018/07/06/队列/" rel="next" title="队列">
+                <i class="fa fa-chevron-left"></i> 队列
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/shortfeng/2018/07/08/java面试题第二套/" rel="prev" title="java面试题第二套">
+                java面试题第二套 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/shortfeng/images/avatar.gif"
+               alt="changfeng" />
+          <p class="site-author-name" itemprop="name">changfeng</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/shortfeng/archives/">
+                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#java面试题第一套"><span class="nav-number">1.</span> <span class="nav-text">java面试题第一套</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">changfeng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/shortfeng/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/shortfeng/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/shortfeng/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/shortfeng/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/shortfeng/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/shortfeng/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/shortfeng/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/shortfeng/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/shortfeng/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/shortfeng/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/shortfeng/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

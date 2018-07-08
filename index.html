@@ -260,6 +260,1335 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/07/08/java面试题第五套/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/shortfeng/2018/07/08/java面试题第五套/" itemprop="url">java面试题第五套</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-08T22:05:38+08:00">
+                2018-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="java面试题第五套"><a href="#java面试题第五套" class="headerlink" title="java面试题第五套"></a>java面试题第五套</h3><p>一、Java相关</p>
+<p>乐观悲观锁的设计，如何保证原子性，解决的问题；</p>
+<p>char和double的字节，以及在内存的分布是怎样；</p>
+<p>对象内存布局，然后讲下对象的死亡过程？</p>
+<p>对象头，详细讲下；</p>
+<p>sync原理详细，sync内抛异常会怎样，死锁吗？还是释放掉？怎么排查死锁？死锁会怎样？有没有什么更好的替代方案？</p>
+<p>详细讲一下集合，HashSet源码，HashMap源码，如果要线程安全需要怎么做？</p>
+<p>多线程是解决什么问题的？线程池解决什么问题？</p>
+<p>线程池，如何设计的，里面的参数有多少种，里面的工作队列和线程队列是怎样的结构，如果给你，怎样设计线程池？</p>
+<p>AQS原理，ReentranLock源码，设计原理，整体过程。</p>
+<p>继续聊多线程源码，sync原理，然后一个场景设计题；</p>
+<p>float f = 1.4f;double d = 1.4d; 与 float f = 1.5f;double d = 1.5d; 是否为true，内存是怎样的；</p>
+<p>split的源码，split(“a|b|c”);得出多少个数组；</p>
+<p>把所有认识熟用的JUC( java.util.concurrent(简称JUC)包)下的类写出来，讲下使用，然后讲下原生的线程操作;</p>
+<p>开闭原则，解析工厂方法模式，建造者模式，区别。手撸出来。</p>
+<p>讲下JVM的大页模式，JVM内存模型;</p>
+<p>什么是敏捷开发，防御性编程，并行编程。Team Leader的思考;</p>
+<p>逃逸分析是什么，作用是什么，用途是什么;</p>
+<p>怎么认为一个类是线程安全？线程安全的定义是什么？Java有多少个关键字进行同步？为什么这样设计？（聊了一大堆，一堆为什么）；</p>
+<p>两个线程设计题。记得一个是：t1,t2,t3，让t1，t2执行完才执行t3，原生实现。</p>
+<p>写个后缀表达式，为什么要设计后缀表达式，有什么好处？然后写下中缀。</p>
+<p>我看你做过性能优化，比如你怎么分析项目里面的OOM的，内存泄露呢？详细说思路;</p>
+<p>说下多线程，我们什么时候需要分析线程数，怎么分析，分析什么因素;</p>
+<p>抽象方法和类方法的区别，static的抽象方法可以吗？</p>
+<p>说下Java的克隆体系;</p>
+<p>涉及OOM、JVM优化、源码问题、数据库优化、多线程等问题;</p>
+<p>CPU高？什么情况CPU高？解决什么问题？</p>
+<p>你有遇到过临界区问题吗？有遇到过吗？你在项目遇到这个问题是怎样解决的？</p>
+<p>volatile关键字作用;</p>
+<p>Java的多态怎么实现;</p>
+<p>解释一下自旋;</p>
+<p>解释一下信号量;</p>
+<p>什么情况下会触发类加载；</p>
+<p>Java内存抖动严重，优化的思路；</p>
+<p>二、数据库相关</p>
+<p>SQL优化思路，联合索引与底层树结构的映像关系，索引结构（B+、B-），为什么用这样的结构；</p>
+<p>讲下MySQL的集群？集群遇到过什么问题？sql的优化？</p>
+<p>你目前为止遇到的最大数据量是多少？知道100万时候怎么设计吗？1000万呢？过几十亿呢？</p>
+<p>MySQL有多少个参数可调，除了最大连接数。全部列出来，一个个分析。</p>
+<p>聊下优化过的索引，怎么优化;</p>
+<p>红黑树和平衡树的区别，为什么数据库不用红黑树;</p>
+<p>mysql有哪些锁，意向锁有什么用;</p>
+<p>数据库高并发下的优化思路;</p>
+<p>数据库什么情况下索引会失效;</p>
+<p>三、数据结构和操作系统相关</p>
+<p>数据结构学过吧，聊一下？学过什么结构？讲下树和队列？B树呢？</p>
+<p>操作系统学过吧，聊一下？讲一下系统内存是怎样的？分段分页虚拟内存？</p>
+<p>页面置换算法呢？多少种？有最优的置换算法吗？</p>
+<p>你学过什么课程？然后聊下操作系统，内核、用户之类。</p>
+<p>反转链表手撸;</p>
+<p>快排，给一串数组，把具体每次patition写下，最终结果也写45, 32, 41, 35, 38, 20, 50;</p>
+<p>一个整数status, 判断第K个比特位是否为比特1;</p>
+<p>把递归实现的快排改成非递归，你知道非递归有什么好处吗;</p>
+<p>举例使用分治思想的算法;</p>
+<p>四、网络相关</p>
+<p>讲下请求头细节？</p>
+<p>Http和Https？Http1.0,1.1,2.0，讲下长连接和短连接？Https是怎样的？如果我篡改了公钥呢？怎么防止？</p>
+<p>Get和Post，讲下区别，要我模拟出抓包来。</p>
+<p>详细讲下Cookie和Session，Token，OAuth2.0协议;</p>
+<p>拥塞算法知道吗？哪些，分别怎样？</p>
+<p>学过计算机网络是吧？socket熟悉吗？对它的读写缓冲区有理解吗？怎么的？那滑动窗口是怎样的？为什么这样设计？</p>
+<p>再聊下Http的Http basic authentication;</p>
+<p>Https的过程;</p>
+<p>五、框架相关</p>
+<p>聊下Spring源码，知道多少，都聊一下；</p>
+<p>聊下Spring注解，@Autowire，@Resource，以及他们的解析过程；</p>
+<p>聊一下架构，接入层架构，服务层架构。聊下技术栈，Spring Boot，Spring Cloud、Docker；</p>
+<p>Spring ioc的具体优势，和直接New一个对象有什么区别;</p>
+<p>Servlet生命周期，是否单例，为什么是单例;</p>
+<p>Spring Mvc初始化过程；</p>
+<p>五、分布式相关</p>
+<p>多少种RPC框架？</p>
+<p>一致性哈希是干嘛的？</p>
+<p>搭建高并发高可用系统需要怎样设计？考虑哪些东西，有多少说多少。</p>
+<p>你对缓存有什么理解？缓存是解决什么问题？后端缓存有哪些，分别解决什么问题？</p>
+<p>聊一下分布式锁；</p>
+<p>你是怎么设计系统缓存的，为什么，什么场景；</p>
+<p>也来说下，削峰的多种实现，Redis？MQ？</p>
+<p>为什么用mq就能削峰？解决什么问题？</p>
+<p>六、设计题</p>
+<p>有几台机器存储着几亿淘宝搜索日志，你只有一台2g的电脑，怎么选出搜索热度最高的十个搜索关键词;</p>
+<p>如何设计算法压缩一段URL;</p>
+<p>有一个页面能同时展示两个广告，现在有五个广告，设计算法使五个广告展示概率为1:2:3:4:5；</p>
+<p>有25匹马，五个赛道，用最少比赛次数将25匹马排序；</p>
+<p>七、其他相关</p>
+<p>Tomcat缓存，聊下缓存的整体理解，知道多少种缓存；</p>
+<p>解释下Mucene原理，倒排索引，怎样进行中文分词，基于什么进行分词；</p>
+<p>TopN的大数据量题；</p>
+<p>你对接入层要思考什么东西？遇到过哪些问题？搭建系统要考量哪些因素？</p>
+<p>然后项目问题，优化问题；</p>
+<p>熟悉maven是吧？我们来聊下Maven的源码原理，Maven冲突的时候，怎么选择依赖包，我们怎么查，我们遇到两个不一样的版本，我们应该如何去选择，为什么？</p>
+<p>项目如何分组，性能优化小组应该做哪些;</p>
+<p>我们来说下接入层的搭建，认知分析;</p>
+<p>问下项目的系统构建，思考，为什么这样构建？</p>
+<p>如何判断一段代码的好坏;</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/07/08/java面试题第四套/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/shortfeng/2018/07/08/java面试题第四套/" itemprop="url">java面试题第四套</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-08T22:04:53+08:00">
+                2018-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="java面试题第四套"><a href="#java面试题第四套" class="headerlink" title="java面试题第四套"></a>java面试题第四套</h3><p>一、Java基础</p>
+<p>为什么JVM调优经常会将-Xms和-Xmx参数设置成一样；</p>
+<p>Java线程池的核心属性以及处理流程；</p>
+<p>Java内存模型，方法区存什么；</p>
+<p>CMS垃圾回收过程；</p>
+<p>Full GC次数太多了，如何优化；</p>
+<p>直接内存如何管理的；</p>
+<p>Java线程池的几个参数的意义和实现机制；</p>
+<p>Java线程池使用无界任务队列和有界任务队列的优劣对比；</p>
+<p>CountDownLatch和CyclicBarrier的区别；</p>
+<p>Java中有哪些同步方案（重量级锁、显式锁、并发容器、并发同步器、CAS、volatile、AQS等）</p>
+<p>如果你的项目出现了内存泄露，怎么监控这个问题呢；</p>
+<p>标记清除和标记整理的区别和优缺点，为何标记整理会发生stop the world；</p>
+<p>线程池，如何根据CPU的核数来设计线程大小，如果是计算机密集型的呢，如果是IO密集型的呢？</p>
+<p>让你设计一个cache如何设计；</p>
+<p>String中hashcode是怎么实现的；</p>
+<p>JDK中哪些实现了单例模式？</p>
+<p>多个线程同时读写，读线程的数量远远⼤于写线程，你认为应该如何解决并发的问题？你会选择加什么样的锁？</p>
+<p>线程池内的线程如果全部忙，提交⼀个新的任务，会发⽣什么？队列全部塞满了之后，还是忙，再提交会发⽣什么？</p>
+<p>synchronized关键字锁住的是什么东西？在字节码中是怎么表示的？在内存中的对象上表现为什么？</p>
+<p>wait/notify/notifyAll⽅法需不需要被包含在synchronized块中？这是为什么？</p>
+<p>ExecutorService你一般是怎么⽤的？是每个Service放一个还是个项目放一个？有什么好处？</p>
+<p>二、数据库</p>
+<p>InnoDB的插入缓冲和两次写的概率和意义；</p>
+<p>如果建了⼀个单列索引，查询的时候查出2列，会⽤到这个单列索引吗？（会用到）</p>
+<p>如果建了⼀个包含多个列的索引，查询的时候只⽤了第⼀列，能不能⽤上这个索引？查三列呢？</p>
+<p>接上题，如果where条件后⾯带有⼀个 i + 5 &lt; 100 会使⽤到这个索引吗？</p>
+<p>like %aaa%会使⽤索引吗? like aaa%呢?</p>
+<p>drop、truncate、delete的区别？</p>
+<p>平时你们是怎么监控数据库的? 慢SQL是怎么排查的？（慢查询日志）</p>
+<p>你们数据库是否⽀持emoji表情，如果不⽀持，如何操作?选择什么编码方式？如果支持一个表情占几个字节?(utf8mb4)；</p>
+<p>如果查询很慢，你会想到的第⼀个⽅式是什么？（数据库索引）</p>
+<p>三、Linux基础</p>
+<p>Linux下可以在/proc目录下可以查看CPU的核心数等；cat /proc/下边会有很多系统内核信息可供显示； </p>
+<p>说一下栈的内存是怎么分配的；</p>
+<p>Linux各个目录有了解过吗？/etc、/bin、/dev、/lib、/sbin这些常见的目录主要作用是什么？</p>
+<p>说一下栈帧的内存是怎么分配的；</p>
+<p>Linux下排查某个死循环的线程；</p>
+<p>动态链接和静态链接的区别；</p>
+<p>进程的内存分布；</p>
+<p>如何查找一个进程打开所有的文件；</p>
+<p>说一下常使用的协议及其对应的端口；</p>
+<p>为什么会有内核态，保护模式你知道吗?</p>
+<p>文件是怎么在磁盘上存储的？</p>
+<p>有了进程为何还要线程呢，不同进程和线程他们之间有什么不同。（进程是资源管理的最小单位，线程是程序执行的最小单位。在操作系统设计上，从进程演化出线程，最主要的目的就是更好的支持SMP以及减小（进程/线程）上下文切换开销。）</p>
+<p>InnoDB聚集索引B+树叶子节点和磁盘什么顺序相同;</p>
+<p>文件系统，进程管理和调度，内存管理机制、虚地址保护模式；</p>
+<p>四、网络基础</p>
+<p>HTTP1.0和HTTP1.1的区别；</p>
+<p>DHCP如何实现分配IP的； 发现阶段（DHCP客户端在网络中广播发送DHCP DISCOVER请求报文，发现DHCP服务器，请求IP地址租约）、提供阶段（DHCP服务器通过DHCP OFFER报文向DHCP客户端提供IP地址预分配）、选择阶段（DHCP客户端通过DHCP REQUEST报文确认选择第一个DHCP服务器为它提供IP地址自动分配服务）和确认阶段（被选择的DHCP服务器通过DHCP ACK报文把在DHCP OFFER报文中准备的IP地址租约给对应DHCP客户端）。</p>
+<p>OSI七层模型，每层都说下自己的理解和知道的，说的越多越好；</p>
+<p>五、框架相关</p>
+<p>Servlet如何保证单例模式,可不可以编程多例的哪？</p>
+<p>Dubbo请求流程以及原理；</p>
+<p>Spring框架如何实现事务的；</p>
+<p>如果一个接⼝有2个不同的实现, 那么怎么来Autowire一个指定的实现？(可以使用Qualifier注解限定要注入的Bean，也可以使用Qualifier和Autowire注解指定要获取的bean，也可以使用Resource注解的name属性指定要获取的Bean)</p>
+<p>Spring框架中需要引用哪些jar包，以及这些jar包的用途；</p>
+<p>Spring Boot没有放到web容器⾥为什么能跑HTTP服务？</p>
+<p>Spring中循环注入是什么意思，可不可以解决，如何解决；</p>
+<p>Spring的声明式事务 @Transaction注解⼀般写在什么位置? 抛出了异常会⾃动回滚吗？有没有办法控制不触发回滚?</p>
+<p>MyBatis怎么防止SQL注入；</p>
+<p>Tomcat本身的参数你⼀般会怎么调整？</p>
+<p>了解哪几种序列化协议？如何选择合适的序列化协议；</p>
+<p>Redis渐进式rehash过程？</p>
+<p>比如我有个电商平台，做每日订单的异常检测，服务端代码应该写；</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/07/08/java面试题第三套/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/shortfeng/2018/07/08/java面试题第三套/" itemprop="url">java面试题第三套</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-08T22:03:56+08:00">
+                2018-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="java面试题第三套"><a href="#java面试题第三套" class="headerlink" title="java面试题第三套"></a>java面试题第三套</h3><p>一、基础题</p>
+<p>怎么解决Hash冲突；（开放地址法、链地址法、再哈希法、建立公共溢出区等）</p>
+<p>写出一个必然会产生死锁的伪代码；</p>
+<p>Spring IoC涉及到的设计模式；（工厂模式、单利模式。。）</p>
+<p>toString()方法什么情况下需要重写；</p>
+<p>判断对象相等时，什么情况下只需要重写 equals()，什么情况下需要重写 equals(),hashcode()？</p>
+<p>Set内存放的元素为什么不可以重复，内部是如何保证和实现的？</p>
+<p>如何保证分布式缓存的一致性(分布式缓存一致性hash算法?)？分布式session实现？</p>
+<p>Java 8流式迭代的好处？</p>
+<p>项目中用到的JDK的哪些特性？</p>
+<p>说一下TreeMap的实现原理？红黑树的性质？红黑树遍历方式有哪些？如果key冲突如何解决？setColor()方法在什么时候用？什么时候会进行旋转和颜色转换？</p>
+<p>Spring的bean的创建时机？依赖注入的时机？</p>
+<p>ArrayList和LinkList的删除一个元素的时间复杂度；（ArrayList是O(N)，LinkList是O(1)）；</p>
+<p>CopyOnWriteArrayList是什么；</p>
+<p>序列化和反序列化底层如何实现的（ObjectOutputStream 、ObjectInputStream、 readObject  writeObject）；</p>
+<p>如何调试多线程的程序；</p>
+<p>一个线程连着调用start两次会出现什么情况？（由于状态只有就绪、阻塞、执行，状态是无法由执行转化为执行的，所以会报不合法的状态！）</p>
+<p>HashMap在什么时候时间复杂度是O（1），什么时候是O（n），什么时候又是O（logn）；</p>
+<p>wait方法能不能被重写？（wait是final类型的，不可以被重写，不仅如此，notify和notifyall都是final类型的），wait能不能被中断；</p>
+<p>一个Controller调用两个Service，这两Service又都分别调用两个Dao，问其中用到了几个数据库连接池的连接？</p>
+<p>二、网络基础</p>
+<p>HTTP、TCP、UDP的区别和联系；</p>
+<p>TCP和UDP各自的优势，知道哪些使用UDP协议的成功案例；</p>
+<p>TCP和UDP各用了底层什么协议；</p>
+<p>单个UDP报文最大容量；</p>
+<p>单个TCP报文最大容量；</p>
+<p>TCP报头格式、UDP报头格式；</p>
+<p>Server遭遇SYN Flood应当怎么处理；</p>
+<p>Web开发中如何防范XSS？</p>
+<p>拆包和粘包的问题，如何解决，如果我们的包没有固定长度的话，我们的应用程序应该如何解决；</p>
+<p>三、操作系统</p>
+<p>为什么要内存对齐；</p>
+<p>为什么会有大端小端，htol这一类函数的作用；</p>
+<p>top显示出来的系统信息都是什么含义；（重要！）</p>
+<p>Linux地址空间，怎么样进行寻址的；</p>
+<p>Linux如何查找目录或者文件的；</p>
+<p>四、分布式其他</p>
+<p>分库与分表带来的分布式困境与应对之策；</p>
+<p>Solr如何实现全天24小时索引更新；</p>
+<p>五、Redis</p>
+<p>Redis插槽的分配（key的有效部分使用CRC16算法计算出哈希值，再将哈希值对16384取余，得到插槽值）;</p>
+<p>Redis主从是怎么选取的（一种是主动切换，另一种是使用sentinel自动方式）;</p>
+<p>Redis复制的过程;</p>
+<p>Redis队列应用场景；</p>
+<p>Redis主节点宕机了怎么办，还有没有同步的数据怎么办;</p>
+<p>六、系统设计开放性题目</p>
+<p>秒杀系统设计，超卖怎么搞;</p>
+<p>你们的图片时怎么存储的，对应在数据库中时如何保存图片的信息的？</p>
+<p>假如成都没有一座消防站，现在问你要建立几座消防站，每个消防站要配多少名消防官兵，多少辆消防车，请你拿出一个方案；</p>
+<p>基于数组实现一个循环阻塞队列；</p>
+<p>常见的ipv4地址的展现形式如“168.0.0.1”，请实现ip地址和int类型的相互转换。（使用位移的方式）</p>
+<p>现网某个服务部署在多台Liunx服务器上，其中一台突然出现CPU 100%的情况，而其他服务器正常，请列举可能导致这种情况发生的原因？如果您遇到这样的情况，应如何定位？内存？CPU？发布？debug？请求量？</p>
+<p>七、大数据量问题（后边会有专题单独讨论）</p>
+<p>给定a、b两个文件，各存放50亿个url，每个url各占64字节，内存限制是4G，让你找出a、b文件共同的url？</p>
+<p>海量日志数据，提取出某日访问百度次数最多的那个IP；</p>
+<p>一个文本文件，大约有一万行，每行一个词，要求统计出其中最频繁出现的前10个词，请给出思想，给出时间复杂度分析。</p>
+<p>此话题后边会有专门的文章探讨，如果有等不及的小伙伴，可以移步参考：</p>
+<p>1、<a href="https://blog.csdn.net/v_july_v/article/details/6279498" target="_blank" rel="noopener">https://blog.csdn.net/v_july_v/article/details/6279498</a></p>
+<p>2、<a href="https://blog.csdn.net/v_july_v/article/details/7382693" target="_blank" rel="noopener">https://blog.csdn.net/v_july_v/article/details/7382693</a></p>
+<p>八、逻辑思维题</p>
+<p>有两根粗细均匀的香（烧香拜佛的香），每一根烧完都花一个小时，怎么样能够得到15min？</p>
+<p>假定你有8个撞球，其中有1个球比其他的球稍重,如果只能利用天平来断定哪一个球重,要找到较重的球,要称几次?（2次）；</p>
+<p>实验室里有1000个一模一样的瓶子，但是其中的一瓶有毒。可以用实验室的小白鼠来测试哪一瓶是毒药。如果小白鼠喝掉毒药的话，会在一个星期的时候死去，其他瓶子里的药水没有任何副作用。请问最少用多少只小白鼠可以在一个星期以内查出哪瓶是毒药；（答案是10只）</p>
+<p>假设有一个池塘，里面有无穷多的水。现有2个空水壶，容积分别为5升和6升。问题是如何只用这2个水壶从池塘里取得3升的水；</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/07/08/java面试题第二套/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/shortfeng/2018/07/08/java面试题第二套/" itemprop="url">java面试题第二套</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-08T22:02:06+08:00">
+                2018-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="java面试题第二套"><a href="#java面试题第二套" class="headerlink" title="java面试题第二套"></a>java面试题第二套</h3><p>一、Java相关</p>
+<p>Arraylist与LinkedList默认空间是多少；</p>
+<p>Arraylist与LinkedList区别与各自的优势List 和 Map 区别；</p>
+<p>谈谈HashMap，哈希表解决hash冲突的方法；</p>
+<p>为什么要重写hashcode()和equals()以及他们之间的区别与关系；</p>
+<p>Object的hashcode()是怎么计算的？</p>
+<p>若hashcode方法永远返回1或者一个常量会产生什么结果？</p>
+<p>Java Collections和Arrays的sort方法默认的排序方法是什么；</p>
+<p>引用计数法与GC Root可达性分析法区别；</p>
+<p>浅拷贝和深拷贝的区别；</p>
+<p>String s=”abc”和String s=new String(“abc”)区别；</p>
+<p>HashSet方法里面的hashcode存在哪，如果重写equals不重写hashcode会怎么样？</p>
+<p>反射的作用与实现原理；</p>
+<p>Java中的回调机制；</p>
+<p>模板方法模式；</p>
+<p>开闭原则说一下；</p>
+<p>发布/订阅使用场景；</p>
+<p>KMP算法（一种改进的字符串匹配算法）；</p>
+<p>JMM里边的原子性、可见性、有序性是如何体现出来的，JMM中内存屏障是什么意思，</p>
+<p>二、多线程</p>
+<p>AtomicInteger底层实现原理；</p>
+<p>synchronized与ReentraLock哪个是公平锁；</p>
+<p>CAS机制会出现什么问题；</p>
+<p>用过并发包下边的哪些类；</p>
+<p>一个线程连着调用start两次会出现什么情况？</p>
+<p>wait方法能不能被重写，wait能不能被中断；</p>
+<p>线程池的实现？四种线程池？重要参数及原理？任务拒接策略有哪几种？</p>
+<p>线程状态以及API怎么操作会发生这种转换；</p>
+<p>常用的避免死锁方法；</p>
+<p>三、JVM</p>
+<p>Minor GC与Full GC分别在什么时候发生？什么时候触发Full GC;</p>
+<p>GC收集器有哪些？CMS收集器与G1收集器的特点。</p>
+<p>Java在什么时候会出现内存泄漏；</p>
+<p>Java中的大对象如何进行存储；</p>
+<p>rt.jar被什么类加载器加载，什么时间加载；</p>
+<p>自己写的类被什么加载，什么时间加载；</p>
+<p>自己写的两个不同的类是被同一个类加载器加载的吗？为什么？</p>
+<p>为什么新生代内存需要有两个Survivor区？</p>
+<p>几种常用的内存调试工具：jmap、jstack、jconsole；</p>
+<p>类加载的五个过程：加载、验证、准备、解析、初始化；</p>
+<p>G1停顿吗，CMS回收步骤，CMS为什么会停顿，停顿时间；</p>
+<p>栈主要存的数据是什么，堆呢？</p>
+<p>堆分为哪几块，比如说新生代老生代，那么新生代又分为什么？</p>
+<p>软引用和弱引用的使用场景（软引用可以实现缓存，弱引用可以用来在回调函数中防止内存泄露）；</p>
+<p>四、数据库</p>
+<p>数据库索引，什么是全文索引，全文索引中的倒排索引是什么原理；</p>
+<p>数据库最佳左前缀原则是什么？</p>
+<p>数据库的三大范式；</p>
+<p>悲观锁和乐观锁的原理和应用场景；</p>
+<p>左连接、右连接、内连接、外连接、交叉连接、笛卡儿积等；</p>
+<p>一般情况下数据库宕机了如何进行恢复（什么是Write Ahead Log机制，什么是Double Write机制，什么是Check Point）；</p>
+<p>什么是redo日志、什么是undo日志；</p>
+<p>数据库中的隔离性是怎样实现的；原子性、一致性、持久性又是如何实现的；</p>
+<p>什么是组合索引，组合索引什么时候会失效；</p>
+<p>关系型数据库和非关系型数据库区别；</p>
+<p>数据库死锁如何解决；</p>
+<p>MySQL并发情况下怎么解决（通过事务、隔离级别、锁）；</p>
+<p>MySQL中的MVCC机制是什么意思，根据具体场景，MVCC是否有问题；</p>
+<p>MySQL数据库的隔离级别，以及如何解决幻读；</p>
+<p>五、缓存服务器</p>
+<p>Redis中zSet跳跃表问题；</p>
+<p>Redis的set的应用场合？</p>
+<p>Redis高级特性了解吗？</p>
+<p>Redis的pipeline有什么用处？</p>
+<p>Redis集群宕机如何处理，怎么样进行数据的迁移；</p>
+<p>Redis的集群方案；</p>
+<p>Redis原子操作怎么用比较好；</p>
+<p>Redis过期策略是怎么实现的呢？</p>
+<p>六、SSM相关</p>
+<p>Spring中@Autowired和@Resource注解的区别？</p>
+<p>Spring声明一个 bean 如何对其进行个性化定制；</p>
+<p>MyBatis有什么优势；</p>
+<p>MyBatis如何做事务管理；</p>
+<p>七、操作系统</p>
+<p>Linux静态链接和动态链接；</p>
+<p>什么是IO多路复用模型（select、poll、epoll）；</p>
+<p>Linux中的grep管道用处？Linux的常用命令？</p>
+<p>操作系统中虚拟地址、逻辑地址、线性地址、物理地址的概念及区别；</p>
+<p>内存的页面置换算法；</p>
+<p>内存的页面置换算法；</p>
+<p>进程调度算法，操作系统是如何调度进程的；</p>
+<p>父子进程、孤儿进程、僵死进程等概念；</p>
+<p>fork进程时的操作；</p>
+<p>kill用法，某个进程杀不掉的原因（僵死进程；进入内核态，忽略kill信号）；</p>
+<p>系统管理命令（如查看内存使用、网络情况）；</p>
+<p>find命令、awk使用；</p>
+<p>Linux下排查某个死循环的线程；</p>
+<p>八、网络相关</p>
+<p>数据链路层是做什么的?</p>
+<p>数据链路层的流量控制？</p>
+<p>网络模型的分层、IP和Mac地址在那个层、TCP和HTTP分别在那个层；</p>
+<p>TCP滑动窗口；</p>
+<p>TCP为什么可靠；</p>
+<p>TCP的同传，拆包与组装包是什么意思；</p>
+<p>Https和Http有什么区别；</p>
+<p>Http 为什么是无状态的；</p>
+<p>TCP三次握手，为什么不是三次，为什么不是四次；</p>
+<p>TCP的拥塞控制、流量控制详细说明？</p>
+<p>Http1.0和Http2.0的区别；</p>
+<p>两个不同ip地址的计算机之间如何通信；</p>
+<p>地址解析协议ARP；</p>
+<p>OSI七层模型分别对应着五层模型的哪一部分；</p>
+<p>TCP三次握手数据丢失了怎么办？那如果后面又找到了呢？</p>
+<p>九、分布式相关</p>
+<p>消息队列使用的场景介绍和作用（应用耦合、异步消息、流量削锋等）；</p>
+<p>如何解决消息队列丢失消息和重复消费问题；</p>
+<p>Kafka使用过吗，什么是幂等性？怎么保证一致性，持久化怎么做，分区partition的理解，LEO是什么意思，如何保证多个partition之间数据一致性的（ISR机制），为什么Kafka可以这么快（基于磁盘的顺序读写）；</p>
+<p>异步队列怎么实现；</p>
+<p>你项目的并发是多少？怎么解决高并发问题？单机情况下Tomcat的并发大概是多少，MySQL的并发大致是多少？</p>
+<p>什么是C10K问题；</p>
+<p>高并发情况下怎么办；</p>
+<p>分布式理论，什么是CAP理论，什么是Base理论，什么是Paxos理论；</p>
+<p>分布式协议的选举算法；</p>
+<p>说一下你对微服务的理解，与SOA的区别；</p>
+<p>Dubbo的基本原理，RPC，支持哪些通信方式，服务的调用过程；</p>
+<p>Dubbo如果有一个服务挂掉了怎么办；</p>
+<p>分布式事务，操作两个表不在一个库，如何保证一致性。</p>
+<p>分布式系统中，每台机器如何产生一个唯一的随机值；</p>
+<p>系统的量级、pv、uv等；</p>
+<p>什么是Hash一致性算法？分布式缓存的一致性，服务器如何扩容（哈希环）；</p>
+<p>正向代理、反向代理；</p>
+<p>什么是客户端负载均衡策略、什么是服务器端负载均衡策略；</p>
+<p>如何优化Tomcat，常见的优化方式有哪些；</p>
+<p>Nginx的Master和Worker，Nginx是如何处理请求的；</p>
+<p>十、系统设计相关</p>
+<p>如何防止表单重复提交（Token令牌环等方式）；</p>
+<p>有一个url白名单，需要使用正则表达式进行过滤，但是url量级很大，大概亿级，那么如何优化正则表达式？如何优化亿级的url匹配呢？</p>
+<p>常见的Nginx负载均衡策略；已有两台Nginx服务器了，倘若这时候再增加一台服务器，采用什么负载均衡算法比较好？</p>
+<p>扫描二维码登录的过程解析；</p>
+<p>如何设计一个生成唯一UUID的算法？</p>
+<p>实现一个负载均衡的算法，服务器资源分配为70%、20%、10%；</p>
+<p>有三个线程T1 T2 T3，如何保证他们按顺序执行；</p>
+<p>三个线程循环输出ABCABCABC….</p>
+<p>十一、安全相关</p>
+<p>什么是XSS攻击，XSS攻击的一般表现形式有哪些？如何防止XSS攻击；</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/07/08/java面试题第一套/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/shortfeng/2018/07/08/java面试题第一套/" itemprop="url">java面试题第一套</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-08T21:54:34+08:00">
+                2018-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="java面试题第一套"><a href="#java面试题第一套" class="headerlink" title="java面试题第一套"></a>java面试题第一套</h3><p>一、基础篇</p>
+<p>1.1、Java基础 </p>
+<p>面向对象的特征：继承、封装和多态</p>
+<p>final, finally, finalize 的区别</p>
+<p>Exception、Error、运行时异常与一般异常有何异同</p>
+<p>请写出5种常见到的runtime exception</p>
+<p>int 和 Integer 有什么区别，Integer的值缓存范围</p>
+<p>包装类，装箱和拆箱</p>
+<p>String、StringBuilder、StringBuffer</p>
+<p>重载和重写的区别</p>
+<p>抽象类和接口有什么区别</p>
+<p>说说反射的用途及实现</p>
+<p>说说自定义注解的场景及实现</p>
+<p>HTTP请求的GET与POST方式的区别</p>
+<p>Session与Cookie区别</p>
+<p>列出自己常用的JDK包</p>
+<p>MVC设计思想</p>
+<p>equals与==的区别</p>
+<p>hashCode和equals方法的区别与联系</p>
+<p>什么是Java序列化和反序列化，如何实现Java序列化？或者请解释Serializable 接口的作用</p>
+<p>Object类中常见的方法，为什么wait  notify会放在Object里边？</p>
+<p>Java的平台无关性如何体现出来的</p>
+<p>JDK和JRE的区别</p>
+<p>Java 8有哪些新特性</p>
+<p>1.2、Java常见集合</p>
+<p>List 和 Set 区别</p>
+<p>Set和hashCode以及equals方法的联系</p>
+<p>List 和 Map 区别</p>
+<p>Arraylist 与 LinkedList 区别</p>
+<p>ArrayList 与 Vector 区别</p>
+<p>HashMap 和 Hashtable 的区别</p>
+<p>HashSet 和 HashMap 区别</p>
+<p>HashMap 和 ConcurrentHashMap 的区别</p>
+<p>HashMap 的工作原理及代码实现，什么时候用到红黑树</p>
+<p>多线程情况下HashMap死循环的问题</p>
+<p>HashMap出现Hash DOS攻击的问题</p>
+<p>ConcurrentHashMap 的工作原理及代码实现，如何统计所有的元素个数</p>
+<p>手写简单的HashMap</p>
+<p>看过那些Java集合类的源码</p>
+<p>1.3、进程和线程</p>
+<p>线程和进程的概念、并行和并发的概念</p>
+<p>创建线程的方式及实现</p>
+<p>进程间通信的方式</p>
+<p>说说 CountDownLatch、CyclicBarrier 原理和区别</p>
+<p>说说 Semaphore 原理</p>
+<p>说说 Exchanger 原理</p>
+<p>ThreadLocal 原理分析，ThreadLocal为什么会出现OOM，出现的深层次原理</p>
+<p>讲讲线程池的实现原理</p>
+<p>线程池的几种实现方式</p>
+<p>线程的生命周期，状态是如何转移的</p>
+<p>可参考：《Java多线程编程核心技术》<br>1.4、锁机制</p>
+<p>说说线程安全问题，什么是线程安全，如何保证线程安全</p>
+<p>重入锁的概念，重入锁为什么可以防止死锁</p>
+<p>产生死锁的四个条件（互斥、请求与保持、不剥夺、循环等待）</p>
+<p>如何检查死锁（通过jConsole检查死锁）</p>
+<p>volatile 实现原理（禁止指令重排、刷新内存）</p>
+<p>synchronized 实现原理（对象监视器）</p>
+<p>synchronized 与 lock 的区别</p>
+<p>AQS同步队列</p>
+<p>CAS无锁的概念、乐观锁和悲观锁</p>
+<p>常见的原子操作类</p>
+<p>什么是ABA问题，出现ABA问题JDK是如何解决的</p>
+<p>乐观锁的业务场景及实现方式</p>
+<p>Java 8并法包下常见的并发类</p>
+<p>偏向锁、轻量级锁、重量级锁、自旋锁的概念</p>
+<p>可参考：《Java多线程编程核心技术》</p>
+<p>1.5、JVM</p>
+<p>JVM运行时内存区域划分</p>
+<p>内存溢出OOM和堆栈溢出SOE的示例及原因、如何排查与解决</p>
+<p>如何判断对象是否可以回收或存活</p>
+<p>常见的GC回收算法及其含义</p>
+<p>常见的JVM性能监控和故障处理工具类：jps、jstat、jmap、jinfo、jconsole等</p>
+<p>JVM如何设置参数</p>
+<p>JVM性能调优</p>
+<p>类加载器、双亲委派模型、一个类的生命周期、类是如何加载到JVM中的</p>
+<p>类加载的过程：加载、验证、准备、解析、初始化</p>
+<p>强引用、软引用、弱引用、虚引用</p>
+<p>Java内存模型JMM</p>
+<p>1.6、设计模式</p>
+<p>常见的设计模式</p>
+<p>设计模式的的六大原则及其含义</p>
+<p>常见的单例模式以及各种实现方式的优缺点，哪一种最好，手写常见的单利模式</p>
+<p>设计模式在实际场景中的应用</p>
+<p>Spring中用到了哪些设计模式</p>
+<p>MyBatis中用到了哪些设计模式</p>
+<p>你项目中有使用哪些设计模式</p>
+<p>说说常用开源框架中设计模式使用分析</p>
+<p>动态代理很重要！！！</p>
+<p>1.7、数据结构</p>
+<p>树（二叉查找树、平衡二叉树、红黑树、B树、B+树）</p>
+<p>深度有限算法、广度优先算法</p>
+<p>克鲁斯卡尔算法、普林母算法、迪克拉斯算法</p>
+<p>什么是一致性Hash及其原理、Hash环问题</p>
+<p>常见的排序算法和查找算法：快排、折半查找、堆排序等</p>
+<p>1.8、网络/IO基础</p>
+<p>BIO、NIO、AIO的概念</p>
+<p>什么是长连接和短连接</p>
+<p>Http1.0和2.0相比有什么区别，可参考《Http 2.0》</p>
+<p>Https的基本概念</p>
+<p>三次握手和四次挥手、为什么挥手需要四次</p>
+<p>从游览器中输入URL到页面加载的发生了什么？可参考《从输入URL到页面加载发生了什么》</p>
+<p>二、数据存储和消息队列</p>
+<p>2.1、数据库</p>
+<p>MySQL 索引使用的注意事项</p>
+<p>DDL、DML、DCL分别指什么</p>
+<p>explain命令</p>
+<p>left join，right join，inner join</p>
+<p>数据库事物ACID（原子性、一致性、隔离性、持久性）</p>
+<p>事物的隔离级别（读未提交、读以提交、可重复读、可序列化读）</p>
+<p>脏读、幻读、不可重复读</p>
+<p>数据库的几大范式</p>
+<p>数据库常见的命令</p>
+<p>说说分库与分表设计</p>
+<p>分库与分表带来的分布式困境与应对之策（如何解决分布式下的分库分表，全局表？）</p>
+<p>说说 SQL 优化之道</p>
+<p>MySQL遇到的死锁问题、如何排查与解决</p>
+<p>存储引擎的 InnoDB与MyISAM区别，优缺点，使用场景</p>
+<p>索引类别（B+树索引、全文索引、哈希索引）、索引的原理</p>
+<p>什么是自适应哈希索引（AHI）</p>
+<p>为什么要用 B+tree作为MySQL索引的数据结构</p>
+<p>聚集索引与非聚集索引的区别</p>
+<p>遇到过索引失效的情况没，什么时候可能会出现，如何解决</p>
+<p>limit 20000 加载很慢怎么解决</p>
+<p>如何选择合适的分布式主键方案</p>
+<p>选择合适的数据存储方案</p>
+<p>常见的几种分布式ID的设计方案</p>
+<p>常见的数据库优化方案，在你的项目中数据库如何进行优化的</p>
+<p>2.2、Redis</p>
+<p>Redis 有哪些数据类型，可参考《Redis常见的5种不同的数据类型详解》</p>
+<p>Redis 内部结构</p>
+<p>Redis 使用场景</p>
+<p>Redis 持久化机制，可参考《使用快照和AOF将Redis数据持久化到硬盘中》</p>
+<p>Redis 集群方案与实现</p>
+<p>Redis 为什么是单线程的？</p>
+<p>缓存雪崩、缓存穿透、缓存预热、缓存更新、缓存降级</p>
+<p>使用缓存的合理性问题</p>
+<p>Redis常见的回收策略</p>
+<p>2.3、消息队列</p>
+<p>消息队列的使用场景</p>
+<p>消息的重发补偿解决思路</p>
+<p>消息的幂等性解决思路</p>
+<p>消息的堆积解决思路</p>
+<p>自己如何实现消息队列</p>
+<p>如何保证消息的有序性</p>
+<p>三、开源框架和容器</p>
+<p>3.1、SSM/Servlet</p>
+<p>Servlet的生命周期</p>
+<p>转发与重定向的区别</p>
+<p>BeanFactory 和 ApplicationContext 有什么区别</p>
+<p>Spring Bean 的生命周期</p>
+<p>Spring IOC 如何实现</p>
+<p>Spring中Bean的作用域，默认的是哪一个</p>
+<p>说说 Spring AOP、Spring AOP 实现原理</p>
+<p>动态代理（CGLib 与 JDK）、优缺点、性能对比、如何选择</p>
+<p>Spring 事务实现方式、事务的传播机制、默认的事务类别</p>
+<p>Spring 事务底层原理</p>
+<p>Spring事务失效（事务嵌套），JDK动态代理给Spring事务埋下的坑，可参考《JDK动态代理给Spring事务埋下的坑！》</p>
+<p>如何自定义注解实现功能</p>
+<p>Spring MVC 运行流程</p>
+<p>Spring MVC 启动流程</p>
+<p>Spring 的单例实现原理</p>
+<p>Spring 框架中用到了哪些设计模式</p>
+<p>Spring 其他产品（Srping Boot、Spring Cloud、Spring Secuirity、Spring Data、Spring AMQP 等）</p>
+<p>有没有用到Spring Boot，Spring Boot的认识、原理</p>
+<p>MyBatis的原理</p>
+<p>可参考《为什么会有Spring》</p>
+<p>可参考《为什么会有Spring AOP》</p>
+<p>3.2、Netty</p>
+<p>为什么选择 Netty</p>
+<p>说说业务中，Netty 的使用场景</p>
+<p>原生的 NIO 在 JDK 1.7 版本存在 epoll bug</p>
+<p>什么是TCP 粘包/拆包</p>
+<p>TCP粘包/拆包的解决办法</p>
+<p>Netty 线程模型</p>
+<p>说说 Netty 的零拷贝</p>
+<p>Netty 内部执行流程</p>
+<p>Netty 重连实现</p>
+<p>3.3、Tomcat</p>
+<p>Tomcat的基础架构（Server、Service、Connector、Container）</p>
+<p>Tomcat如何加载Servlet的</p>
+<p>Pipeline-Valve机制</p>
+<p>可参考：《四张图带你了解Tomcat系统架构！》</p>
+<p>四、分布式</p>
+<p>4.1、Nginx</p>
+<p>请解释什么是C10K问题或者知道什么是C10K问题吗？</p>
+<p>Nginx简介，可参考《Nginx简介》</p>
+<p>正向代理和反向代理.</p>
+<p>Nginx几种常见的负载均衡策略</p>
+<p>Nginx服务器上的Master和Worker进程分别是什么</p>
+<p>使用“反向代理服务器”的优点是什么?</p>
+<p>4.2、分布式其他</p>
+<p>谈谈业务中使用分布式的场景</p>
+<p>Session 分布式方案</p>
+<p>Session 分布式处理</p>
+<p>分布式锁的应用场景、分布式锁的产生原因、基本概念</p>
+<p>分布是锁的常见解决方案</p>
+<p>分布式事务的常见解决方案</p>
+<p>集群与负载均衡的算法与实现</p>
+<p>说说分库与分表设计，可参考《数据库分库分表策略的具体实现方案》</p>
+<p>分库与分表带来的分布式困境与应对之策</p>
+<p>4.3、Dubbo</p>
+<p>什么是Dubbo，可参考《Dubbo入门》</p>
+<p>什么是RPC、如何实现RPC、RPC 的实现原理，可参考《基于HTTP的RPC实现》</p>
+<p>Dubbo中的SPI是什么概念</p>
+<p>Dubbo的基本原理、执行流程</p>
+<p>五、微服务</p>
+<p>5.1、微服务</p>
+<p>前后端分离是如何做的？</p>
+<p>微服务哪些框架</p>
+<p>Spring Could的常见组件有哪些？可参考《Spring Cloud概述》</p>
+<p>领域驱动有了解吗？什么是领域驱动模型？充血模型、贫血模型</p>
+<p>JWT有了解吗，什么是JWT，可参考《前后端分离利器之JWT》</p>
+<p>你怎么理解 RESTful</p>
+<p>说说如何设计一个良好的 API</p>
+<p>如何理解 RESTful API 的幂等性</p>
+<p>如何保证接口的幂等性</p>
+<p>说说 CAP 定理、BASE 理论</p>
+<p>怎么考虑数据一致性问题</p>
+<p>说说最终一致性的实现方案</p>
+<p>微服务的优缺点，可参考《微服务批判》</p>
+<p>微服务与 SOA 的区别</p>
+<p>如何拆分服务、水平分割、垂直分割</p>
+<p>如何应对微服务的链式调用异常</p>
+<p>如何快速追踪与定位问题</p>
+<p>如何保证微服务的安全、认证</p>
+<p>5.2、安全问题</p>
+<p>如何防范常见的Web攻击、如何方式SQL注入</p>
+<p>服务端通信安全攻防</p>
+<p>HTTPS原理剖析、降级攻击、HTTP与HTTPS的对比</p>
+<p>5.3、性能优化</p>
+<p>性能指标有哪些</p>
+<p>如何发现性能瓶颈</p>
+<p>性能调优的常见手段</p>
+<p>说说你在项目中如何进行性能调优</p>
+<p>六、其他</p>
+<p>6.1、设计能力</p>
+<p>说说你在项目中使用过的UML图</p>
+<p>你如何考虑组件化、服务化、系统拆分</p>
+<p>秒杀场景如何设计</p>
+<p>可参考：《秒杀系统的技术挑战、应对策略以及架构设计总结一二！》<br>6.2、业务工程</p>
+<p>说说你的开发流程、如何进行自动化部署的</p>
+<p>你和团队是如何沟通的</p>
+<p>你如何进行代码评审</p>
+<p>说说你对技术与业务的理解</p>
+<p>说说你在项目中遇到感觉最难Bug，是如何解决的</p>
+<p>介绍一下工作中的一个你认为最有价值的项目，以及在这个过程中的角色、解决的问题、你觉得你们项目还有哪些不足的地方</p>
+<p>6.3、软实力</p>
+<p>说说你的优缺点、亮点</p>
+<p>说说你最近在看什么书、什么博客、在研究什么新技术、再看那些开源项目的源代码</p>
+<p>说说你觉得最有意义的技术书籍</p>
+<p>工作之余做什么事情、平时是如何学习的，怎样提升自己的能力</p>
+<p>说说个人发展方向方面的思考</p>
+<p>说说你认为的服务端开发工程师应该具备哪些能力</p>
+<p>说说你认为的架构师是什么样的，架构师主要做什么</p>
+<p>如何看待加班的问题</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/07/06/队列/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/shortfeng/2018/07/06/队列/" itemprop="url">队列</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-06T10:26:52+08:00">
+                2018-07-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h3><h4 id="BlockingQueue-阻塞队列"><a href="#BlockingQueue-阻塞队列" class="headerlink" title="BlockingQueue 阻塞队列"></a>BlockingQueue 阻塞队列</h4><p>当一个线程试图对一个已经满了的队列进行入队列操作时，它将会被阻塞，除非有另一个线程做了出队列操作；同样，当一个线程试图对一个空队列进行出队列操作时，它将会被阻塞，除非有另一个线程进行了入队列操作，阻塞队列是线程安全的</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/07/05/线程池/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -789,858 +2118,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/07/01/git命令/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="changfeng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/shortfeng/2018/07/01/git命令/" itemprop="url">git命令</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-01T20:27:12+08:00">
-                2018-07-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="git命令"><a href="#git命令" class="headerlink" title="git命令"></a>git命令</h3><p>1、推送本地新建的分支</p>
-<p>git push –set-upstream origin hotfix/corpname_changfeng_20180629D</p>
-<p>2、sourceTree和idea 拉取和提交代码反复提示输入用户名和密码</p>
-<p>在命令终端执行以下命令解决<br>git config –global credential.helper store</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/06/27/mysql优化/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="changfeng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/shortfeng/2018/06/27/mysql优化/" itemprop="url">mysql优化</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-27T15:11:35+08:00">
-                2018-06-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="mysql优化"><a href="#mysql优化" class="headerlink" title="mysql优化"></a>mysql优化</h2><hr>
-<p>1、为查询缓存优化你的查询</p>
-<p>// 查询缓存不开启<br>$r = mysql_query(“SELECT username FROM user WHERE signup_date &gt;= CURDATE()”);</p>
-<p>// 开启查询缓存<br>$today = date(“Y-m-d”);<br>$r = mysql_query(“SELECT username FROM user WHERE signup_date &gt;= ‘$today’”);</p>
-<p>2、当只要一行数据时使用 LIMIT 1</p>
-<p>3、在Join表的时候使用相当类型的列，并将其索引</p>
-<p>如果你的应用程序有很多 JOIN 查询，你应该确认两个表中Join的字段是被建过索引的</p>
-<p>4、使用 ENUM 而不是 VARCHAR</p>
-<p>ENUM 类型是非常快和紧凑的。在实际上，其保存的是 TINYINT，但其外表上显示为字符串</p>
-<p>5、尽可能的使用 NOT NULL</p>
-<p>6、把IP地址存成 UNSIGNED INT</p>
-<p>你可以使用 INET_ATON() 来把一个字符串IP转成一个整形，并使用 INET_NTOA() 把一个整形转成一个字符串IP</p>
-<p>7、拆分大的 DELETE 或 INSERT 语句</p>
-<p>如果你需要在一个在线的网站上去执行一个大的 DELETE 或 INSERT 查询，你需要非常小心，要避免你的操作让你的整个网站停止相应。因为这两个操作是会锁表的，表一锁住了，别的操作都进不来了。</p>
-<p>8、分页limit太大，导致查询慢</p>
-<p>limit10000,20的意思扫描满足条件的10020行，扔掉前面的10000行，返回最后的20行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">日常分页SQL语句</span><br><span class="line">select id,name,content from users order by id asc limit 100000,20</span><br><span class="line">扫描100020行</span><br><span class="line">如果记录了上次的最大ID</span><br><span class="line">select id,name,content from users where id&gt;100073 order by id asc limit 20</span><br><span class="line">扫描20行。</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">优化前： </span><br><span class="line">select * from wl_tagindex where byname=&apos;f&apos; order by id limit 300000,10 执行时间是 3.21s</span><br><span class="line">优化后：</span><br><span class="line">select * from (</span><br><span class="line">            select id from wl_tagindex</span><br><span class="line">            where byname=&apos;f&apos; order by id limit 300000,10</span><br><span class="line">) a</span><br><span class="line">left join wl_tagindex b on a.id=b.id</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/06/25/java性能优化/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="changfeng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/shortfeng/2018/06/25/java性能优化/" itemprop="url">java性能优化</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-25T11:08:00+08:00">
-                2018-06-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="java性能优化"><a href="#java性能优化" class="headerlink" title="java性能优化"></a>java性能优化</h2><hr>
-<p>1、随机访问使用for循环，顺序访问使用Iterator或foreach<br>实现RandomAccess接口的类实例比如ArrayList，假如是随机访问的，使用普通for循环效率将高于使用foreach循环；反过来，如果是顺序访问的，则使用Iterator会效率更高</p>
-<p>foreach循环的底层实现原理就是迭代器Iterator</p>
-<p>2、循环内不要不断创建对象引用</p>
-<p>例如：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= count; i++)</span><br><span class="line">&#123;</span><br><span class="line">    Object obj = <span class="keyword">new</span> Object();    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这种做法会导致内存中有count份Object对象引用存在，count很大的话，就耗费内存了，建议为改为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Object obj = null;</span><br><span class="line">for (int i = 0; i &lt;= count; i++)</span><br><span class="line">&#123;</span><br><span class="line">    obj = new Object();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这样的话，内存中只有一份Object对象引用，每次new Object()的时候，Object对象引用指向不同的Object罢了，但是内存中只有一份，这样就大大节省了内存空间了</p>
-<p>3、尽量减少对变量的重复计算</p>
-<p>明确一个概念，对方法的调用，即使方法中只有一句语句，也是有消耗的，包括创建栈帧、调用方法时保护现场、调用方法完毕时恢复现场等。所以例如下面的操作：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; list.size(); i++)</span><br><span class="line">&#123;...&#125;</span><br><span class="line">建议替换为：</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, length = list.size(); i &lt; length; i++)</span><br><span class="line">&#123;...&#125;</span><br><span class="line">这样，在list.size()很大的时候，就减少了很多的消耗</span><br></pre></td></tr></table></figure>
-<p>4、如果能估计到待添加的内容长度，为底层以数组方式实现的集合、工具类指定初始长度</p>
-<p>比如ArrayList、LinkedLlist、StringBuilder、StringBuffer、HashMap、HashSet等等</p>
-<p>5、把一个基本数据类型转为字符串，基本数据类型.toString()是最快的方式、String.valueOf(数据)次之、数据+””最慢</p>
-<p>（1）、String.valueOf()方法底层调用了Integer.toString()方法，但是会在调用前做空判断</p>
-<p>（2）、Integer.toString()方法就不说了，直接调用了</p>
-<p>（3）、i + “”底层使用了StringBuilder实现，先用append方法拼接，再用toString()方法获取字符串</p>
-<p> 三者对比下来，明显是2最快、1次之、3最慢</p>
-<p>6、对资源的close()建议分开操作</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">    XXX.close();</span><br><span class="line">    YYY.close();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (Exception e)</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">建议修改为：</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">    XXX.close();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (Exception e)</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">    YYY.close();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (Exception e)</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>7、对于ThreadLocal使用前或者使用后一定要先remove</p>
-<p>当前基本所有的项目都使用了线程池技术，这非常好，可以动态配置线程数、可以重用线程。</p>
-<p>然而，如果你在项目中使用到了ThreadLocal，一定要记得使用前或者使用后remove一下。这是因为上面提到了线程池技术做的是一个线程重用，这意味着代码运行过程中，一条线程使用完毕，并不会被销毁而是等待下一次的使用。我们看一下Thread类中，持有ThreadLocal.ThreadLocalMap的引用：</p>
-<p>1<br>2<br>3<br>/* ThreadLocal values pertaining to this thread. This map is maintained</p>
-<ul>
-<li>by the ThreadLocal class. */<br>ThreadLocal.ThreadLocalMap threadLocals = null;<br>线程不销毁意味着上条线程set的ThreadLocal.ThreadLocalMap中的数据依然存在，那么在下一条线程重用这个Thread的时候，很可能get到的是上条线程set的数据而不是自己想要的内容。</li>
-</ul>
-<p>这个问题非常隐晦，一旦出现这个原因导致的错误，没有相关经验或者没有扎实的基础非常难发现这个问题，因此在写代码的时候就要注意这一点，这将给你后续减少很多的工作量。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/06/22/Comparable接口与Comparator/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="changfeng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/shortfeng/2018/06/22/Comparable接口与Comparator/" itemprop="url">Comparable接口、Comparator接口</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-22T17:36:17+08:00">
-                2018-06-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Comparable接口、Comparator接口"><a href="#Comparable接口、Comparator接口" class="headerlink" title="Comparable接口、Comparator接口"></a>Comparable接口、Comparator接口</h2><hr>
-<p>1、元素自身具备比较性</p>
-<p>元素自身具备比较性，需要元素实现Comparable接口，重写compareTo方法，也就是让元素自身具备比较性，这种方式叫做元素的自然排序也叫做默认排序</p>
-<p>2、容器具备比较性</p>
-<p>当元素自身不具备比较性，或者自身具备的比较性不是所需要的。那么此时可以让容器自身具备。需要定义一个类实现接口Comparator，重写compare方法，并将该接口的子类实例对象作为参数传递给TreeMap集合的构造方法。</p>
-<p>注意：当Comparable比较方式和Comparator比较方式同时存在时，以Comparator的比较方式为主；</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/04/04/跨域问题/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="changfeng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/shortfeng/2018/04/04/跨域问题/" itemprop="url">跨域问题</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-04T10:48:32+08:00">
-                2018-04-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="跨域问题"><a href="#跨域问题" class="headerlink" title="跨域问题"></a>跨域问题</h2><hr>
-<h4 id="同源"><a href="#同源" class="headerlink" title="同源"></a>同源</h4><p>同源政策的目的，是为了保证用户信息的安全，防止恶意的网站窃取数据</p>
-<p>同源是指以下三个信息都必须相同：</p>
-<blockquote>
-<ul>
-<li>协议相同</li>
-<li>域名相同</li>
-<li>端口相同</li>
-</ul>
-</blockquote>
-<p>如果非同源，共有三种行为受到限制：</p>
-<blockquote>
-<ul>
-<li>Cookie、LocalStorage 和 IndexDB 无法读取</li>
-<li>DOM 无法获得</li>
-<li>AJAX 请求不能发送</li>
-</ul>
-</blockquote>
-<p>虽然这些限制是必要的，但是有时很不方便，合理的用途也受到影响。如何规避上面三种限制</p>
-<h5 id="设置document-domain"><a href="#设置document-domain" class="headerlink" title="设置document.domain"></a>设置document.domain</h5><p>这种方案只适用Cookie与iframe</p>
-<p>A网页是<a href="http://w1.example.com/a.html，B网页是http://w2.example.com/b.html，那么只要设置相同的document.domain，两个网页就可以共享Cookie" target="_blank" rel="noopener">http://w1.example.com/a.html，B网页是http://w2.example.com/b.html，那么只要设置相同的document.domain，两个网页就可以共享Cookie</a></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">document.domain = <span class="string">'example.com'</span>;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<ul>
-<li>Cookie 是服务器写入浏览器的一小段信息，只有同源的网页才能共享。但是，两个网页一级域名相同，只是二级域名不同，浏览器允许通过设置document.domain共享 Cookie</li>
-<li>如果两个网页不同源，就无法拿到对方的DOM。典型的例子是iframe窗口和window.open方法打开的窗口，它们与父窗口无法通信</li>
-</ul>
-</blockquote>
-<h5 id="完全不同源"><a href="#完全不同源" class="headerlink" title="完全不同源"></a>完全不同源</h5><blockquote>
-<ul>
-<li>window.name</li>
-<li>window.postMessage：HTML5为了解决这个问题，引入了一个全新的API：跨文档通信 API（Cross-document messaging）。<br>这个API为window对象新增了一个window.postMessage方法，允许跨窗口通信，不论这两个窗口是否同源</li>
-</ul>
-</blockquote>
-<p>AJAX：</p>
-<blockquote>
-<ul>
-<li><p>JSONP ： 简单适用，老式浏览器全部支持，服务器改造非常小;网页通过添加一个script元素，向服务器请求JSON数据，这种做法不受同源政策限制；服务器收到请求后，将数据放在一个指定名字的回调函数里传回来</p>
-</li>
-<li><p>WebSocket：WebSocket是一种通信协议，使用ws://（非加密）和wss://（加密）作为协议前缀。该协议不实行同源政策，只要服务器支持，就可以通过它进行跨源通信</p>
-</li>
-<li>CORS：跨源资源分享（Cross-Origin Resource Sharing）的缩写。它是W3C标准，是跨源AJAX请求的根本解决方法。相比JSONP只能发GET请求，CORS允许任何类型的请求</li>
-</ul>
-</blockquote>
-<p>JSONP例子:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">function <span class="title">addScriptTag</span><span class="params">(src)</span> </span>&#123;</span><br><span class="line">  var script = document.createElement(<span class="string">'script'</span>);</span><br><span class="line">  script.setAttribute(<span class="string">"type"</span>,<span class="string">"text/javascript"</span>);</span><br><span class="line">  script.src = src;</span><br><span class="line">  document.body.appendChild(script);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">window.onload = function () &#123;</span><br><span class="line">  addScriptTag(<span class="string">'http://example.com/ip?callback=foo'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">function <span class="title">foo</span><span class="params">(data)</span> </span>&#123;</span><br><span class="line">  console.log(<span class="string">'Your public IP address is: '</span> + data.ip);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h4 id="X-Frame-Options"><a href="#X-Frame-Options" class="headerlink" title="X-Frame-Options"></a>X-Frame-Options</h4><p>nginx中设置X-Frame-Options ，防止网站被别人用iframe嵌入使用</p>
-<p>X-Frame-Options 响应头</p>
-<p>X-Frame-Options HTTP 响应头是用来给浏览器指示允许一个页面可否在 iframe 或者 object标签中展现的标记。网站可以使用此功能，来确保自己网站的内容没有被嵌到别人的网站中去，也从而避免了点击劫持 (clickjacking) 的攻击。</p>
-<p>X-Frame-Options 有三个值:</p>
-<blockquote>
-<ul>
-<li><p>DENY<br>表示该页面不允许在 frame 中展示，即便是在相同域名的页面中嵌套也不允许。</p>
-</li>
-<li><p>SAMEORIGIN<br>表示该页面可以在相同域名页面的 frame 中展示。</p>
-</li>
-<li><p>ALLOW-FROM uri<br>表示该页面可以在指定来源的 frame 中展示。<br>换一句话说，如果设置为 DENY，不光在别人的网站 frame 嵌入时会无法加载，在同域名页面中同样会无法加载。另一方面，如果设置为 SAMEORIGIN，那么页面就可以在同域名页面的 frame 中嵌套。</p>
-</li>
-</ul>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/04/04/支付/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="changfeng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/shortfeng/2018/04/04/支付/" itemprop="url">支付</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-04T00:03:00+08:00">
-                2018-04-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="支付系统的思考"><a href="#支付系统的思考" class="headerlink" title="支付系统的思考"></a>支付系统的思考</h2><hr>
-<p>支付系统特点：</p>
-<blockquote>
-<ul>
-<li>写多读少，读写分离方案效果不明显</li>
-<li>事务强一致性，事务ACID，强调Consistency（一致性）和Availability（可用性），数据库一般用关系数据库。</li>
-</ul>
-</blockquote>
-<h4 id="防重提交策略"><a href="#防重提交策略" class="headerlink" title="防重提交策略"></a>防重提交策略</h4><blockquote>
-<ul>
-<li><p>乐观锁：通过唯一索引锁住记录（行级锁），UPDATE tab1 SET col1=1,version=version+1 WHERE id=#id# and version=#version#</p>
-</li>
-<li><p>悲观锁：select * from table_xxx where id=’xxx’ for update，id字段一定是主键或者唯一索引，不然是锁表，悲观锁使用时一般伴随事务一起使用，数据锁定时间可能会很长，根据实际情况选用</p>
-</li>
-<li><p>防重表：唯一索引导致插入失败</p>
-</li>
-<li>分布式锁：redis分布式锁</li>
-<li>Token：分为两步，第一步申请Token，第二步拿申请到Token发起请求。可以设置Token过期时间</li>
-<li>支付缓冲：把支付请求快速接下来，后续再启异步任务处理，可以过滤掉重复的支付订单。优点是<br>高吞吐；缺点是不能及时返回处理结果，后续需要监听支付结果的异步返回</li>
-<li>状态机：如果状态机已经处于下一个状态，这时候来了一个上一个状态的变更，理论上是不能够变更的</li>
-</ul>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1691,7 +2168,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/shortfeng/archives/">
-                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-count">39</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

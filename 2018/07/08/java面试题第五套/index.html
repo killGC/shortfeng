@@ -94,17 +94,17 @@
 
 
 
-<meta name="description" content="分布式事务   事务补偿机制：事务链中的任何一个正向事务操作，都必须存在一个完全符合回滚规则的可逆事务，补偿过程作为一个服务调用过程同样存在调用不成功的情况，这个时候需要通过重试的机制来保证补偿的成功率。当然这也就要求补偿操作本身具备幂等性 柔性事务：分布式事务适用柔性事务 刚性事务：本地事务采用刚性事务 幂等性：不具有幂等性的操作，需要存储操作的执行结果，当执行操作的时候，查询是否已执行过，如果">
+<meta name="description" content="java面试题第五套一、Java相关 乐观悲观锁的设计，如何保证原子性，解决的问题； char和double的字节，以及在内存的分布是怎样； 对象内存布局，然后讲下对象的死亡过程？ 对象头，详细讲下； sync原理详细，sync内抛异常会怎样，死锁吗？还是释放掉？怎么排查死锁？死锁会怎样？有没有什么更好的替代方案？ 详细讲一下集合，HashSet源码，HashMap源码，如果要线程安全需要怎么做？">
 <meta property="og:type" content="article">
-<meta property="og:title" content="分布式事务">
-<meta property="og:url" content="https://killgc.github.io/shortfeng/2018/03/30/分布式事务/index.html">
+<meta property="og:title" content="java面试题第五套">
+<meta property="og:url" content="https://killgc.github.io/shortfeng/2018/07/08/java面试题第五套/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="分布式事务   事务补偿机制：事务链中的任何一个正向事务操作，都必须存在一个完全符合回滚规则的可逆事务，补偿过程作为一个服务调用过程同样存在调用不成功的情况，这个时候需要通过重试的机制来保证补偿的成功率。当然这也就要求补偿操作本身具备幂等性 柔性事务：分布式事务适用柔性事务 刚性事务：本地事务采用刚性事务 幂等性：不具有幂等性的操作，需要存储操作的执行结果，当执行操作的时候，查询是否已执行过，如果">
+<meta property="og:description" content="java面试题第五套一、Java相关 乐观悲观锁的设计，如何保证原子性，解决的问题； char和double的字节，以及在内存的分布是怎样； 对象内存布局，然后讲下对象的死亡过程？ 对象头，详细讲下； sync原理详细，sync内抛异常会怎样，死锁吗？还是释放掉？怎么排查死锁？死锁会怎样？有没有什么更好的替代方案？ 详细讲一下集合，HashSet源码，HashMap源码，如果要线程安全需要怎么做？">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-01T11:49:33.000Z">
+<meta property="og:updated_time" content="2018-07-08T14:06:14.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="分布式事务">
-<meta name="twitter:description" content="分布式事务   事务补偿机制：事务链中的任何一个正向事务操作，都必须存在一个完全符合回滚规则的可逆事务，补偿过程作为一个服务调用过程同样存在调用不成功的情况，这个时候需要通过重试的机制来保证补偿的成功率。当然这也就要求补偿操作本身具备幂等性 柔性事务：分布式事务适用柔性事务 刚性事务：本地事务采用刚性事务 幂等性：不具有幂等性的操作，需要存储操作的执行结果，当执行操作的时候，查询是否已执行过，如果">
+<meta name="twitter:title" content="java面试题第五套">
+<meta name="twitter:description" content="java面试题第五套一、Java相关 乐观悲观锁的设计，如何保证原子性，解决的问题； char和double的字节，以及在内存的分布是怎样； 对象内存布局，然后讲下对象的死亡过程？ 对象头，详细讲下； sync原理详细，sync内抛异常会怎样，死锁吗？还是释放掉？怎么排查死锁？死锁会怎样？有没有什么更好的替代方案？ 详细讲一下集合，HashSet源码，HashMap源码，如果要线程安全需要怎么做？">
 
 
 
@@ -133,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="https://killgc.github.io/shortfeng/2018/03/30/分布式事务/"/>
+  <link rel="canonical" href="https://killgc.github.io/shortfeng/2018/07/08/java面试题第五套/"/>
 
 
 
 
 
-  <title>分布式事务 | Hexo</title>
+  <title>java面试题第五套 | Hexo</title>
   
 
 
@@ -262,7 +262,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/30/分布式事务/">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/07/08/java面试题第五套/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="changfeng">
@@ -279,7 +279,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">分布式事务</h1>
+          <h1 class="post-title" itemprop="name headline">java面试题第五套</h1>
         
 
         <div class="post-meta">
@@ -291,8 +291,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-30T23:40:48+08:00">
-                2018-03-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-08T22:05:38+08:00">
+                2018-07-08
               </time>
             
 
@@ -329,51 +329,102 @@
       
 
       
-        <h2 id="分布式事务"><a href="#分布式事务" class="headerlink" title="分布式事务"></a>分布式事务</h2><hr>
-<blockquote>
-<ul>
-<li>事务补偿机制：事务链中的任何一个正向事务操作，都必须存在一个完全符合回滚规则的可逆事务，补偿过程作为一个服务调用过程同样存在调用不成功的情况，这个时候需要通过重试的机制来保证补偿的成功率。当然这也就要求补偿操作本身具备幂等性</li>
-<li>柔性事务：分布式事务适用柔性事务</li>
-<li>刚性事务：本地事务采用刚性事务</li>
-<li>幂等性：不具有幂等性的操作，需要存储操作的执行结果，当执行操作的时候，查询是否已执行过，如果执行过直接返回上一次执行的结果，否则执行操作</li>
-</ul>
-</blockquote>
-<h4 id="重试策略"><a href="#重试策略" class="headerlink" title="重试策略"></a>重试策略</h4><p>如果只是一味的失败就立即重试会给工作服务造成不必要的压力，我们要根据服务执行失败的原因来选择不同的重试策略</p>
-<p>重试操作一般会指定重试次数上线，如果重试次数达到了上限就不再进行重试了。这个时候应该通过一种手段通知相关人员进行处理。</p>
-<p>对于等待重试的策略如果重试时仍然错误，可逐渐增加等待的时间，直到达到一个上限后，以上限作为等待时间。</p>
-<p>如果某个时刻聚集了大量需要重试的操作，补偿框架需要控制请求的流量，以防止对工作服务造成过大的压力</p>
-<blockquote>
-<ul>
-<li>如果失败的原因不是暂时性的，由于业务因素导致（如业务要素检查失败）的业务错误，这类错误是不会重发就能自动恢复的，那么应该立即终止重试</li>
-<li>如果错误的原因是一些罕见的异常，比如因为网络传输过程出现数据丢失或者错误，应该立即再次重试，因为类似的错误一般很少会再次发生</li>
-<li>如果错误的原因是系统繁忙（比如http协议返回的500或者另外约定的返回码）或者超时，这个时候需要等待一些时间再重试。</li>
-</ul>
-</blockquote>
-<p>分布式事务实现方案：</p>
-<blockquote>
-<ul>
-<li>两阶段提交(2PC)</li>
-<li>TCC(Try-Confirm-Cancel)</li>
-<li>异步确保型</li>
-<li>最大努力通知型</li>
-</ul>
-</blockquote>
-<h4 id="两阶段提交"><a href="#两阶段提交" class="headerlink" title="两阶段提交"></a>两阶段提交</h4><h4 id="TCC"><a href="#TCC" class="headerlink" title="TCC"></a>TCC</h4><p>适用场景：</p>
-<blockquote>
-<ul>
-<li>严格一致性</li>
-<li>执行时间较短</li>
-<li>实时性要求高</li>
-</ul>
-</blockquote>
-<h4 id="异步确保型"><a href="#异步确保型" class="headerlink" title="异步确保型"></a>异步确保型</h4><p>消息可靠、消息重复消费<br>适用场景：</p>
-<blockquote>
-<ul>
-<li>执行周期较长</li>
-<li>实时性要求不高</li>
-</ul>
-</blockquote>
-<h4 id="最大努力通知型"><a href="#最大努力通知型" class="headerlink" title="最大努力通知型"></a>最大努力通知型</h4>
+        <h3 id="java面试题第五套"><a href="#java面试题第五套" class="headerlink" title="java面试题第五套"></a>java面试题第五套</h3><p>一、Java相关</p>
+<p>乐观悲观锁的设计，如何保证原子性，解决的问题；</p>
+<p>char和double的字节，以及在内存的分布是怎样；</p>
+<p>对象内存布局，然后讲下对象的死亡过程？</p>
+<p>对象头，详细讲下；</p>
+<p>sync原理详细，sync内抛异常会怎样，死锁吗？还是释放掉？怎么排查死锁？死锁会怎样？有没有什么更好的替代方案？</p>
+<p>详细讲一下集合，HashSet源码，HashMap源码，如果要线程安全需要怎么做？</p>
+<p>多线程是解决什么问题的？线程池解决什么问题？</p>
+<p>线程池，如何设计的，里面的参数有多少种，里面的工作队列和线程队列是怎样的结构，如果给你，怎样设计线程池？</p>
+<p>AQS原理，ReentranLock源码，设计原理，整体过程。</p>
+<p>继续聊多线程源码，sync原理，然后一个场景设计题；</p>
+<p>float f = 1.4f;double d = 1.4d; 与 float f = 1.5f;double d = 1.5d; 是否为true，内存是怎样的；</p>
+<p>split的源码，split(“a|b|c”);得出多少个数组；</p>
+<p>把所有认识熟用的JUC( java.util.concurrent(简称JUC)包)下的类写出来，讲下使用，然后讲下原生的线程操作;</p>
+<p>开闭原则，解析工厂方法模式，建造者模式，区别。手撸出来。</p>
+<p>讲下JVM的大页模式，JVM内存模型;</p>
+<p>什么是敏捷开发，防御性编程，并行编程。Team Leader的思考;</p>
+<p>逃逸分析是什么，作用是什么，用途是什么;</p>
+<p>怎么认为一个类是线程安全？线程安全的定义是什么？Java有多少个关键字进行同步？为什么这样设计？（聊了一大堆，一堆为什么）；</p>
+<p>两个线程设计题。记得一个是：t1,t2,t3，让t1，t2执行完才执行t3，原生实现。</p>
+<p>写个后缀表达式，为什么要设计后缀表达式，有什么好处？然后写下中缀。</p>
+<p>我看你做过性能优化，比如你怎么分析项目里面的OOM的，内存泄露呢？详细说思路;</p>
+<p>说下多线程，我们什么时候需要分析线程数，怎么分析，分析什么因素;</p>
+<p>抽象方法和类方法的区别，static的抽象方法可以吗？</p>
+<p>说下Java的克隆体系;</p>
+<p>涉及OOM、JVM优化、源码问题、数据库优化、多线程等问题;</p>
+<p>CPU高？什么情况CPU高？解决什么问题？</p>
+<p>你有遇到过临界区问题吗？有遇到过吗？你在项目遇到这个问题是怎样解决的？</p>
+<p>volatile关键字作用;</p>
+<p>Java的多态怎么实现;</p>
+<p>解释一下自旋;</p>
+<p>解释一下信号量;</p>
+<p>什么情况下会触发类加载；</p>
+<p>Java内存抖动严重，优化的思路；</p>
+<p>二、数据库相关</p>
+<p>SQL优化思路，联合索引与底层树结构的映像关系，索引结构（B+、B-），为什么用这样的结构；</p>
+<p>讲下MySQL的集群？集群遇到过什么问题？sql的优化？</p>
+<p>你目前为止遇到的最大数据量是多少？知道100万时候怎么设计吗？1000万呢？过几十亿呢？</p>
+<p>MySQL有多少个参数可调，除了最大连接数。全部列出来，一个个分析。</p>
+<p>聊下优化过的索引，怎么优化;</p>
+<p>红黑树和平衡树的区别，为什么数据库不用红黑树;</p>
+<p>mysql有哪些锁，意向锁有什么用;</p>
+<p>数据库高并发下的优化思路;</p>
+<p>数据库什么情况下索引会失效;</p>
+<p>三、数据结构和操作系统相关</p>
+<p>数据结构学过吧，聊一下？学过什么结构？讲下树和队列？B树呢？</p>
+<p>操作系统学过吧，聊一下？讲一下系统内存是怎样的？分段分页虚拟内存？</p>
+<p>页面置换算法呢？多少种？有最优的置换算法吗？</p>
+<p>你学过什么课程？然后聊下操作系统，内核、用户之类。</p>
+<p>反转链表手撸;</p>
+<p>快排，给一串数组，把具体每次patition写下，最终结果也写45, 32, 41, 35, 38, 20, 50;</p>
+<p>一个整数status, 判断第K个比特位是否为比特1;</p>
+<p>把递归实现的快排改成非递归，你知道非递归有什么好处吗;</p>
+<p>举例使用分治思想的算法;</p>
+<p>四、网络相关</p>
+<p>讲下请求头细节？</p>
+<p>Http和Https？Http1.0,1.1,2.0，讲下长连接和短连接？Https是怎样的？如果我篡改了公钥呢？怎么防止？</p>
+<p>Get和Post，讲下区别，要我模拟出抓包来。</p>
+<p>详细讲下Cookie和Session，Token，OAuth2.0协议;</p>
+<p>拥塞算法知道吗？哪些，分别怎样？</p>
+<p>学过计算机网络是吧？socket熟悉吗？对它的读写缓冲区有理解吗？怎么的？那滑动窗口是怎样的？为什么这样设计？</p>
+<p>再聊下Http的Http basic authentication;</p>
+<p>Https的过程;</p>
+<p>五、框架相关</p>
+<p>聊下Spring源码，知道多少，都聊一下；</p>
+<p>聊下Spring注解，@Autowire，@Resource，以及他们的解析过程；</p>
+<p>聊一下架构，接入层架构，服务层架构。聊下技术栈，Spring Boot，Spring Cloud、Docker；</p>
+<p>Spring ioc的具体优势，和直接New一个对象有什么区别;</p>
+<p>Servlet生命周期，是否单例，为什么是单例;</p>
+<p>Spring Mvc初始化过程；</p>
+<p>五、分布式相关</p>
+<p>多少种RPC框架？</p>
+<p>一致性哈希是干嘛的？</p>
+<p>搭建高并发高可用系统需要怎样设计？考虑哪些东西，有多少说多少。</p>
+<p>你对缓存有什么理解？缓存是解决什么问题？后端缓存有哪些，分别解决什么问题？</p>
+<p>聊一下分布式锁；</p>
+<p>你是怎么设计系统缓存的，为什么，什么场景；</p>
+<p>也来说下，削峰的多种实现，Redis？MQ？</p>
+<p>为什么用mq就能削峰？解决什么问题？</p>
+<p>六、设计题</p>
+<p>有几台机器存储着几亿淘宝搜索日志，你只有一台2g的电脑，怎么选出搜索热度最高的十个搜索关键词;</p>
+<p>如何设计算法压缩一段URL;</p>
+<p>有一个页面能同时展示两个广告，现在有五个广告，设计算法使五个广告展示概率为1:2:3:4:5；</p>
+<p>有25匹马，五个赛道，用最少比赛次数将25匹马排序；</p>
+<p>七、其他相关</p>
+<p>Tomcat缓存，聊下缓存的整体理解，知道多少种缓存；</p>
+<p>解释下Mucene原理，倒排索引，怎样进行中文分词，基于什么进行分词；</p>
+<p>TopN的大数据量题；</p>
+<p>你对接入层要思考什么东西？遇到过哪些问题？搭建系统要考量哪些因素？</p>
+<p>然后项目问题，优化问题；</p>
+<p>熟悉maven是吧？我们来聊下Maven的源码原理，Maven冲突的时候，怎么选择依赖包，我们怎么查，我们遇到两个不一样的版本，我们应该如何去选择，为什么？</p>
+<p>项目如何分组，性能优化小组应该做哪些;</p>
+<p>我们来说下接入层的搭建，认知分析;</p>
+<p>问下项目的系统构建，思考，为什么这样构建？</p>
+<p>如何判断一段代码的好坏;</p>
+
       
     </div>
     
@@ -397,8 +448,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/shortfeng/2018/03/27/Dubbo/" rel="next" title="Dubbo">
-                <i class="fa fa-chevron-left"></i> Dubbo
+              <a href="/shortfeng/2018/07/08/java面试题第四套/" rel="next" title="java面试题第四套">
+                <i class="fa fa-chevron-left"></i> java面试题第四套
               </a>
             
           </div>
@@ -406,10 +457,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/shortfeng/2018/04/01/redis/" rel="prev" title="redis">
-                redis <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -525,7 +572,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式事务"><span class="nav-number">1.</span> <span class="nav-text">分布式事务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#重试策略"><span class="nav-number">1.0.1.</span> <span class="nav-text">重试策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#两阶段提交"><span class="nav-number">1.0.2.</span> <span class="nav-text">两阶段提交</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCC"><span class="nav-number">1.0.3.</span> <span class="nav-text">TCC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异步确保型"><span class="nav-number">1.0.4.</span> <span class="nav-text">异步确保型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最大努力通知型"><span class="nav-number">1.0.5.</span> <span class="nav-text">最大努力通知型</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#java面试题第五套"><span class="nav-number">1.</span> <span class="nav-text">java面试题第五套</span></a></li></ol></div>
             
 
           </div>
