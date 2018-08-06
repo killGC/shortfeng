@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/shortfeng/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/shortfeng/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/shortfeng/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/shortfeng/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="分布式系统理解CAP简介  C (Consistency) 强一致性系统在执行过某项操作后仍然处于一致的状态。在分布式系统中，更新操作执行成功后所有的用户都应该读到最新的值，这样的系统被认为是具有强一致性的。 等同于所有节点访问同一份最新的数据副本 A (Availability) 可用性每一个操作总是能够在一定的时间内返回结果，这里需要注意的是”一定时间内”和”返回结果”。一定时间指的是，在可以">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分布式系统理解">
+<meta property="og:url" content="https://killgc.github.io/shortfeng/2018/07/15/分布式系统理解/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="分布式系统理解CAP简介  C (Consistency) 强一致性系统在执行过某项操作后仍然处于一致的状态。在分布式系统中，更新操作执行成功后所有的用户都应该读到最新的值，这样的系统被认为是具有强一致性的。 等同于所有节点访问同一份最新的数据副本 A (Availability) 可用性每一个操作总是能够在一定的时间内返回结果，这里需要注意的是”一定时间内”和”返回结果”。一定时间指的是，在可以">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://images0.cnblogs.com/blog2015/387014/201503/312030383574823.jpg">
+<meta property="og:updated_time" content="2018-07-15T13:26:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="分布式系统理解">
+<meta name="twitter:description" content="分布式系统理解CAP简介  C (Consistency) 强一致性系统在执行过某项操作后仍然处于一致的状态。在分布式系统中，更新操作执行成功后所有的用户都应该读到最新的值，这样的系统被认为是具有强一致性的。 等同于所有节点访问同一份最新的数据副本 A (Availability) 可用性每一个操作总是能够在一定的时间内返回结果，这里需要注意的是”一定时间内”和”返回结果”。一定时间指的是，在可以">
+<meta name="twitter:image" content="https://images0.cnblogs.com/blog2015/387014/201503/312030383574823.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/shortfeng/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://killgc.github.io/shortfeng/2018/07/15/分布式系统理解/"/>
+
+
+
+
+
+  <title>分布式系统理解 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/shortfeng/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/shortfeng/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/shortfeng/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/shortfeng/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/07/15/分布式系统理解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">分布式系统理解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-15T08:36:16+08:00">
+                2018-07-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="分布式系统理解"><a href="#分布式系统理解" class="headerlink" title="分布式系统理解"></a>分布式系统理解</h3><h5 id="CAP简介"><a href="#CAP简介" class="headerlink" title="CAP简介"></a>CAP简介</h5><blockquote>
+<ul>
+<li>C (Consistency) 强一致性<br>系统在执行过某项操作后仍然处于一致的状态。在分布式系统中，更新操作执行成功后所有的用户都应该读到最新的值，这样的系统被认为是具有强一致性的。 等同于所有节点访问同一份最新的数据副本</li>
+<li>A (Availability) 可用性<br>每一个操作总是能够在一定的时间内返回结果，这里需要注意的是”一定时间内”和”返回结果”。一定时间指的是，在可以容忍的范围内返回结果，结果可以是成功或者失败</li>
+<li>P (Partition tolerance) 分区容忍性<br>理解为在存在网络分区的情况下，仍然可以接受请求（满足一致性和可用性)。这里的网络分区是指由于某种原因，网络被分成若干个孤立的区域，而区域之间互不相通</li>
+</ul>
+</blockquote>
+<h5 id="放弃C-A-P"><a href="#放弃C-A-P" class="headerlink" title="放弃C.A.P"></a>放弃C.A.P</h5><p>   放弃P：如果想避免分区容错性问题的发生，一种做法是将所有的数据（与事务相关的）都放在一台机器上。虽然无法100%保证系统不会出错，但不会碰到由分区带来的负面效果。当然这个选择会严重的影响系统的扩展性。</p>
+<p>　　放弃A:相对于放弃“分区容错性“来说，其反面就是放弃可用性。一旦遇到分区容错故障，那么受到影响的服务需要等待一定的时间，因此在等待期间系统无法对外提供服务。</p>
+<p>　　放弃C：这里所说的放弃一致性，并不是完全放弃数据一致性，而是放弃数据的强一致性，而保留数据的最终一致性。以网络购物为例，对只剩下一件库存的商品，如果同时接受到了两份订单，那么较晚的订单将被告知商品告罄。</p>
+<p>　　一致性与可用性的决择： 而CAP理论就是说在分布式存储系统中，最多只能实现上面的两点。而由于当前的网络硬件肯定 会出现延迟丢包等问题，所以分区容忍性是我们必须需要实现的。所以我们只能在一致性和可用 性之间进行权衡</p>
+<h5 id="流行解释"><a href="#流行解释" class="headerlink" title="流行解释"></a>流行解释</h5><p>　　目前流行的、对CAP理论解释的情形是从同一数据在网络环境中存在多个副本出发为前提的。为了保证数据不会丢失，同时也是为了增加并发访问量（读写分离），在企业级的数据管理方案中，一般必须考虑数据的冗余存储问题，而这应该是通过在网络上的其他独立物理存储节点上保留另一份、或多份数据副本来实现的（如附图所示）。因为在同一个存储节点上的数据冗余明显不能解决单点故障问题，这与通过多节点集群来提供更好的计算可用性的道理是相同的。</p>
+<p>　　如上图的情况，数据在节点A、B、C上保留了三份，如果对节点A上的数据进行了修改，然后再让客户端通过网络对该数据进行读取。那么，客户端的读取操作什么时候返回呢？</p>
+<p>　　一种情况是要求节点A、B、C的三份数据完全一致后返回。也就是说，这时从任何一个网络节点读取的数据都是一样的，这就是所谓的强一致性读。很明显，这时数据读取的Latency要高一些（因为要等数据在网络中的复制），同时A、B、C三个节点中任何一个宕机，都会导致数据不可用。也就是说，要保证强一致性，网络中的副本越多，数据的可用性就越差。</p>
+<p>　　另一种情况是，允许读操作立即返回，容忍B节点的读取与A节点的读取不一致的情况发生。这样一来，可用性显然得到了提高，网络中的副本也可以多一些，唯一得不到保证的是数据一致性。当然，对写操作同样也有多个节点一致性的情况，在此不再赘述。</p>
+<p>　　可以看出，上述对CAP理论的解释主要是从网络上多个节点之间的读写一致性出发考虑问题的。而这一点，对于关系型数据库意味着什么呢？当然主要是指通常所说的Standby（关于分布式事务，涉及到更多考虑，随后讨论）情况。对此，在实践中我们大多已经采取了弱一致性的异步延时同步方案，以提高可用性。这种情况并不存在关系型数据库为保证C、A而放弃P的情况；而对海量数据管理的需求，关系型数据库扩展过程中所遇到的性能瓶颈，似乎也并不是CAP理论中所描述的那种原因造成的。那么，上述流行的说法中所描述的关系型数据库为保证C、A而牺牲P到底是在指什么呢？ 如果只将CAP当作分布式系统中多个数据副本之间的读写一致性问题的通用理论对待，那么就可以得出结论：CAP既适用于NoSQL数据库，也适用于关系型数据库。它是NoSQL数据库、关系型数据库，乃至一切分布式系统在设计数据多个副本之间读写一致性问题时需要遵循的共同原则。</p>
+<p><img src="https://images0.cnblogs.com/blog2015/387014/201503/312030383574823.jpg" alt="cmd-markdown-logo"></p>
+<p>关于对CAP理论中一致性C的理解，除了上述数据副本之间的读写一致性以外，分布式环境中还有两种非常重要的场景，如果不对它们进行认识与讨论，就永远无法全面地理解CAP，当然也就无法根据CAP做出正确的解释。</p>
+<h5 id="分布式场景"><a href="#分布式场景" class="headerlink" title="分布式场景"></a>分布式场景</h5><p>　　1.分布式环境中的事务场景      </p>
+<p>　　我们知道，在关系型数据库的事务操作遵循ACID原则，其中的一致性C，主要是指一个事务中相关联的数据在事务操作结束后是一致的。所谓ACID原则，是指在写入/异动资料的过程中，为保证交易正确可靠所必须具备的四个特性：即原子性（Atomicity，或称不可分割性）、一致性（Consistency）、隔离性（Isolation，又称独立性）和持久性（Durability）。</p>
+<p>　　例如银行的一个存款交易事务，将导致交易流水表增加一条记录。同时，必须导致账户表余额发生变化，这两个操作必须是一个事务中全部完成，保证相关数据的一致性。而前文解释的CAP理论中的C是指对一个数据多个备份的读写一致性。表面上看，这两者不是一回事，但实际上，却是本质基本相同的事物：数据请求会等待多个相关数据操作全部完成才返回。对分布式系统来讲，这就是我们通常所说的分布式事务问题。</p>
+<p>　　众所周知，分布式事务一般采用两阶段提交策略来实现，这是一个非常耗时的复杂过程，会严重影响系统效率，在实践中我们尽量避免使用它。在实践过程中，如果我们为了扩展数据容量将数据分布式存储，而事务的要求又完全不能降低。那么，系统的可用性一定会大大降低，在现实中我们一般都采用对这些数据不分散存储的策略。</p>
+<p>　　当然，我们也可以说，最常使用的关系型数据库，因为这个原因，扩展性（分区可容忍性P）受到了限制，这是完全符合CAP理论的。但同时我们应该意识到，这对NoSQL数据库也是一样的。如果NoSQL数据库也要求严格的分布式事务功能，情况并不会比关系型数据库好多少。只是在NoSQL的设计中，我们往往会弱化甚至去除事务的功能，该问题才表现得不那么明显而已。</p>
+<p>　　因此，在扩展性问题上，如果要说关系型数据库是为了保证C、A而牺牲P，在尽量避免分布式事务这一点上来看，应该是正确的。也就是说：关系型数据库应该具有强大的事务功能，如果分区扩展，可用性就会降低；而NoSQL数据库干脆弱化甚至去除了事务功能，因此，分区的可扩展性就大大增加了。</p>
+<p>　　2.分布式环境中的关联场景      </p>
+<p>　　初看起来，关系型数据库中常用的多表关联操作与CAP理论就更加不沾边了。但仔细考虑，也可以用它来解释数据库分区扩展对关联所带来的影响。对一个数据库来讲，采用了分区扩展策略来扩充容量，数据分散存储了，很显然多表关联的性能就会下降，因为我们必须在网络上进行大量的数据迁移操作，这与CAP理论中数据副本之间的同步操作本质上也是相同的。</p>
+<p>　　因此，如果要保证系统的高可用性，需要同时实现强大的多表关系操作的关系型数据库在分区可扩展性上就遇到了极大的限制（即使是那些采用了各种优秀解决方案的MPP架构的关系型数据库，如TeraData，Netezza等，其水平可扩展性也是远远不如NoSQL数据库的），而NoSQL数据库则干脆在设计上弱化甚至去除了多表关联操作。那么，从这一点上来理解”NoSQL数据库是为了保证A与P，而牺牲C”的说法，也是可以讲得通的。当然，我们应该理解，关联问题在很多情况下不是并行处理的优点所在，这在很大程度上与Amdahl定律相符合。</p>
+<p>　　所以，从事务与关联的角度来看关系型数据库的分区可扩展性为什么受限的原因是最为清楚的。而NoSQL数据库也正是因为弱化，甚至去除了像事务与关联（全面地讲，其实还有索引等特性）等在分布式环境中会严重影响系统可用性的功能，才获得了更好的水平可扩展性。</p>
+<p>　　那么，如果将事务与关联也纳入CAP理论中一致性C的范畴的话，问题就很清楚了：关于“关系型数据库为了保证一致性C与可用性A，而不得不牺牲分区可容忍性P”的说法便是正确的了。但关于”NoSQL选择了C与P，或者A与P”的说法则是错误的，所有的NoSQL数据库在设计策略的大方向上都是选择了A与P（虽然对同一数据多个副本的读写一致性问题的设计各有不同），从来没有完全选择C与P的情况存在。</p>
+<p>　　现在看来，如果理解CAP理论只是指多个数据副本之间读写一致性的问题，那么它对关系型数据库与NoSQL数据库来讲是完全一样的，它只是运行在分布式环境中的数据管理设施在设计读写一致性问题时需要遵循的一个原则而已，却并不是NoSQL数据库具有优秀的水平可扩展性的真正原因。而如果将CAP理论中的一致性C理解为读写一致性、事务与关联操作的综合，则可以认为关系型数据库选择了C与A，而NoSQL数据库则全都是选择了A与P，但并没有选择C与P的情况存</p>
+<p>CAP理论是指多个数据副本之间读写一致性的问题</p>
+<p>CAP理论中的一致性C理解为读写一致性、事务与关联操作的综合，则可以认为关系型数据库选择了C与A，而NoSQL数据库则全都是选择了A与P，但并没有选择C与P的情况存在</p>
+<p>对于一致性，可以分为从客户端和服务端两个不同的视角。从客户端来看，一致性主要指的是多并发访问时更新过的数据如何获取的问题。从服务端来看，则是更新如何复制分布到整个系统，以保证数据最终一致。一致性是因为有并发读写才有的问题，因此在理解一致性的问题时，一定要注意结合考虑并发读写的场景</p>
+<p>传统的关系型数据库在功能支持上通常很宽泛，从简单的键值查询，到复杂的多表联合查询再到事务机制的支持。而与之不同的是，NoSQL系统通常注重性能和扩展性，而非事务机制（事务就是强一致性的体现）</p>
+<p>对于分布式数据系统： N — 数据复制的份数,W — 更新数据是需要保证写完成的节点数,R — 读取数据的时候需要读取的节点数如果W+R&gt;N，写的节点和读的节点重叠，则是强一致性。例如对于典型的一主一备同步复制的关系型数据库，N=2,W=2,R=1，则不管读的是主库还是备库的数据，都是一致的。 如果W+R&lt;=N，则是弱一致性。例如对于一主一备异步复制的关系型数据库，N=2,W=1,R=1，则如果读的是备库，就可能无法读取主库已经更新过的数据，所以是弱一致性。 对于分布式系统，为了保证高可用性，一般设置N&gt;=3。不同的N,W,R组合，是在可用性和一致性之间取一个平衡，以适应不同的应用场景。 如果N=W,R=1，任何一个写节点失效，都会导致写失败，因此可用性会降低，但是由于数据分布的N个节点是同步写入的，因此可以保证强一致性。如果N=R,W=1，只需要一个节点写入成功即可，写性能和可用性都比较高。但是读取其他节点的进程可能不能获取更新后的数据，因此是弱一致性。这种情况下，如果W&lt;(N+1)/2，并且写入的节点不重叠的话，则会存在写冲突。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/shortfeng/2018/07/08/java面试题第五套/" rel="next" title="java面试题第五套">
+                <i class="fa fa-chevron-left"></i> java面试题第五套
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/shortfeng/2018/07/16/中间件/" rel="prev" title="中间件">
+                中间件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/shortfeng/images/avatar.gif"
+               alt="changfeng" />
+          <p class="site-author-name" itemprop="name">changfeng</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/shortfeng/archives/">
+                <span class="site-state-item-count">42</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式系统理解"><span class="nav-number">1.</span> <span class="nav-text">分布式系统理解</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#CAP简介"><span class="nav-number">1.0.1.</span> <span class="nav-text">CAP简介</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#放弃C-A-P"><span class="nav-number">1.0.2.</span> <span class="nav-text">放弃C.A.P</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#流行解释"><span class="nav-number">1.0.3.</span> <span class="nav-text">流行解释</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#分布式场景"><span class="nav-number">1.0.4.</span> <span class="nav-text">分布式场景</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">changfeng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/shortfeng/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/shortfeng/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/shortfeng/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/shortfeng/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/shortfeng/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/shortfeng/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/shortfeng/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/shortfeng/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/shortfeng/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/shortfeng/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/shortfeng/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

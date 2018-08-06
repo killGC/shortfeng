@@ -104,7 +104,7 @@
 <meta property="og:image" content="https://images2015.cnblogs.com/blog/249993/201612/249993-20161213140338917-602479781.png">
 <meta property="og:image" content="https://images2015.cnblogs.com/blog/249993/201612/249993-20161215143120620-1544337380.png">
 <meta property="og:image" content="https://images2015.cnblogs.com/blog/249993/201612/249993-20161215143544401-1850524627.jpg">
-<meta property="og:updated_time" content="2018-07-03T16:43:04.000Z">
+<meta property="og:updated_time" content="2018-07-17T01:41:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java-Map">
 <meta name="twitter:description" content="Map一、LinkedHashMap通过维护一个运行于所有条目的双向链表，LinkedHashMap保证了元素迭代的顺序。该迭代顺序可以是插入顺序或者是访问顺序 HashMap + LinkedList，以LinkedList维护插入或访问的顺序，默认都采用插入顺序来维持取出键值对的次序 1、特点：   非线程安全  Key和Value都允许空  有序    2、底层结构 LinkedHashMa">
@@ -371,6 +371,15 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * The comparator used to maintain order in this tree map, or</span></span><br><span class="line"><span class="comment"> * null if it uses the natural ordering of its keys.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@serial</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Comparator&lt;? <span class="keyword">super</span> K&gt; comparator;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">transient</span> Entry&lt;K,V&gt; root;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * The number of entries in the tree</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">transient</span> <span class="keyword">int</span> size = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * The number of structural modifications to the tree.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">transient</span> <span class="keyword">int</span> modCount = <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
 <p>Entry节点</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Entry</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; <span class="keyword">implements</span> <span class="title">Map</span>.<span class="title">Entry</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">    K key;</span><br><span class="line">    V value;</span><br><span class="line">    Entry&lt;K,V&gt; left;</span><br><span class="line">    Entry&lt;K,V&gt; right;</span><br><span class="line">    Entry&lt;K,V&gt; parent;</span><br><span class="line">    <span class="keyword">boolean</span> color = BLACK;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>三、HashMap<br>HashMap的key和value都能为null，HashTable的key和value都不能为null，HashMap的key为null的元素放在table[0]</p>
+<p>当元素个数超过HashMap的阈值，resize扩容为当前容量的两倍</p>
+<p>HashMap在并发执行put操作时会引起死循环，是因为多线程会导致HashMap的Entry链表形成环形数据结构，查找时会陷入死循环</p>
+<blockquote>
+<ul>
+<li>resize()方法中的transfer（）方法对旧数组中元素转移到新数组。</li>
+</ul>
+</blockquote>
+
       
     </div>
     
@@ -483,7 +492,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/shortfeng/archives/">
-                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-count">42</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

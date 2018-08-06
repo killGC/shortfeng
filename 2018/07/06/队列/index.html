@@ -94,17 +94,17 @@
 
 
 
-<meta name="description" content="队列BlockingQueue 阻塞队列当一个线程试图对一个已经满了的队列进行入队列操作时，它将会被阻塞，除非有另一个线程做了出队列操作；同样，当一个线程试图对一个空队列进行出队列操作时，它将会被阻塞，除非有另一个线程进行了入队列操作，阻塞队列是线程安全的">
+<meta name="description" content="队列BlockingQueue 阻塞队列当一个线程试图对一个已经满了的队列进行入队列操作时，它将会被阻塞，除非有另一个线程做了出队列操作；同样，当一个线程试图对一个空队列进行出队列操作时，它将会被阻塞，除非有另一个线程进行了入队列操作，阻塞队列是线程安全的 123456789101112131415161718public interface BlockingQueue&amp;lt;E&amp;gt; exte">
 <meta property="og:type" content="article">
 <meta property="og:title" content="队列">
 <meta property="og:url" content="https://killgc.github.io/shortfeng/2018/07/06/队列/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="队列BlockingQueue 阻塞队列当一个线程试图对一个已经满了的队列进行入队列操作时，它将会被阻塞，除非有另一个线程做了出队列操作；同样，当一个线程试图对一个空队列进行出队列操作时，它将会被阻塞，除非有另一个线程进行了入队列操作，阻塞队列是线程安全的">
+<meta property="og:description" content="队列BlockingQueue 阻塞队列当一个线程试图对一个已经满了的队列进行入队列操作时，它将会被阻塞，除非有另一个线程做了出队列操作；同样，当一个线程试图对一个空队列进行出队列操作时，它将会被阻塞，除非有另一个线程进行了入队列操作，阻塞队列是线程安全的 123456789101112131415161718public interface BlockingQueue&amp;lt;E&amp;gt; exte">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-06T02:31:34.000Z">
+<meta property="og:updated_time" content="2018-07-10T16:10:46.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="队列">
-<meta name="twitter:description" content="队列BlockingQueue 阻塞队列当一个线程试图对一个已经满了的队列进行入队列操作时，它将会被阻塞，除非有另一个线程做了出队列操作；同样，当一个线程试图对一个空队列进行出队列操作时，它将会被阻塞，除非有另一个线程进行了入队列操作，阻塞队列是线程安全的">
+<meta name="twitter:description" content="队列BlockingQueue 阻塞队列当一个线程试图对一个已经满了的队列进行入队列操作时，它将会被阻塞，除非有另一个线程做了出队列操作；同样，当一个线程试图对一个空队列进行出队列操作时，它将会被阻塞，除非有另一个线程进行了入队列操作，阻塞队列是线程安全的 123456789101112131415161718public interface BlockingQueue&amp;lt;E&amp;gt; exte">
 
 
 
@@ -330,6 +330,41 @@
 
       
         <h3 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h3><h4 id="BlockingQueue-阻塞队列"><a href="#BlockingQueue-阻塞队列" class="headerlink" title="BlockingQueue 阻塞队列"></a>BlockingQueue 阻塞队列</h4><p>当一个线程试图对一个已经满了的队列进行入队列操作时，它将会被阻塞，除非有另一个线程做了出队列操作；同样，当一个线程试图对一个空队列进行出队列操作时，它将会被阻塞，除非有另一个线程进行了入队列操作，阻塞队列是线程安全的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">BlockingQueue</span>&lt;<span class="title">E</span>&gt; <span class="keyword">extends</span> <span class="title">Queue</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">boolean</span> <span class="title">add</span><span class="params">(E e)</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">boolean</span> <span class="title">offer</span><span class="params">(E e)</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">put</span><span class="params">(E e)</span> <span class="keyword">throws</span> InterruptedException</span>;</span><br><span class="line">	<span class="function"><span class="keyword">boolean</span> <span class="title">offer</span><span class="params">(E e, <span class="keyword">long</span> timeout, TimeUnit unit)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> InterruptedException</span>;</span><br><span class="line">   <span class="function">E <span class="title">take</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException</span>;</span><br><span class="line">   <span class="function">E <span class="title">poll</span><span class="params">(<span class="keyword">long</span> timeout, TimeUnit unit)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> InterruptedException</span>;</span><br><span class="line">   <span class="function"><span class="keyword">boolean</span> <span class="title">remove</span><span class="params">(Object o)</span></span>;<span class="comment">//获取并移除表头元素</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Queue</span>&lt;<span class="title">E</span>&gt; <span class="keyword">extends</span> <span class="title">Collection</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">	<span class="function">E <span class="title">poll</span><span class="params">()</span></span>;<span class="comment">//获取并移除表头元素</span></span><br><span class="line">   <span class="function">E <span class="title">element</span><span class="params">()</span></span>;<span class="comment">//获取表头元素，不移除</span></span><br><span class="line">   <span class="function">E <span class="title">peek</span><span class="params">()</span></span>;<span class="comment">//获取表头元素，不移除</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th>Throws Exception</th>
+<th>Special Value</th>
+<th>Blocks</th>
+<th>Times Out</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Insert</td>
+<td>add(o)</td>
+<td>offer(o) 返回true or false</td>
+<td>put(o)</td>
+<td>offer(o, timeout, timeunit)</td>
+</tr>
+<tr>
+<td>Remove</td>
+<td>remove(o)</td>
+<td>poll() 返回null</td>
+<td>take()</td>
+<td>poll(timeout, timeunit)</td>
+</tr>
+<tr>
+<td>Examine</td>
+<td>element()</td>
+<td>peek() 返回null</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>. ThrowsException：如果操作不能马上进行，则抛出异常</span><br><span class="line"><span class="number">2</span>. SpecialValue：如果操作不能马上进行，将会返回一个特殊的值，一般是<span class="keyword">true</span>或者<span class="keyword">false</span></span><br><span class="line"><span class="number">3</span>. Blocks:如果操作不能马上进行，操作会被阻塞</span><br><span class="line"><span class="number">4</span>. TimesOut:如果操作不能马上进行，操作会被阻塞指定的时间，如果指定时间没执行，则返回一个特殊值，一般是<span class="keyword">true</span>或者<span class="keyword">false</span></span><br><span class="line"></span><br><span class="line">需要注意的是，我们不能向BlockingQueue中插入<span class="keyword">null</span>，否则会报NullPointerException。</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -443,7 +478,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/shortfeng/archives/">
-                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-count">42</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
