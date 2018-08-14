@@ -94,17 +94,17 @@
 
 
 
-<meta name="description" content="mvn 1、使用以下命令做一次构建 mvn clean install 2、可以通过以下的构建命令来跳过单元测试 mvn install -Dmaven.test.skip 3、架包推送mvn clean package deploy -Dmaven.test.skip=true">
+<meta name="description" content="mvn 1、使用以下命令做一次构建 mvn clean install 2、可以通过以下的构建命令来跳过单元测试 mvn install -Dmaven.test.skip 3、架包推送mvn clean package deploy -Dmaven.test.skip=true 4、冲突解决 mvn dependency:tree -Dverbose -Dincludes=commons-log">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mvn">
 <meta property="og:url" content="https://killgc.github.io/shortfeng/2018/03/12/mvn/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="mvn 1、使用以下命令做一次构建 mvn clean install 2、可以通过以下的构建命令来跳过单元测试 mvn install -Dmaven.test.skip 3、架包推送mvn clean package deploy -Dmaven.test.skip=true">
+<meta property="og:description" content="mvn 1、使用以下命令做一次构建 mvn clean install 2、可以通过以下的构建命令来跳过单元测试 mvn install -Dmaven.test.skip 3、架包推送mvn clean package deploy -Dmaven.test.skip=true 4、冲突解决 mvn dependency:tree -Dverbose -Dincludes=commons-log">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-03T16:34:44.000Z">
+<meta property="og:updated_time" content="2018-08-14T11:24:34.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mvn">
-<meta name="twitter:description" content="mvn 1、使用以下命令做一次构建 mvn clean install 2、可以通过以下的构建命令来跳过单元测试 mvn install -Dmaven.test.skip 3、架包推送mvn clean package deploy -Dmaven.test.skip=true">
+<meta name="twitter:description" content="mvn 1、使用以下命令做一次构建 mvn clean install 2、可以通过以下的构建命令来跳过单元测试 mvn install -Dmaven.test.skip 3、架包推送mvn clean package deploy -Dmaven.test.skip=true 4、冲突解决 mvn dependency:tree -Dverbose -Dincludes=commons-log">
 
 
 
@@ -335,6 +335,22 @@
 <p>2、可以通过以下的构建命令来跳过单元测试</p>
 <p>mvn install -Dmaven.test.skip</p>
 <p>3、架包推送<br>mvn clean package deploy -Dmaven.test.skip=true</p>
+<p>4、冲突解决</p>
+<p>mvn dependency:tree -Dverbose -Dincludes=commons-logging:commons-loggging</p>
+<p>这条命令可以打印出所有依赖了groupId和artifactId都为commons-logging的jar包的依赖路径。</p>
+<p>mvn dependency:tree -Dverbose -Dincludes=org.mybatis:mybatis -l /Users/user/log.txt<br>mvn dependency:tree -Dverbose -Dincludes=org.mybatis:mybatis –&gt; /Users/user/log.txt<br>输出到文件</p>
+<p>-D 指定参数，如 -Dmaven.test.skip=true 跳过单元测试；</p>
+<h4 id="原则："><a href="#原则：" class="headerlink" title="原则："></a>原则：</h4><p>1、第一声明优先原则</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line">&lt;!--   spring-beans-<span class="number">4.2</span>.4 --&gt;</span><br><span class="line">  	&lt;dependency&gt;</span><br><span class="line">  		&lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">  		&lt;artifactId&gt;spring-context&lt;/artifactId&gt;</span><br><span class="line">  		&lt;version&gt;4.2.4.RELEASE&lt;/version&gt;</span><br><span class="line">  	&lt;/dependency&gt;</span><br><span class="line">  </span><br><span class="line">&lt;!--   spring-beans-<span class="number">3.0</span>.5 --&gt;</span><br><span class="line">  	&lt;dependency&gt;</span><br><span class="line">  		&lt;groupId&gt;org.apache.struts&lt;/groupId&gt;</span><br><span class="line">  		&lt;artifactId&gt;struts2-spring-plugin&lt;/artifactId&gt;</span><br><span class="line">  		&lt;version&gt;2.3.24&lt;/version&gt;</span><br><span class="line">  	&lt;/dependency&gt;</span><br><span class="line">&lt;/dependencies&gt;</span><br></pre></td></tr></table></figure>
+<p>2、路径近者优先原则</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  	&lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">  	&lt;artifactId&gt;spring-beans&lt;/artifactId&gt;</span><br><span class="line">  	&lt;version&gt;4.2.4.RELEASE&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<p>3、排除原则</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  	&lt;groupId&gt;org.apache.struts&lt;/groupId&gt;</span><br><span class="line">  	&lt;artifactId&gt;struts2-spring-plugin&lt;/artifactId&gt;</span><br><span class="line">  	&lt;version&gt;2.3.24&lt;/version&gt;</span><br><span class="line">  	&lt;exclusions&gt;</span><br><span class="line">  	   &lt;exclusion&gt;</span><br><span class="line">  	      &lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">  	      &lt;artifactId&gt;spring-beans&lt;/artifactId&gt;</span><br><span class="line">  	   &lt;/exclusion&gt;</span><br><span class="line">       &lt;/exclusions&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<p>4、版本锁定原则</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;properties&gt;</span><br><span class="line">	&lt;spring.version&gt;4.2.4.RELEASE&lt;/spring.version&gt;</span><br><span class="line">	&lt;hibernate.version&gt;5.0.7.Final&lt;/hibernate.version&gt;</span><br><span class="line">	&lt;struts.version&gt;2.3.24&lt;/struts.version&gt;</span><br><span class="line">&lt;/properties&gt;</span><br><span class="line"> </span><br><span class="line">&lt;!-- 锁定版本，struts2-<span class="number">2.3</span>.24、spring4.2.4、hibernate5.0.7 --&gt;</span><br><span class="line">&lt;dependencyManagement&gt;</span><br><span class="line">	&lt;dependencies&gt;</span><br><span class="line">		&lt;dependency&gt;</span><br><span class="line">			&lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">			&lt;artifactId&gt;spring-context&lt;/artifactId&gt;</span><br><span class="line">			&lt;version&gt;$&#123;spring.version&#125;&lt;/version&gt;</span><br><span class="line">		&lt;/dependency&gt;</span><br><span class="line">        &lt;/dependencies&gt;</span><br><span class="line">&lt;/dependencyManagement&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="dependencies与dependencyManagement区别"><a href="#dependencies与dependencyManagement区别" class="headerlink" title="dependencies与dependencyManagement区别"></a>dependencies与dependencyManagement区别</h4><p>dependencyManagement只会影响现有依赖的配置，但不会引入依赖</p>
+<p>dependencies即使在子项目中不写该依赖项，那么子项目仍然会从父项目中继承该依赖项（全部继承）</p>
+<p>dependencyManagement里只是声明依赖，并不实现引入，因此子项目需要显示的声明需要用的依赖。如果不在子项目中声明依赖，是不会从父项目中继承下来的；只有在子项目中写了该依赖项，并且没有指定具体版本，才会从父项目中继承该项，并且version和scope都读取自父pom;另外如果子项目中指定了版本号，那么会使用子项目中指定的jar版本。</p>
 
       
     </div>
@@ -359,8 +375,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/shortfeng/2018/03/12/dubbo服务调用三次的问题/" rel="next" title="mysql常用">
-                <i class="fa fa-chevron-left"></i> mysql常用
+              <a href="/shortfeng/2018/03/12/mac linux/" rel="next" title="mac linux">
+                <i class="fa fa-chevron-left"></i> mac linux
               </a>
             
           </div>
@@ -369,8 +385,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/shortfeng/2018/03/12/mysql总结/" rel="prev" title="mysql常用">
-                mysql常用 <i class="fa fa-chevron-right"></i>
+              <a href="/shortfeng/2018/03/12/CAS与JUC/" rel="prev" title="CAS、JUC">
+                CAS、JUC <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -487,7 +503,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#mvn"><span class="nav-number">1.</span> <span class="nav-text">mvn</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#mvn"><span class="nav-number">1.</span> <span class="nav-text">mvn</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#原则："><span class="nav-number">1.0.1.</span> <span class="nav-text">原则：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dependencies与dependencyManagement区别"><span class="nav-number">1.0.2.</span> <span class="nav-text">dependencies与dependencyManagement区别</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
