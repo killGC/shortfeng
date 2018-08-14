@@ -94,17 +94,17 @@
 
 
 
-<meta name="description" content="HashMap 特点：   允许null键/值 非同步 不保证有序（比如插入顺序） 不保证顺序不随时间变化">
+<meta name="description" content="java可见性简要的给出JavaCore里面的总结： private：仅对本类是可见的； public：对所有类都是可见的； protected：对本包(package)及所有子类是可见的； friendly：对本包内的所有类是可见的 1、类可见性 在java中类只可被public修饰，或者被默认为包可见性（即不被修饰时），且java中类不可被private，protect修饰符修饰（这是与c++">
 <meta property="og:type" content="article">
-<meta property="og:title" content="HashMap">
-<meta property="og:url" content="https://killgc.github.io/shortfeng/2018/03/21/HashMap/index.html">
+<meta property="og:title" content="java可见性">
+<meta property="og:url" content="https://killgc.github.io/shortfeng/2018/08/14/java可见性/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="HashMap 特点：   允许null键/值 非同步 不保证有序（比如插入顺序） 不保证顺序不随时间变化">
+<meta property="og:description" content="java可见性简要的给出JavaCore里面的总结： private：仅对本类是可见的； public：对所有类都是可见的； protected：对本包(package)及所有子类是可见的； friendly：对本包内的所有类是可见的 1、类可见性 在java中类只可被public修饰，或者被默认为包可见性（即不被修饰时），且java中类不可被private，protect修饰符修饰（这是与c++">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-21T05:06:23.000Z">
+<meta property="og:updated_time" content="2018-08-14T08:22:12.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HashMap">
-<meta name="twitter:description" content="HashMap 特点：   允许null键/值 非同步 不保证有序（比如插入顺序） 不保证顺序不随时间变化">
+<meta name="twitter:title" content="java可见性">
+<meta name="twitter:description" content="java可见性简要的给出JavaCore里面的总结： private：仅对本类是可见的； public：对所有类都是可见的； protected：对本包(package)及所有子类是可见的； friendly：对本包内的所有类是可见的 1、类可见性 在java中类只可被public修饰，或者被默认为包可见性（即不被修饰时），且java中类不可被private，protect修饰符修饰（这是与c++">
 
 
 
@@ -133,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="https://killgc.github.io/shortfeng/2018/03/21/HashMap/"/>
+  <link rel="canonical" href="https://killgc.github.io/shortfeng/2018/08/14/java可见性/"/>
 
 
 
 
 
-  <title>HashMap | Hexo</title>
+  <title>java可见性 | Hexo</title>
   
 
 
@@ -262,7 +262,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/21/HashMap/">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/08/14/java可见性/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="changfeng">
@@ -279,7 +279,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">HashMap</h1>
+          <h1 class="post-title" itemprop="name headline">java可见性</h1>
         
 
         <div class="post-meta">
@@ -291,8 +291,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-21T12:57:47+08:00">
-                2018-03-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-14T15:47:13+08:00">
+                2018-08-14
               </time>
             
 
@@ -329,16 +329,44 @@
       
 
       
-        <h2 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h2><hr>
-<p>特点：</p>
+        <h3 id="java可见性"><a href="#java可见性" class="headerlink" title="java可见性"></a>java可见性</h3><p>简要的给出JavaCore里面的总结：</p>
+<p>private：仅对本类是可见的；</p>
+<p>public：对所有类都是可见的；</p>
+<p>protected：对本包(package)及所有子类是可见的；</p>
+<p>friendly：对本包内的所有类是可见的</p>
+<p>1、类可见性</p>
+<p>在java中类只可被public修饰，或者被默认为包可见性（即不被修饰时），且java中类不可被private，protect修饰符修饰（这是与c++不同的） </p>
+<p>public修饰类时，说明该类可被任意类访问（实例化，继承，实现）<br>当类不被修饰时，即自动默认为包可见时，意味着该类只能被处于同一个包中的类访问，处于其所属包中的子包中的类是不可以访问的它的。</p>
+<p>2、类成员可见性</p>
+<p>public修饰类成员时，表明该成员可以通过该类的任意对象进行显示的调用</p>
+<p>private修饰类成员时，该成员只能被该类中的实例域，或者类方法调用，不可通过该类对象在外界(即非类定义区)进行显示的调用</p>
+<p>当用protected修饰类成员时，该成员可被其所属类的子类以及与其所属类处于同一包中的其他类所访问</p>
+<p>不修饰，该成员可被与其所属类处于同一包中的其他类所访问</p>
+<p>3、方法重写</p>
+<p>方法的重写规则</p>
 <blockquote>
 <ul>
-<li>允许null键/值</li>
-<li>非同步</li>
-<li>不保证有序（比如插入顺序）</li>
-<li>不保证顺序不随时间变化</li>
+<li>参数列表必须完全与被重写方法的相同；</li>
+<li>返回类型必须完全与被重写方法的返回类型相同；</li>
+<li>访问权限不能比父类中被重写的方法的访问权限更低。例如：如果父类的一个方法被声明为public，那么在子类中重写该方法就不能声明为protected。</li>
+<li>父类的成员方法只能被它的子类重写。</li>
+<li>声明为final的方法不能被重写。</li>
+<li>声明为static的方法不能被重写，但是能够被再次声明。</li>
+<li>子类和父类在同一个包中，那么子类可以重写父类所有方法，除了声明为private和final的方法。</li>
+<li>子类和父类不在同一个包中，那么子类只能够重写父类的声明为public和protected的非final方法。</li>
+<li>重写的方法能够抛出任何非强制异常，无论被重写的方法是否抛出异常。但是，重写的方法不能抛出新的强制性异常，或者比被重写方法声明的更广泛的强制性异常，反之则可以。</li>
+<li>构造方法不能被重写。</li>
+<li>如果不能继承一个方法，则不能重写这个方法。</li>
 </ul>
 </blockquote>
+<p>可以重写静态方法，但重写后的静态方法不支持多态。</p>
+<p>其实static根本就没有重写之说。static方法引用的时候应该用类名来引用，而不是对象。同时static方法不参与继承，所以在继承体系里面也不存在重载的说法。</p>
+<p>静态的方法可以被继承，但是不能重写。如果父类中有一个静态的方法，子类也有一个与其方法名，参数类型，参数个数都一样的方法，并且也有static关键字修饰，那么该子类的方法会把原来继承过来的父类的方法隐藏，而不是重写。通俗的讲就是父类的方法和子类的方法是两个没有关系的方法，具体调用哪一个方法是看是哪个对象的引用；这种父子类方法也不在存在多态的性质。</p>
+<p>java不推荐用对象调用static方法,这会使人混淆,请大家注意。</p>
+<p>这也是为什么abstract修饰的method是不可同时是static的原因：</p>
+<p>abstract修饰方法，子类需要重写去实现，主要用于各个子类的实例对象；<br>static修饰方法，则方法不属于某个对象，属于class，可用class名.方法名（），进行调用；</p>
+<p>简单的说abstract实例对象；<br>而static属于类。<br>所以static方法不能是abstract方法</p>
+<p>附：<a href="http://blog.51cto.com/qsjming/749100" target="_blank" rel="noopener">http://blog.51cto.com/qsjming/749100</a></p>
 
       
     </div>
@@ -363,8 +391,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/shortfeng/2018/03/19/JVM/" rel="next" title="JVM">
-                <i class="fa fa-chevron-left"></i> JVM
+              <a href="/shortfeng/2018/08/06/SpringEL/" rel="next" title="SpringEL">
+                <i class="fa fa-chevron-left"></i> SpringEL
               </a>
             
           </div>
@@ -372,10 +400,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/shortfeng/2018/03/22/ConcurrentHashMap/" rel="prev" title="ConcurrentHashMap">
-                ConcurrentHashMap <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -491,7 +515,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap"><span class="nav-number">1.</span> <span class="nav-text">HashMap</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#java可见性"><span class="nav-number">1.</span> <span class="nav-text">java可见性</span></a></li></ol></div>
             
 
           </div>
