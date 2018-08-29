@@ -634,6 +634,10 @@
 <p>某个带Transactional注解的方法里面有个代码块，通过try catch包入，但是该代码块抛出的异常还是会使整个方法的事物回滚。在方法中的代码有抛出异常，不管有没有做异常处理，都会回滚方法的事务。</p>
 <p>4、自定义对象作为Map的key，需要实现自定义对象的equals和hashcode方法</p>
 <p>5、.properties文件的中文，在代码里面读取的是乱码，需要使用java native2ascii工具进行编码转换<br>native2ascii -encoding utf-8</p>
+<p>6、两次相同查询中间插入数据，第一次查询没有查到数据，第二次查询也没有查到数据</p>
+<p>正常结果为第二次查询要能查到数据，导致的原因为mybatis默认针对相同的statementId+sql作为key缓存查询结果，导致第二次查询未到数据执行查询，直接返回缓存中的数据</p>
+<p>解决方法，把mapper中的查询statement的useCache设置成false</p>
+<p>mybatis缓存：<br>1、一级缓存 针对sqlsession，相同sqlsession会缓存相同查询的结果<br>2、二级缓存 针对mapper，全局sqlsession共享</p>
 
           
         
