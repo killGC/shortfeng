@@ -260,6 +260,635 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/07/08/java面试题第二套/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/shortfeng/2018/07/08/java面试题第二套/" itemprop="url">java面试题第二套</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-08T22:02:06+08:00">
+                2018-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="java面试题第二套"><a href="#java面试题第二套" class="headerlink" title="java面试题第二套"></a>java面试题第二套</h3><p>一、Java相关</p>
+<p>Arraylist与LinkedList默认空间是多少；</p>
+<p>Arraylist与LinkedList区别与各自的优势List 和 Map 区别；</p>
+<p>谈谈HashMap，哈希表解决hash冲突的方法；</p>
+<p>为什么要重写hashcode()和equals()以及他们之间的区别与关系；</p>
+<p>Object的hashcode()是怎么计算的？</p>
+<p>若hashcode方法永远返回1或者一个常量会产生什么结果？</p>
+<p>Java Collections和Arrays的sort方法默认的排序方法是什么；</p>
+<p>引用计数法与GC Root可达性分析法区别；</p>
+<p>浅拷贝和深拷贝的区别；</p>
+<p>String s=”abc”和String s=new String(“abc”)区别；</p>
+<p>HashSet方法里面的hashcode存在哪，如果重写equals不重写hashcode会怎么样？</p>
+<p>反射的作用与实现原理；</p>
+<p>Java中的回调机制；</p>
+<p>模板方法模式；</p>
+<p>开闭原则说一下；</p>
+<p>发布/订阅使用场景；</p>
+<p>KMP算法（一种改进的字符串匹配算法）；</p>
+<p>JMM里边的原子性、可见性、有序性是如何体现出来的，JMM中内存屏障是什么意思，</p>
+<p>二、多线程</p>
+<p>AtomicInteger底层实现原理；</p>
+<p>synchronized与ReentraLock哪个是公平锁；</p>
+<p>CAS机制会出现什么问题；</p>
+<p>用过并发包下边的哪些类；</p>
+<p>一个线程连着调用start两次会出现什么情况？</p>
+<p>wait方法能不能被重写，wait能不能被中断；</p>
+<p>线程池的实现？四种线程池？重要参数及原理？任务拒接策略有哪几种？</p>
+<p>线程状态以及API怎么操作会发生这种转换；</p>
+<p>常用的避免死锁方法；</p>
+<p>三、JVM</p>
+<p>Minor GC与Full GC分别在什么时候发生？什么时候触发Full GC;</p>
+<p>GC收集器有哪些？CMS收集器与G1收集器的特点。</p>
+<p>Java在什么时候会出现内存泄漏；</p>
+<p>Java中的大对象如何进行存储；</p>
+<p>rt.jar被什么类加载器加载，什么时间加载；</p>
+<p>自己写的类被什么加载，什么时间加载；</p>
+<p>自己写的两个不同的类是被同一个类加载器加载的吗？为什么？</p>
+<p>为什么新生代内存需要有两个Survivor区？</p>
+<p>几种常用的内存调试工具：jmap、jstack、jconsole；</p>
+<p>类加载的五个过程：加载、验证、准备、解析、初始化；</p>
+<p>G1停顿吗，CMS回收步骤，CMS为什么会停顿，停顿时间；</p>
+<p>栈主要存的数据是什么，堆呢？</p>
+<p>堆分为哪几块，比如说新生代老生代，那么新生代又分为什么？</p>
+<p>软引用和弱引用的使用场景（软引用可以实现缓存，弱引用可以用来在回调函数中防止内存泄露）；</p>
+<p>四、数据库</p>
+<p>数据库索引，什么是全文索引，全文索引中的倒排索引是什么原理；</p>
+<p>数据库最佳左前缀原则是什么？</p>
+<p>数据库的三大范式；</p>
+<p>悲观锁和乐观锁的原理和应用场景；</p>
+<p>左连接、右连接、内连接、外连接、交叉连接、笛卡儿积等；</p>
+<p>一般情况下数据库宕机了如何进行恢复（什么是Write Ahead Log机制，什么是Double Write机制，什么是Check Point）；</p>
+<p>什么是redo日志、什么是undo日志；</p>
+<p>数据库中的隔离性是怎样实现的；原子性、一致性、持久性又是如何实现的；</p>
+<p>什么是组合索引，组合索引什么时候会失效；</p>
+<p>关系型数据库和非关系型数据库区别；</p>
+<p>数据库死锁如何解决；</p>
+<p>MySQL并发情况下怎么解决（通过事务、隔离级别、锁）；</p>
+<p>MySQL中的MVCC机制是什么意思，根据具体场景，MVCC是否有问题；</p>
+<p>MySQL数据库的隔离级别，以及如何解决幻读；</p>
+<p>五、缓存服务器</p>
+<p>Redis中zSet跳跃表问题；</p>
+<p>Redis的set的应用场合？</p>
+<p>Redis高级特性了解吗？</p>
+<p>Redis的pipeline有什么用处？</p>
+<p>Redis集群宕机如何处理，怎么样进行数据的迁移；</p>
+<p>Redis的集群方案；</p>
+<p>Redis原子操作怎么用比较好；</p>
+<p>Redis过期策略是怎么实现的呢？</p>
+<p>六、SSM相关</p>
+<p>Spring中@Autowired和@Resource注解的区别？</p>
+<p>Spring声明一个 bean 如何对其进行个性化定制；</p>
+<p>MyBatis有什么优势；</p>
+<p>MyBatis如何做事务管理；</p>
+<p>七、操作系统</p>
+<p>Linux静态链接和动态链接；</p>
+<p>什么是IO多路复用模型（select、poll、epoll）；</p>
+<p>Linux中的grep管道用处？Linux的常用命令？</p>
+<p>操作系统中虚拟地址、逻辑地址、线性地址、物理地址的概念及区别；</p>
+<p>内存的页面置换算法；</p>
+<p>内存的页面置换算法；</p>
+<p>进程调度算法，操作系统是如何调度进程的；</p>
+<p>父子进程、孤儿进程、僵死进程等概念；</p>
+<p>fork进程时的操作；</p>
+<p>kill用法，某个进程杀不掉的原因（僵死进程；进入内核态，忽略kill信号）；</p>
+<p>系统管理命令（如查看内存使用、网络情况）；</p>
+<p>find命令、awk使用；</p>
+<p>Linux下排查某个死循环的线程；</p>
+<p>八、网络相关</p>
+<p>数据链路层是做什么的?</p>
+<p>数据链路层的流量控制？</p>
+<p>网络模型的分层、IP和Mac地址在那个层、TCP和HTTP分别在那个层；</p>
+<p>TCP滑动窗口；</p>
+<p>TCP为什么可靠；</p>
+<p>TCP的同传，拆包与组装包是什么意思；</p>
+<p>Https和Http有什么区别；</p>
+<p>Http 为什么是无状态的；</p>
+<p>TCP三次握手，为什么不是三次，为什么不是四次；</p>
+<p>TCP的拥塞控制、流量控制详细说明？</p>
+<p>Http1.0和Http2.0的区别；</p>
+<p>两个不同ip地址的计算机之间如何通信；</p>
+<p>地址解析协议ARP；</p>
+<p>OSI七层模型分别对应着五层模型的哪一部分；</p>
+<p>TCP三次握手数据丢失了怎么办？那如果后面又找到了呢？</p>
+<p>九、分布式相关</p>
+<p>消息队列使用的场景介绍和作用（应用耦合、异步消息、流量削锋等）；</p>
+<p>如何解决消息队列丢失消息和重复消费问题；</p>
+<p>Kafka使用过吗，什么是幂等性？怎么保证一致性，持久化怎么做，分区partition的理解，LEO是什么意思，如何保证多个partition之间数据一致性的（ISR机制），为什么Kafka可以这么快（基于磁盘的顺序读写）；</p>
+<p>异步队列怎么实现；</p>
+<p>你项目的并发是多少？怎么解决高并发问题？单机情况下Tomcat的并发大概是多少，MySQL的并发大致是多少？</p>
+<p>什么是C10K问题；</p>
+<p>高并发情况下怎么办；</p>
+<p>分布式理论，什么是CAP理论，什么是Base理论，什么是Paxos理论；</p>
+<p>分布式协议的选举算法；</p>
+<p>说一下你对微服务的理解，与SOA的区别；</p>
+<p>Dubbo的基本原理，RPC，支持哪些通信方式，服务的调用过程；</p>
+<p>Dubbo如果有一个服务挂掉了怎么办；</p>
+<p>分布式事务，操作两个表不在一个库，如何保证一致性。</p>
+<p>分布式系统中，每台机器如何产生一个唯一的随机值；</p>
+<p>系统的量级、pv、uv等；</p>
+<p>什么是Hash一致性算法？分布式缓存的一致性，服务器如何扩容（哈希环）；</p>
+<p>正向代理、反向代理；</p>
+<p>什么是客户端负载均衡策略、什么是服务器端负载均衡策略；</p>
+<p>如何优化Tomcat，常见的优化方式有哪些；</p>
+<p>Nginx的Master和Worker，Nginx是如何处理请求的；</p>
+<p>十、系统设计相关</p>
+<p>如何防止表单重复提交（Token令牌环等方式）；</p>
+<p>有一个url白名单，需要使用正则表达式进行过滤，但是url量级很大，大概亿级，那么如何优化正则表达式？如何优化亿级的url匹配呢？</p>
+<p>常见的Nginx负载均衡策略；已有两台Nginx服务器了，倘若这时候再增加一台服务器，采用什么负载均衡算法比较好？</p>
+<p>扫描二维码登录的过程解析；</p>
+<p>如何设计一个生成唯一UUID的算法？</p>
+<p>实现一个负载均衡的算法，服务器资源分配为70%、20%、10%；</p>
+<p>有三个线程T1 T2 T3，如何保证他们按顺序执行；</p>
+<p>三个线程循环输出ABCABCABC….</p>
+<p>十一、安全相关</p>
+<p>什么是XSS攻击，XSS攻击的一般表现形式有哪些？如何防止XSS攻击；</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/07/08/java面试题第一套/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/shortfeng/2018/07/08/java面试题第一套/" itemprop="url">java面试题第一套</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-08T21:54:34+08:00">
+                2018-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="java面试题第一套"><a href="#java面试题第一套" class="headerlink" title="java面试题第一套"></a>java面试题第一套</h3><p>一、基础篇</p>
+<p>1.1、Java基础 </p>
+<p>面向对象的特征：继承、封装和多态</p>
+<p>final, finally, finalize 的区别</p>
+<p>Exception、Error、运行时异常与一般异常有何异同</p>
+<p>请写出5种常见到的runtime exception</p>
+<p>int 和 Integer 有什么区别，Integer的值缓存范围</p>
+<p>包装类，装箱和拆箱</p>
+<p>String、StringBuilder、StringBuffer</p>
+<p>重载和重写的区别</p>
+<p>抽象类和接口有什么区别</p>
+<p>说说反射的用途及实现</p>
+<p>说说自定义注解的场景及实现</p>
+<p>HTTP请求的GET与POST方式的区别</p>
+<p>Session与Cookie区别</p>
+<p>列出自己常用的JDK包</p>
+<p>MVC设计思想</p>
+<p>equals与==的区别</p>
+<p>hashCode和equals方法的区别与联系</p>
+<p>什么是Java序列化和反序列化，如何实现Java序列化？或者请解释Serializable 接口的作用</p>
+<p>Object类中常见的方法，为什么wait  notify会放在Object里边？</p>
+<p>三个方法都必须在synchronized 同步关键字所限定的作用域中调用，否则会报错java.lang.IllegalMonitorStateException ，意思是因为没有同步，所以线程对对象锁的状态是不确定的，不能调用这些方法</p>
+<p>Java的平台无关性如何体现出来的</p>
+<p>JDK和JRE的区别</p>
+<p>Java 8有哪些新特性</p>
+<p>1.2、Java常见集合</p>
+<p>List 和 Set 区别</p>
+<p>Set和hashCode以及equals方法的联系</p>
+<p>List 和 Map 区别</p>
+<p>Arraylist 与 LinkedList 区别</p>
+<p>ArrayList 与 Vector 区别</p>
+<p>HashMap 和 Hashtable 的区别</p>
+<p>HashSet 和 HashMap 区别</p>
+<p>HashMap 和 ConcurrentHashMap 的区别</p>
+<p>HashMap 的工作原理及代码实现，什么时候用到红黑树</p>
+<p>多线程情况下HashMap死循环的问题</p>
+<p>HashMap出现Hash DOS攻击的问题</p>
+<p>ConcurrentHashMap 的工作原理及代码实现，如何统计所有的元素个数</p>
+<p>手写简单的HashMap</p>
+<p>看过那些Java集合类的源码</p>
+<p>1.3、进程和线程</p>
+<p>线程和进程的概念、并行和并发的概念</p>
+<p>创建线程的方式及实现</p>
+<p>进程间通信的方式</p>
+<p>说说 CountDownLatch、CyclicBarrier 原理和区别</p>
+<p>说说 Semaphore 原理</p>
+<p>说说 Exchanger 原理</p>
+<p>ThreadLocal 原理分析，ThreadLocal为什么会出现OOM，出现的深层次原理</p>
+<p>讲讲线程池的实现原理</p>
+<p>线程池的几种实现方式</p>
+<p>线程的生命周期，状态是如何转移的</p>
+<p>可参考：《Java多线程编程核心技术》<br>1.4、锁机制</p>
+<p>说说线程安全问题，什么是线程安全，如何保证线程安全</p>
+<p>重入锁的概念，重入锁为什么可以防止死锁</p>
+<p>产生死锁的四个条件（互斥、请求与保持、不剥夺、循环等待）</p>
+<p>如何检查死锁（通过jConsole检查死锁）</p>
+<p>volatile 实现原理（禁止指令重排、刷新内存）</p>
+<p>synchronized 实现原理（对象监视器）</p>
+<p>synchronized 与 lock 的区别</p>
+<p>AQS同步队列</p>
+<p>CAS无锁的概念、乐观锁和悲观锁</p>
+<p>常见的原子操作类</p>
+<p>什么是ABA问题，出现ABA问题JDK是如何解决的</p>
+<p>乐观锁的业务场景及实现方式</p>
+<p>Java 8并法包下常见的并发类</p>
+<p>偏向锁、轻量级锁、重量级锁、自旋锁的概念</p>
+<p>可参考：《Java多线程编程核心技术》</p>
+<p>1.5、JVM</p>
+<p>JVM运行时内存区域划分</p>
+<p>内存溢出OOM和堆栈溢出SOE的示例及原因、如何排查与解决</p>
+<p>如何判断对象是否可以回收或存活</p>
+<p>常见的GC回收算法及其含义</p>
+<p>常见的JVM性能监控和故障处理工具类：jps、jstat、jmap、jinfo、jconsole等</p>
+<p>JVM如何设置参数</p>
+<p>JVM性能调优</p>
+<p>类加载器、双亲委派模型、一个类的生命周期、类是如何加载到JVM中的</p>
+<p>类加载的过程：加载、验证、准备、解析、初始化</p>
+<p>强引用、软引用、弱引用、虚引用</p>
+<p>Java内存模型JMM</p>
+<p>1.6、设计模式</p>
+<p>常见的设计模式</p>
+<p>设计模式的的六大原则及其含义</p>
+<p>常见的单例模式以及各种实现方式的优缺点，哪一种最好，手写常见的单利模式</p>
+<p>设计模式在实际场景中的应用</p>
+<p>Spring中用到了哪些设计模式</p>
+<p>MyBatis中用到了哪些设计模式</p>
+<p>你项目中有使用哪些设计模式</p>
+<p>说说常用开源框架中设计模式使用分析</p>
+<p>动态代理很重要！！！</p>
+<p>1.7、数据结构</p>
+<p>树（二叉查找树、平衡二叉树、红黑树、B树、B+树）</p>
+<p>深度有限算法、广度优先算法</p>
+<p>克鲁斯卡尔算法、普林母算法、迪克拉斯算法</p>
+<p>什么是一致性Hash及其原理、Hash环问题</p>
+<p>常见的排序算法和查找算法：快排、折半查找、堆排序等</p>
+<p>1.8、网络/IO基础</p>
+<p>BIO、NIO、AIO的概念</p>
+<p>什么是长连接和短连接</p>
+<p>Http1.0和2.0相比有什么区别，可参考《Http 2.0》</p>
+<p>Https的基本概念</p>
+<p>三次握手和四次挥手、为什么挥手需要四次</p>
+<p>从游览器中输入URL到页面加载的发生了什么？可参考《从输入URL到页面加载发生了什么》</p>
+<p>二、数据存储和消息队列</p>
+<p>2.1、数据库</p>
+<p>MySQL 索引使用的注意事项</p>
+<p>DDL、DML、DCL分别指什么</p>
+<p>explain命令</p>
+<p>left join，right join，inner join</p>
+<p>数据库事物ACID（原子性、一致性、隔离性、持久性）</p>
+<p>事物的隔离级别（读未提交、读以提交、可重复读、可序列化读）</p>
+<p>脏读、幻读、不可重复读</p>
+<p>数据库的几大范式</p>
+<p>数据库常见的命令</p>
+<p>说说分库与分表设计</p>
+<p>分库与分表带来的分布式困境与应对之策（如何解决分布式下的分库分表，全局表？）</p>
+<p>说说 SQL 优化之道</p>
+<p>MySQL遇到的死锁问题、如何排查与解决</p>
+<p>存储引擎的 InnoDB与MyISAM区别，优缺点，使用场景</p>
+<p>索引类别（B+树索引、全文索引、哈希索引）、索引的原理</p>
+<p>什么是自适应哈希索引（AHI）</p>
+<p>为什么要用 B+tree作为MySQL索引的数据结构</p>
+<p>聚集索引与非聚集索引的区别</p>
+<p>遇到过索引失效的情况没，什么时候可能会出现，如何解决</p>
+<p>limit 20000 加载很慢怎么解决</p>
+<p>如何选择合适的分布式主键方案</p>
+<p>选择合适的数据存储方案</p>
+<p>常见的几种分布式ID的设计方案</p>
+<p>常见的数据库优化方案，在你的项目中数据库如何进行优化的</p>
+<p>2.2、Redis</p>
+<p>Redis 有哪些数据类型，可参考《Redis常见的5种不同的数据类型详解》</p>
+<p>Redis 内部结构</p>
+<p>Redis 使用场景</p>
+<p>Redis 持久化机制，可参考《使用快照和AOF将Redis数据持久化到硬盘中》</p>
+<p>Redis 集群方案与实现</p>
+<p>Redis 为什么是单线程的？</p>
+<p>缓存雪崩、缓存穿透、缓存预热、缓存更新、缓存降级</p>
+<p>使用缓存的合理性问题</p>
+<p>Redis常见的回收策略</p>
+<p>2.3、消息队列</p>
+<p>消息队列的使用场景</p>
+<p>消息的重发补偿解决思路</p>
+<p>消息的幂等性解决思路</p>
+<p>消息的堆积解决思路</p>
+<p>自己如何实现消息队列</p>
+<p>如何保证消息的有序性</p>
+<p>三、开源框架和容器</p>
+<p>3.1、SSM/Servlet</p>
+<p>Servlet的生命周期</p>
+<p>转发与重定向的区别</p>
+<p>BeanFactory 和 ApplicationContext 有什么区别</p>
+<p>Spring Bean 的生命周期</p>
+<p>Spring IOC 如何实现</p>
+<p>Spring中Bean的作用域，默认的是哪一个</p>
+<p>说说 Spring AOP、Spring AOP 实现原理</p>
+<p>动态代理（CGLib 与 JDK）、优缺点、性能对比、如何选择</p>
+<p>Spring 事务实现方式、事务的传播机制、默认的事务类别</p>
+<p>Spring 事务底层原理</p>
+<p>Spring事务失效（事务嵌套），JDK动态代理给Spring事务埋下的坑，可参考《JDK动态代理给Spring事务埋下的坑！》</p>
+<p>如何自定义注解实现功能</p>
+<p>Spring MVC 运行流程</p>
+<p>Spring MVC 启动流程</p>
+<p>Spring 的单例实现原理</p>
+<p>Spring 框架中用到了哪些设计模式</p>
+<p>Spring 其他产品（Srping Boot、Spring Cloud、Spring Secuirity、Spring Data、Spring AMQP 等）</p>
+<p>有没有用到Spring Boot，Spring Boot的认识、原理</p>
+<p>MyBatis的原理</p>
+<p>可参考《为什么会有Spring》</p>
+<p>可参考《为什么会有Spring AOP》</p>
+<p>3.2、Netty</p>
+<p>为什么选择 Netty</p>
+<p>说说业务中，Netty 的使用场景</p>
+<p>原生的 NIO 在 JDK 1.7 版本存在 epoll bug</p>
+<p>什么是TCP 粘包/拆包</p>
+<p>TCP粘包/拆包的解决办法</p>
+<p>Netty 线程模型</p>
+<p>说说 Netty 的零拷贝</p>
+<p>Netty 内部执行流程</p>
+<p>Netty 重连实现</p>
+<p>3.3、Tomcat</p>
+<p>Tomcat的基础架构（Server、Service、Connector、Container）</p>
+<p>Tomcat如何加载Servlet的</p>
+<p>Pipeline-Valve机制</p>
+<p>可参考：《四张图带你了解Tomcat系统架构！》</p>
+<p>四、分布式</p>
+<p>4.1、Nginx</p>
+<p>请解释什么是C10K问题或者知道什么是C10K问题吗？</p>
+<p>Nginx简介，可参考《Nginx简介》</p>
+<p>正向代理和反向代理.</p>
+<p>Nginx几种常见的负载均衡策略</p>
+<p>Nginx服务器上的Master和Worker进程分别是什么</p>
+<p>使用“反向代理服务器”的优点是什么?</p>
+<p>4.2、分布式其他</p>
+<p>谈谈业务中使用分布式的场景</p>
+<p>Session 分布式方案</p>
+<p>Session 分布式处理</p>
+<p>分布式锁的应用场景、分布式锁的产生原因、基本概念</p>
+<p>分布是锁的常见解决方案</p>
+<p>分布式事务的常见解决方案</p>
+<p>集群与负载均衡的算法与实现</p>
+<p>说说分库与分表设计，可参考《数据库分库分表策略的具体实现方案》</p>
+<p>分库与分表带来的分布式困境与应对之策</p>
+<p>4.3、Dubbo</p>
+<p>什么是Dubbo，可参考《Dubbo入门》</p>
+<p>什么是RPC、如何实现RPC、RPC 的实现原理，可参考《基于HTTP的RPC实现》</p>
+<p>Dubbo中的SPI是什么概念</p>
+<p>Dubbo的基本原理、执行流程</p>
+<p>五、微服务</p>
+<p>5.1、微服务</p>
+<p>前后端分离是如何做的？</p>
+<p>微服务哪些框架</p>
+<p>Spring Could的常见组件有哪些？可参考《Spring Cloud概述》</p>
+<p>领域驱动有了解吗？什么是领域驱动模型？充血模型、贫血模型</p>
+<p>JWT有了解吗，什么是JWT，可参考《前后端分离利器之JWT》</p>
+<p>你怎么理解 RESTful</p>
+<p>说说如何设计一个良好的 API</p>
+<p>如何理解 RESTful API 的幂等性</p>
+<p>如何保证接口的幂等性</p>
+<p>说说 CAP 定理、BASE 理论</p>
+<p>怎么考虑数据一致性问题</p>
+<p>说说最终一致性的实现方案</p>
+<p>微服务的优缺点，可参考《微服务批判》</p>
+<p>微服务与 SOA 的区别</p>
+<p>如何拆分服务、水平分割、垂直分割</p>
+<p>如何应对微服务的链式调用异常</p>
+<p>如何快速追踪与定位问题</p>
+<p>如何保证微服务的安全、认证</p>
+<p>5.2、安全问题</p>
+<p>如何防范常见的Web攻击、如何方式SQL注入</p>
+<p>服务端通信安全攻防</p>
+<p>HTTPS原理剖析、降级攻击、HTTP与HTTPS的对比</p>
+<p>5.3、性能优化</p>
+<p>性能指标有哪些</p>
+<p>如何发现性能瓶颈</p>
+<p>性能调优的常见手段</p>
+<p>说说你在项目中如何进行性能调优</p>
+<p>六、其他</p>
+<p>6.1、设计能力</p>
+<p>说说你在项目中使用过的UML图</p>
+<p>你如何考虑组件化、服务化、系统拆分</p>
+<p>秒杀场景如何设计</p>
+<p>可参考：《秒杀系统的技术挑战、应对策略以及架构设计总结一二！》<br>6.2、业务工程</p>
+<p>说说你的开发流程、如何进行自动化部署的</p>
+<p>你和团队是如何沟通的</p>
+<p>你如何进行代码评审</p>
+<p>说说你对技术与业务的理解</p>
+<p>说说你在项目中遇到感觉最难Bug，是如何解决的</p>
+<p>介绍一下工作中的一个你认为最有价值的项目，以及在这个过程中的角色、解决的问题、你觉得你们项目还有哪些不足的地方</p>
+<p>6.3、软实力</p>
+<p>说说你的优缺点、亮点</p>
+<p>说说你最近在看什么书、什么博客、在研究什么新技术、再看那些开源项目的源代码</p>
+<p>说说你觉得最有意义的技术书籍</p>
+<p>工作之余做什么事情、平时是如何学习的，怎样提升自己的能力</p>
+<p>说说个人发展方向方面的思考</p>
+<p>说说你认为的服务端开发工程师应该具备哪些能力</p>
+<p>说说你认为的架构师是什么样的，架构师主要做什么</p>
+<p>如何看待加班的问题</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/07/06/队列/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1368,310 +1997,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/06/22/Comparable接口与Comparator/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="changfeng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/shortfeng/2018/06/22/Comparable接口与Comparator/" itemprop="url">Comparable接口、Comparator接口</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-22T17:36:17+08:00">
-                2018-06-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Comparable接口、Comparator接口"><a href="#Comparable接口、Comparator接口" class="headerlink" title="Comparable接口、Comparator接口"></a>Comparable接口、Comparator接口</h2><hr>
-<p>1、元素自身具备比较性</p>
-<p>元素自身具备比较性，需要元素实现Comparable接口，重写compareTo方法，也就是让元素自身具备比较性，这种方式叫做元素的自然排序也叫做默认排序</p>
-<p>2、容器具备比较性</p>
-<p>当元素自身不具备比较性，或者自身具备的比较性不是所需要的。那么此时可以让容器自身具备。需要定义一个类实现接口Comparator，重写compare方法，并将该接口的子类实例对象作为参数传递给TreeMap集合的构造方法。</p>
-<p>注意：当Comparable比较方式和Comparator比较方式同时存在时，以Comparator的比较方式为主；</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/04/04/跨域问题/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="changfeng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/shortfeng/2018/04/04/跨域问题/" itemprop="url">跨域问题</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-04T10:48:32+08:00">
-                2018-04-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="跨域问题"><a href="#跨域问题" class="headerlink" title="跨域问题"></a>跨域问题</h2><hr>
-<h4 id="同源"><a href="#同源" class="headerlink" title="同源"></a>同源</h4><p>同源政策的目的，是为了保证用户信息的安全，防止恶意的网站窃取数据</p>
-<p>同源是指以下三个信息都必须相同：</p>
-<blockquote>
-<ul>
-<li>协议相同</li>
-<li>域名相同</li>
-<li>端口相同</li>
-</ul>
-</blockquote>
-<p>如果非同源，共有三种行为受到限制：</p>
-<blockquote>
-<ul>
-<li>Cookie、LocalStorage 和 IndexDB 无法读取</li>
-<li>DOM 无法获得</li>
-<li>AJAX 请求不能发送</li>
-</ul>
-</blockquote>
-<p>虽然这些限制是必要的，但是有时很不方便，合理的用途也受到影响。如何规避上面三种限制</p>
-<h5 id="设置document-domain"><a href="#设置document-domain" class="headerlink" title="设置document.domain"></a>设置document.domain</h5><p>这种方案只适用Cookie与iframe</p>
-<p>A网页是<a href="http://w1.example.com/a.html，B网页是http://w2.example.com/b.html，那么只要设置相同的document.domain，两个网页就可以共享Cookie" target="_blank" rel="noopener">http://w1.example.com/a.html，B网页是http://w2.example.com/b.html，那么只要设置相同的document.domain，两个网页就可以共享Cookie</a></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">document.domain = <span class="string">'example.com'</span>;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<ul>
-<li>Cookie 是服务器写入浏览器的一小段信息，只有同源的网页才能共享。但是，两个网页一级域名相同，只是二级域名不同，浏览器允许通过设置document.domain共享 Cookie</li>
-<li>如果两个网页不同源，就无法拿到对方的DOM。典型的例子是iframe窗口和window.open方法打开的窗口，它们与父窗口无法通信</li>
-</ul>
-</blockquote>
-<h5 id="完全不同源"><a href="#完全不同源" class="headerlink" title="完全不同源"></a>完全不同源</h5><blockquote>
-<ul>
-<li>window.name</li>
-<li>window.postMessage：HTML5为了解决这个问题，引入了一个全新的API：跨文档通信 API（Cross-document messaging）。<br>这个API为window对象新增了一个window.postMessage方法，允许跨窗口通信，不论这两个窗口是否同源</li>
-</ul>
-</blockquote>
-<p>AJAX：</p>
-<blockquote>
-<ul>
-<li><p>JSONP ： 简单适用，老式浏览器全部支持，服务器改造非常小;网页通过添加一个script元素，向服务器请求JSON数据，这种做法不受同源政策限制；服务器收到请求后，将数据放在一个指定名字的回调函数里传回来</p>
-</li>
-<li><p>WebSocket：WebSocket是一种通信协议，使用ws://（非加密）和wss://（加密）作为协议前缀。该协议不实行同源政策，只要服务器支持，就可以通过它进行跨源通信</p>
-</li>
-<li>CORS：跨源资源分享（Cross-Origin Resource Sharing）的缩写。它是W3C标准，是跨源AJAX请求的根本解决方法。相比JSONP只能发GET请求，CORS允许任何类型的请求</li>
-</ul>
-</blockquote>
-<p>JSONP例子:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">function <span class="title">addScriptTag</span><span class="params">(src)</span> </span>&#123;</span><br><span class="line">  var script = document.createElement(<span class="string">'script'</span>);</span><br><span class="line">  script.setAttribute(<span class="string">"type"</span>,<span class="string">"text/javascript"</span>);</span><br><span class="line">  script.src = src;</span><br><span class="line">  document.body.appendChild(script);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">window.onload = function () &#123;</span><br><span class="line">  addScriptTag(<span class="string">'http://example.com/ip?callback=foo'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">function <span class="title">foo</span><span class="params">(data)</span> </span>&#123;</span><br><span class="line">  console.log(<span class="string">'Your public IP address is: '</span> + data.ip);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h4 id="X-Frame-Options"><a href="#X-Frame-Options" class="headerlink" title="X-Frame-Options"></a>X-Frame-Options</h4><p>nginx中设置X-Frame-Options ，防止网站被别人用iframe嵌入使用</p>
-<p>X-Frame-Options 响应头</p>
-<p>X-Frame-Options HTTP 响应头是用来给浏览器指示允许一个页面可否在 iframe 或者 object标签中展现的标记。网站可以使用此功能，来确保自己网站的内容没有被嵌到别人的网站中去，也从而避免了点击劫持 (clickjacking) 的攻击。</p>
-<p>X-Frame-Options 有三个值:</p>
-<blockquote>
-<ul>
-<li><p>DENY<br>表示该页面不允许在 frame 中展示，即便是在相同域名的页面中嵌套也不允许。</p>
-</li>
-<li><p>SAMEORIGIN<br>表示该页面可以在相同域名页面的 frame 中展示。</p>
-</li>
-<li><p>ALLOW-FROM uri<br>表示该页面可以在指定来源的 frame 中展示。<br>换一句话说，如果设置为 DENY，不光在别人的网站 frame 嵌入时会无法加载，在同域名页面中同样会无法加载。另一方面，如果设置为 SAMEORIGIN，那么页面就可以在同域名页面的 frame 中嵌套。</p>
-</li>
-</ul>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1722,7 +2047,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/shortfeng/archives/">
-                <span class="site-state-item-count">44</span>
+                <span class="site-state-item-count">46</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

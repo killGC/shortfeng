@@ -94,17 +94,17 @@
 
 
 
-<meta name="description" content="支付系统的思考 支付系统特点：   写多读少，读写分离方案效果不明显 事务强一致性，事务ACID，强调Consistency（一致性）和Availability（可用性），数据库一般用关系数据库。   防重提交策略  乐观锁：通过唯一索引锁住记录（行级锁），UPDATE tab1 SET col1=1,version=version+1 WHERE id=#id# and version=#ver">
+<meta name="description" content="性能优化一、for、foreach foreach为java语法糖，通过编译生成代码，通过iterator迭代器遍历如果需要遍历的集合为数组，生成与for一样的遍历方式 for适合数组，可以通过下标访问的对象，如：ArrayList；不适合LinkedListforeach性能比较平均 123456789101112for:for(int i=0; i&amp;lt;list.size; i++)&amp;#12">
 <meta property="og:type" content="article">
-<meta property="og:title" content="支付">
-<meta property="og:url" content="https://killgc.github.io/shortfeng/2018/04/04/支付/index.html">
+<meta property="og:title" content="性能优化">
+<meta property="og:url" content="https://killgc.github.io/shortfeng/2018/08/29/性能优化/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="支付系统的思考 支付系统特点：   写多读少，读写分离方案效果不明显 事务强一致性，事务ACID，强调Consistency（一致性）和Availability（可用性），数据库一般用关系数据库。   防重提交策略  乐观锁：通过唯一索引锁住记录（行级锁），UPDATE tab1 SET col1=1,version=version+1 WHERE id=#id# and version=#ver">
+<meta property="og:description" content="性能优化一、for、foreach foreach为java语法糖，通过编译生成代码，通过iterator迭代器遍历如果需要遍历的集合为数组，生成与for一样的遍历方式 for适合数组，可以通过下标访问的对象，如：ArrayList；不适合LinkedListforeach性能比较平均 123456789101112for:for(int i=0; i&amp;lt;list.size; i++)&amp;#12">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-03T16:36:19.000Z">
+<meta property="og:updated_time" content="2018-08-29T08:49:39.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="支付">
-<meta name="twitter:description" content="支付系统的思考 支付系统特点：   写多读少，读写分离方案效果不明显 事务强一致性，事务ACID，强调Consistency（一致性）和Availability（可用性），数据库一般用关系数据库。   防重提交策略  乐观锁：通过唯一索引锁住记录（行级锁），UPDATE tab1 SET col1=1,version=version+1 WHERE id=#id# and version=#ver">
+<meta name="twitter:title" content="性能优化">
+<meta name="twitter:description" content="性能优化一、for、foreach foreach为java语法糖，通过编译生成代码，通过iterator迭代器遍历如果需要遍历的集合为数组，生成与for一样的遍历方式 for适合数组，可以通过下标访问的对象，如：ArrayList；不适合LinkedListforeach性能比较平均 123456789101112for:for(int i=0; i&amp;lt;list.size; i++)&amp;#12">
 
 
 
@@ -133,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="https://killgc.github.io/shortfeng/2018/04/04/支付/"/>
+  <link rel="canonical" href="https://killgc.github.io/shortfeng/2018/08/29/性能优化/"/>
 
 
 
 
 
-  <title>支付 | Hexo</title>
+  <title>性能优化 | Hexo</title>
   
 
 
@@ -262,7 +262,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/04/04/支付/">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/08/29/性能优化/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="changfeng">
@@ -279,7 +279,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">支付</h1>
+          <h1 class="post-title" itemprop="name headline">性能优化</h1>
         
 
         <div class="post-meta">
@@ -291,8 +291,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-04T00:03:00+08:00">
-                2018-04-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-29T15:21:43+08:00">
+                2018-08-29
               </time>
             
 
@@ -329,29 +329,10 @@
       
 
       
-        <h2 id="支付系统的思考"><a href="#支付系统的思考" class="headerlink" title="支付系统的思考"></a>支付系统的思考</h2><hr>
-<p>支付系统特点：</p>
-<blockquote>
-<ul>
-<li>写多读少，读写分离方案效果不明显</li>
-<li>事务强一致性，事务ACID，强调Consistency（一致性）和Availability（可用性），数据库一般用关系数据库。</li>
-</ul>
-</blockquote>
-<h4 id="防重提交策略"><a href="#防重提交策略" class="headerlink" title="防重提交策略"></a>防重提交策略</h4><blockquote>
-<ul>
-<li><p>乐观锁：通过唯一索引锁住记录（行级锁），UPDATE tab1 SET col1=1,version=version+1 WHERE id=#id# and version=#version#</p>
-</li>
-<li><p>悲观锁：select * from table_xxx where id=’xxx’ for update，id字段一定是主键或者唯一索引，不然是锁表，悲观锁使用时一般伴随事务一起使用，数据锁定时间可能会很长，根据实际情况选用</p>
-</li>
-<li><p>防重表：唯一索引导致插入失败</p>
-</li>
-<li>分布式锁：redis分布式锁</li>
-<li>Token：分为两步，第一步申请Token，第二步拿申请到Token发起请求。可以设置Token过期时间</li>
-<li>支付缓冲：把支付请求快速接下来，后续再启异步任务处理，可以过滤掉重复的支付订单。优点是<br>高吞吐；缺点是不能及时返回处理结果，后续需要监听支付结果的异步返回</li>
-<li>状态机：如果状态机已经处于下一个状态，这时候来了一个上一个状态的变更，理论上是不能够变更的</li>
-</ul>
-</blockquote>
-
+        <h3 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h3><p>一、for、foreach</p>
+<p>foreach为java语法糖，通过编译生成代码，通过iterator迭代器遍历<br>如果需要遍历的集合为数组，生成与for一样的遍历方式</p>
+<p>for适合数组，可以通过下标访问的对象，如：ArrayList；不适合LinkedList<br>foreach性能比较平均</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>:</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;list.size; i++)&#123;</span><br><span class="line"><span class="comment">//.....</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foreach:</span><br><span class="line">List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line"><span class="keyword">for</span>(String e : list)&#123;</span><br><span class="line"><span class="comment">//</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">list.foreach(item-&gt;&#123;<span class="keyword">int</span> xx=item;&#125;)</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -375,8 +356,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/shortfeng/2018/04/01/redis/" rel="next" title="redis">
-                <i class="fa fa-chevron-left"></i> redis
+              <a href="/shortfeng/2018/08/17/环境/" rel="next" title="环境">
+                <i class="fa fa-chevron-left"></i> 环境
               </a>
             
           </div>
@@ -385,8 +366,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/shortfeng/2018/04/04/跨域问题/" rel="prev" title="跨域问题">
-                跨域问题 <i class="fa fa-chevron-right"></i>
+              <a href="/shortfeng/2018/08/31/spring事务实践/" rel="prev" title="spring事务实践">
+                spring事务实践 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -503,7 +484,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#支付系统的思考"><span class="nav-number">1.</span> <span class="nav-text">支付系统的思考</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#防重提交策略"><span class="nav-number">1.0.1.</span> <span class="nav-text">防重提交策略</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#性能优化"><span class="nav-number">1.</span> <span class="nav-text">性能优化</span></a></li></ol></div>
             
 
           </div>

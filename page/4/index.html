@@ -260,6 +260,495 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/15/spring事务传播机制和隔离级别/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/shortfeng/2018/03/15/spring事务传播机制和隔离级别/" itemprop="url">spring事务传播机制和隔离级别</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-15T23:24:57+08:00">
+                2018-03-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="spring事务传播机制和隔离级别"><a href="#spring事务传播机制和隔离级别" class="headerlink" title="spring事务传播机制和隔离级别"></a>spring事务传播机制和隔离级别</h2><h4 id="事务传播机制"><a href="#事务传播机制" class="headerlink" title="事务传播机制"></a>事务传播机制</h4><hr>
+<blockquote>
+<ul>
+<li>propagation_required 支持当前事务，如果不存在事务，则新建一个事务</li>
+<li>propagation_supports 支持当前事务，如果不存在事务，则以非事务方式执行</li>
+<li>propagation_mandatory 支持当前事务，如果不存在事务，则抛出异常</li>
+<li>propagation_required_new 新建事务，如果当前存在事务，则挂起当前事务</li>
+<li>propagation_not_supported 以非事务方式执行，如果当前存在事务，则把当前事务挂起</li>
+<li>propagation_never 以非事务方式执行，如果当前存在事务，则抛出异常</li>
+<li>propagation_nested 如果当前存在事务，则在嵌套事务内执行，如果当前没有事务，则其行为与propagation_required一样。嵌套的事务可以独立于当前事务进行单独的提交或回滚。内部事务的回滚不会对外部事务造成影响，如果外部事务commit, 嵌套事务也会被commit, 这个规则同样适用于 roll back</li>
+</ul>
+</blockquote>
+<h4 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h4><hr>
+<p>数据库事务并发的三个问题：</p>
+<blockquote>
+<ul>
+<li>脏读 脏读发生在一个事务读取另外一个事务改写未提交的数据，如果改写在稍后被回滚，就有可能出现数据不一致。</li>
+<li>不可重复读 一个事务执行相同的查询两次或两次以上，每次得到不同的数据，通常是由于另外一个事务在两次查询期间进行更新。通过锁住满足条件的记录来解决。重点在于update和delete</li>
+<li>幻读 一个事务读取了几行数据，另外一个事务插入了一些数据，在后面的查询，第一个事务会发现多了一些原本不存在的记录。通过锁住满足条件及其相近的记录。重点在于insert</li>
+</ul>
+</blockquote>
+<p>spring中对应数据库的隔离级别：</p>
+<blockquote>
+<ul>
+<li>isolation_default 使用数据库默认的隔离级别</li>
+<li>isolation_read_uncommited 读未提交，可能出现脏读、不可重复读、幻读</li>
+<li>isolation_read_commited 读已提交，避免了脏读，可能会出现不可重复读、幻读</li>
+<li>isolation_repeatable_read 可重复读，避免了脏读、不可重复读，可能出现幻读</li>
+<li>isolation_seriablizable 串行访问，避免脏读、不可重复读、幻读。读加共享锁，写加排他锁，读写互斥</li>
+</ul>
+</blockquote>
+<p>数据库隔离级别：</p>
+<blockquote>
+<ul>
+<li>mysql数据库的默认隔离级别为repeatable_read，并且解决了幻读问题。</li>
+<li>oracle数据库的默认隔离级别为read_commited</li>
+</ul>
+</blockquote>
+<h4 id="回滚机制"><a href="#回滚机制" class="headerlink" title="回滚机制"></a>回滚机制</h4><p>回滚规则用于定义哪些异常会导致回滚，哪些异常不会导致回滚<br>默认情况下，只有遇到运行时异常才会回滚，遇到受检异常不回滚。</p>
+<h2 id="MVCC-多版本并发控制"><a href="#MVCC-多版本并发控制" class="headerlink" title="MVCC(多版本并发控制)"></a>MVCC(多版本并发控制)</h2><p>全称为Multi-Version Currency Control，为了查询一些正在被另外事务更新的行，并且可以看到它们被更新之前的值。可以增强并发，实现查询不用等待另外事务释放锁。</p>
+<p>在InnoDB中,给每行增加两个隐藏字段来实现mvcc，一个用来记录行的创建时间，一个用了记录行的过期时间（删除时间）。在实际实现中，存储的并不是时间，而是事务版本号，每开启一个新的事务，事务的版本号就会递增。<br>mysql的默认隔离级别repeatable read下，增删查改的实现为：</p>
+<blockquote>
+<ul>
+<li>select 读取创建版本号小于或等于当前事务版本号，且删除版本号为空或大于当前事务版本号的记录，这样可以保证在读取之前记录是存在的</li>
+<li>insert 创建版本号为当前事务版本号</li>
+<li>update 插入一条新记录，新记录的创建版本号为当前事务版本号，原记录的删除版本号为当前事务版本号</li>
+<li>delete 删除版本号为当前事务版本号</li>
+</ul>
+</blockquote>
+<p>Mvcc只支持repeatable read和read commited隔离级别。read uncommited与Mvcc不兼容，因为不能找到适合它们事务版本的行版本，每次读取都是最新版本。serailizable与Mvcc也不兼容，因为每次读操作都会锁定它们返回的每一行数据</p>
+<p>快照读和当前读：</p>
+<blockquote>
+<ul>
+<li>快照读 读取的快照版本，也就是历史版本。普通的select是快照读</li>
+<li>当前读 读取的是最新版本。update、insert、delete、select .. for update、select .. lock in share mode是当前读</li>
+</ul>
+</blockquote>
+<p>锁定读和一致性非锁定读：</p>
+<blockquote>
+<ul>
+<li>锁定读 事务中标准的select语句是不会加锁的，select .. for update（与update加锁一样）、select .. lock in share mode（加共享锁，其它事务只读不能修改，直到当前事务提交）两种除外。</li>
+<li>一致性非锁定读  简称一致性读，读的是数据库某个时间点的快照。如果隔离级别是repeatable_read，同一个事务中的所有一致性非锁定读都读的是事务中第一个读读到的快照版，如果隔离级别为read_commited，那么事务的每一个一致性非锁定读都会读到自己刷新的快照版本。一致性非锁定读不会给它访问的表加任何形式的锁，因此其它事务可以并发的修改它们。</li>
+</ul>
+</blockquote>
+<p>悲观锁和乐观锁：</p>
+<blockquote>
+<ul>
+<li>悲观锁 数据库总是认为别人会修改它所操作的数据，因此在操作数据过程中将数据加锁</li>
+<li>乐观锁 总是认为别人不会修改，通过版本来实现</li>
+</ul>
+</blockquote>
+<p>锁：</p>
+<blockquote>
+<ul>
+<li>record lock（记录锁） 在索引记录上加锁</li>
+<li>grap locks（间隙锁） 在索引记录之间加锁，或者在第一个索引记录之前加锁，或者在最后一个索引记录之后加锁</li>
+<li>next key lock 在索引记录上加锁，并且在索引记录之间的间隙加锁，相当于record lock与grap locks的结合</li>
+</ul>
+</blockquote>
+<p>一致性读保证了可重复读，间隙锁防止了幻读。</p>
+<h4 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h4><p>同一service两个方法之间调用，被调用方法的@Transaction配置会被忽略</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">migration方法调用singleProcess方法singleProcess方法的</span><br><span class="line">事务配置会被忽略</span><br><span class="line">出现的结果是两个方法执行的数据库操作都成功了</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Transactional</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">migration</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        B2bPartnerTmpDO record = <span class="keyword">new</span> B2bPartnerTmpDO();</span><br><span class="line">        record.setId(<span class="number">100008001L</span>);</span><br><span class="line">        record.setCorpDescription(<span class="string">"22"</span>);</span><br><span class="line">        partnerTmpManager.updateByPrimaryKeySelective(record);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            singleProcess();<span class="comment">//调用目标对象的方法，不能触发对singleProcess方法的事务增强</span></span><br><span class="line">        &#125;<span class="keyword">catch</span> (Exception ex)&#123;</span><br><span class="line">            log.error(<span class="string">"出现异常:"</span>+ex.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Transactional</span>(propagation=Propagation.REQUIRES_NEW)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">singleProcess</span><span class="params">()</span></span>&#123;</span><br><span class="line">        B2bPartnerTmpDO record = <span class="keyword">new</span> B2bPartnerTmpDO();</span><br><span class="line">        record.setId(<span class="number">100008002L</span>);</span><br><span class="line">        record.setCorpDescription(<span class="string">"33"</span>);</span><br><span class="line">        partnerTmpManager.updateByPrimaryKeySelective(record);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"singleProcess出现异常"</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">migration方法调用singleProcess方法，singleProcess方法的</span><br><span class="line">事务配置会被忽略</span><br><span class="line">出现的结果是两个方法的代码合并在一起了，执行的数据库操作都回滚了</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Transactional</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">migration</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        B2bPartnerTmpDO record = <span class="keyword">new</span> B2bPartnerTmpDO();</span><br><span class="line">        record.setId(<span class="number">100008001L</span>);</span><br><span class="line">        record.setCorpDescription(<span class="string">"22"</span>);</span><br><span class="line">        partnerTmpManager.updateByPrimaryKeySelective(record);</span><br><span class="line"></span><br><span class="line">        singleProcess();<span class="comment">//调用目标对象的方法，不能触发对singleProcess方法的事务增强</span></span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"migration出现异常"</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Transactional</span>(propagation=Propagation.REQUIRES_NEW)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">singleProcess</span><span class="params">()</span></span>&#123;</span><br><span class="line">        B2bPartnerTmpDO record = <span class="keyword">new</span> B2bPartnerTmpDO();</span><br><span class="line">        record.setId(<span class="number">100008002L</span>);</span><br><span class="line">        record.setCorpDescription(<span class="string">"33"</span>);</span><br><span class="line">        partnerTmpManager.updateByPrimaryKeySelective(record);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">结果是migration的sql执行成功，singleProcess方法是新启一个事务，</span><br><span class="line">事务出现异常进行回滚，singleProcess方法sql执行回滚了。</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> MigrationService migrationService;<span class="comment">//引用代理自身的代理对象</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Transactional</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">migration</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        B2bPartnerTmpDO record = <span class="keyword">new</span> B2bPartnerTmpDO();</span><br><span class="line">        record.setId(<span class="number">100008001L</span>);</span><br><span class="line">        record.setCorpDescription(<span class="string">"22"</span>);</span><br><span class="line">        partnerTmpManager.updateByPrimaryKeySelective(record);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//调用代理对象的方法，能触发对singleProcess方法的事务增强</span></span><br><span class="line">            migrationService.singleProcess();</span><br><span class="line">        &#125;<span class="keyword">catch</span> (Exception ex)&#123;</span><br><span class="line">            log.error(<span class="string">"出现异常:"</span>+ex.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Transactional</span>(propagation=Propagation.REQUIRES_NEW)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">singleProcess</span><span class="params">()</span></span>&#123;</span><br><span class="line">        B2bPartnerTmpDO record = <span class="keyword">new</span> B2bPartnerTmpDO();</span><br><span class="line">        record.setId(<span class="number">100008002L</span>);</span><br><span class="line">        record.setCorpDescription(<span class="string">"33"</span>);</span><br><span class="line">        partnerTmpManager.updateByPrimaryKeySelective(record);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"singleProcess出现异常"</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">虽然在migration方法中对singleProcess方法出现的异常进行<span class="keyword">catch</span>了，</span><br><span class="line"><span class="keyword">catch</span>后面的sql语句也能执行下去，但是最终的结果是所有数据库操作都回滚了。</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> MigrationService migrationService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Transactional</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">migration</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        B2bPartnerTmpDO record = <span class="keyword">new</span> B2bPartnerTmpDO();</span><br><span class="line">        record.setId(<span class="number">100008001L</span>);</span><br><span class="line">        record.setCorpDescription(<span class="string">"22"</span>);</span><br><span class="line">        partnerTmpManager.updateByPrimaryKeySelective(record);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//migrationService.singleProcess();</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            migrationService.singleProcess();</span><br><span class="line">        &#125;<span class="keyword">catch</span> (Exception ex)&#123;</span><br><span class="line">            log.error(<span class="string">"出现异常:"</span>+ex.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        B2bPartnerTmpDO record2 = <span class="keyword">new</span> B2bPartnerTmpDO();</span><br><span class="line">        record2.setId(<span class="number">100008003L</span>);</span><br><span class="line">        record2.setCorpDescription(<span class="string">"44"</span>);</span><br><span class="line">        partnerTmpManager.updateByPrimaryKeySelective(record2);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Transactional</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">singleProcess</span><span class="params">()</span></span>&#123;</span><br><span class="line">        B2bPartnerTmpDO record = <span class="keyword">new</span> B2bPartnerTmpDO();</span><br><span class="line">        record.setId(<span class="number">100008002L</span>);</span><br><span class="line">        record.setCorpDescription(<span class="string">"33"</span>);</span><br><span class="line">        partnerTmpManager.updateByPrimaryKeySelective(record);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"singleProcess出现异常"</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/13/性能优化相关linux命令/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/shortfeng/2018/03/13/性能优化相关linux命令/" itemprop="url">性能优化相关linux命令</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-13T16:48:10+08:00">
+                2018-03-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="性能优化相关linux命令"><a href="#性能优化相关linux命令" class="headerlink" title="性能优化相关linux命令"></a>性能优化相关linux命令</h2><hr>
+<h4 id="top命令"><a href="#top命令" class="headerlink" title="top命令"></a>top命令</h4><p>top命令是Linux下常用的性能分析工具，能够实时显示系统中各个进程的资源占用状况，类似于Windows的任务管理器，查看系统平均负载和 CPU 使用率</p>
+<p>平均负载有三个数字：63.66，58.39，57.18，分别表示过去 1 分钟、5 分钟、15 分钟机器的负载。按照经验，若数值小于 0.7*CPU 个数，则系统工作正常；若超过这个值，甚至达到 CPU 核数的四五倍，则系统的负载就明显偏高</p>
+<p>命令格式：<br>top [参数]</p>
+<p>命令功能：<br>显示当前系统正在执行的进程的相关信息，包括进程ID、内存占用率、CPU占用率等</p>
+<p>默认以pid倒序排序<br>命令参数：</p>
+<pre><code>top    [-a | -d | -e | -c &lt;mode&gt;]
+       [-F | -f]
+       [-h]
+       [-i &lt;interval&gt;]
+       [-l &lt;samples&gt;]
+       [-ncols &lt;columns&gt;]
+       [-o &lt;key&gt;] [-O &lt;skey&gt;]
+       [-R | -r]
+       [-S]
+       [-s &lt;delay&gt;]
+       [-n &lt;nprocs&gt;]
+       [-stats &lt;keys&gt;]
+       [-pid &lt;processid&gt;]
+       [-user &lt;username&gt;]
+       [-U &lt;username&gt;]
+       [-u]
+
+ [-a | -d | -e | -c &lt;mode&gt;] 
+ -c &lt;mode&gt;
+    a 累积模式,从top命令执行开始计算
+    d delta模式
+    e 绝对模式，计算事件的绝对数量
+    n 无事件模式，为默认模式
+ -a 等同与-c a，类似的-d、-e 分别等同与-c d、-c e
+
+ [-F | -f]
+ -F 不计算共享内存
+ -f 计算共享内存，默认
+
+ [-h] 打印信息并退出 **这个参数执行不了**
+ [-i &lt;interval&gt;] 每隔多少秒更新信息
+ [-l &lt;samples&gt;]
+ [-ncols &lt;columns&gt;]
+ [-o &lt;key&gt;] [-O &lt;secondaryKey&gt;]
+ -o &lt;key&gt; 第一排序字段
+ -O &lt;secondaryKey&gt; 第二排序字段
+ 支持以下key，key前面可以带上+或-，用于说明倒序还是正序：
+ pid 默认
+ cpu cpu_me CPU time charged to me by other processes.
+ cpu_others  CPU time charged to other processes by me
+ csw 上下文切换次数
+ time 执行时间
+ threads 别名为th，线程数量（总的线程数/运行中线程数）
+ ports 别名prt，机器端口数量
+ mregion 别名mreg, reg，内存区数量
+ mem 内存大小
+ rprvt 常驻私有地址空间大小
+ purg 可移除内存大小
+ vsize  Total memory size.
+ vprvt  Private address space size.
+ kprvt  Private kernel memory size.
+ kshrd  Shared kernel memory size.
+ pgrp   Process group id.
+ ppid   Parent process id.
+ state  alias: pstate Process state.
+ uid    User ID.
+ wq     alias: #wq, workqueue
+              The workqueue total/running.
+
+ faults alias: fault
+              The number of page faults.
+
+ cow    alias: cow_faults
+              The copy-on-write faults.
+
+ user   alias: username Username.
+
+ msgsent Total number of mach messages sent.
+
+ msgrecv Total number of mach messages received.
+
+ sysbsd Total BSD syscalls.
+
+ sysmach Total Mach syscalls.
+
+
+ -R     Do not traverse and  report  the  memory  object  map  for  each
+       process.
+
+-r     Traverse  and report the memory object map for each process (de-
+       fault).
+
+-S     Display the global statistics for swap and purgeable memory.
+
+-s &lt;delay&gt; 每隔多少秒更新显示
+       Set the delay between updates to &lt;delay&gt; seconds.   The  default delay between updates is 1 second.
+
+-stats &lt;keys&gt;
+       Only  display  the  comma separated statistics.  See the -o flag
+       for the valid &lt;keys&gt;.
+
+-pid &lt;processid&gt;
+       Only display &lt;processid&gt; in top.  This option may  be  specified
+       multiple times.
+
+-user &lt;user&gt;
+       Only display processes owned by &lt;user&gt;.
+
+-U &lt;user&gt;
+       This is an alias for -user.
+
+-u     This is an alias equivalent to: -o cpu -O time.
+</code></pre><p>交互式命令：</p>
+<pre><code>?      Display the help screen.  Any character exits help screen  mode.
+       This command always works, even in the middle of a command.
+
+^L     Redraw the screen.
+
+c&lt;mode&gt;
+       Set output mode to &lt;mode&gt;.  The supported modes are:
+
+       a      Accumulative mode.
+
+       d      Delta mode.
+
+       e      Event mode.
+
+       n      Non-event mode.
+
+O&lt;skey&gt;
+       Use &lt;skey&gt; as a secondary key when ordering the process display.
+       See the -o option for key names.
+
+o&lt;key&gt;
+       Order the process display by sorting on &lt;key&gt; in descending  or-
+       der.   A  +  or - can be prefixed to the key name to specify as-
+       cending or descending order, respectively.  The  supported  keys
+       and alises are listed with the -o option above.
+
+q      Quit.
+
+r      Toggle traversal and reporting of the memory object map for each
+       process.
+
+S&lt;signal&gt;&lt;pid&gt;
+       Send &lt;sig&gt; to &lt;pid&gt;.  &lt;sig&gt; can be specified either as a  number
+       or  as a name (for example, HUP).  The default signal starts out
+       as TERM.  Each time a signal is successfully sent,  the  default
+       signal is updated to be that signal.  &lt;pid&gt; is a process id.
+
+s&lt;delay&gt;
+       Set the delay between updates to &lt;delay&gt; seconds.
+U&lt;user&gt;
+       Only  display processes owned by &lt;user&gt;.  Either the username or
+       uid number can be specified.  To display  all  processes,  press
+       enter without entering a username or uid number.
+</code></pre><p>示例：</p>
+<pre><code>top -o cpu -O +rsize -s 5 -n 20
+       Sort the processes according to CPU usage (descending) and resi-
+       dent memory size (ascending), sample and update the display at 5
+       second intervals, and limit the display to 20 processes.
+
+top -c d
+       Run top in delta mode.
+
+top -stats pid,command,cpu,th,pstate,time
+       Display  only the specified statistics, regardless of any growth
+       of the terminal.  If the terminal is too small, only the statis-
+       tics that fit will be displayed.
+</code></pre><p>相关命令：</p>
+<p>kill(2), vm_stat(1), signal(3), vmmap(1)</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/多线程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -387,7 +876,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/ThreadLocal/">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/java lambda/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="changfeng">
@@ -406,7 +895,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/shortfeng/2018/03/12/ThreadLocal/" itemprop="url">ThreadLocal</a></h1>
+                <a class="post-title-link" href="/shortfeng/2018/03/12/java lambda/" itemprop="url">jdk 8 lambda</a></h1>
         
 
         <div class="post-meta">
@@ -458,22 +947,25 @@
       
         
           
-            <h2 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h2><hr>
-<blockquote>
-<ul>
-<li>synchronized 以时间换空间</li>
-<li>ThreadLocal 以空间换时间</li>
-</ul>
-</blockquote>
-<p>Thread类保存了ThreadLocalMap类型的变量, ThreadLocalMap的key为ThreadLoacal对象</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ThreadLocal.ThreadLocalMap threadLocals = <span class="keyword">null</span>;</span><br></pre></td></tr></table></figure>
-<p>ThreadLocal类，支持范型</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>) &#123;</span><br><span class="line">        ThreadLocalMap.Entry e = map.getEntry(<span class="keyword">this</span>);</span><br><span class="line">        <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">            T result = (T)e.value;</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> setInitialValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(T value)</span> </span>&#123;</span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>)</span><br><span class="line">        map.set(<span class="keyword">this</span>, value);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        createMap(t, value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ThreadLocalMap <span class="title">getMap</span><span class="params">(Thread t)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> t.threadLocals;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> T <span class="title">setInitialValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    T value = initialValue();</span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>)</span><br><span class="line">        map.set(<span class="keyword">this</span>, value);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        createMap(t, value);</span><br><span class="line">    <span class="keyword">return</span> value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.sql.Connection;</span><br><span class="line"><span class="keyword">import</span> java.sql.DriverManager;</span><br><span class="line"><span class="keyword">import</span> java.sql.SQLException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConnectionManager</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> ThreadLocal&lt;Connection&gt; connectionHolder = <span class="keyword">new</span> ThreadLocal&lt;Connection&gt;() &#123;</span><br><span class="line">		<span class="meta">@Override</span></span><br><span class="line">		<span class="function"><span class="keyword">protected</span> Connection <span class="title">initialValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			Connection conn = <span class="keyword">null</span>;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				conn = DriverManager.getConnection(</span><br><span class="line">						<span class="string">"jdbc:mysql://localhost:3306/test"</span>, <span class="string">"username"</span>,</span><br><span class="line">						<span class="string">"password"</span>);</span><br><span class="line">			&#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">return</span> conn;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Connection <span class="title">getConnection</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> connectionHolder.get();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setConnection</span><span class="params">(Connection conn)</span> </span>&#123;</span><br><span class="line">		connectionHolder.set(conn);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以创建不同的ThreadLocal实例来实现多个变量在不同线程间的访问隔离，为什么可以这么做？因为不同的ThreadLocal对象作为不同键，当然也可以在线程的ThreadLocalMap对象中设置不同的值了。通过ThreadLocal对象，在多线程中共享一个值和多个值的区别，就像你在一个HashMap对象中存储一个键值对和多个键值对一样，仅此而已</p>
+            <h2 id="jdk-8-lambda"><a href="#jdk-8-lambda" class="headerlink" title="jdk 8 lambda"></a>jdk 8 lambda</h2><hr>
+<p>1、匿名类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、匿名类</span><br><span class="line"><span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"Before Java8, too much code for too little to do"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;).start();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">2</span>、lambda</span><br><span class="line"><span class="keyword">new</span> Thread( () -&gt; System.out.println(<span class="string">"In Java8, Lambda expression rocks !!"</span>) )</span><br><span class="line">.start();</span><br><span class="line"></span><br><span class="line">lambda可以写出如下代码：</span><br><span class="line">(params) -&gt; expression</span><br><span class="line">(params) -&gt; statement</span><br><span class="line">(params) -&gt; &#123; statements &#125;</span><br></pre></td></tr></table></figure>
+<p>2、事件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// Java 8之前：</span></span><br><span class="line">JButton show =  <span class="keyword">new</span> JButton(<span class="string">"Show"</span>);</span><br><span class="line">show.addActionListener(<span class="keyword">new</span> ActionListener() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">actionPerformed</span><span class="params">(ActionEvent e)</span> </span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"Event handling without lambda expression is boring"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Java 8方式：</span></span><br><span class="line">show.addActionListener((e) -&gt; &#123;</span><br><span class="line">    System.out.println(<span class="string">"Light, Camera, Action !! Lambda expressions Rocks"</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>3、迭代</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Java 8之前：</span></span><br><span class="line">List features = Arrays.asList(<span class="string">"Lambdas"</span>, <span class="string">"Default Method"</span>, <span class="string">"Stream API"</span>, <span class="string">"Date and Time API"</span>);</span><br><span class="line"><span class="keyword">for</span> (String feature : features) &#123;</span><br><span class="line">    System.out.println(feature);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Java 8之后：</span></span><br><span class="line">List features = Arrays.asList(<span class="string">"Lambdas"</span>, <span class="string">"Default Method"</span>, <span class="string">"Stream API"</span>, <span class="string">"Date and Time API"</span>);</span><br><span class="line">features.forEach(n -&gt; System.out.println(n));</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 使用Java 8的方法引用更方便，方法引用由::双冒号操作符标示，</span></span><br><span class="line"><span class="comment">// 看起来像C++的作用域解析运算符</span></span><br><span class="line">features.forEach(System.out::println);</span><br></pre></td></tr></table></figure>
+<p>4、函数式接口Predicate</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(args[])</span></span>&#123;</span><br><span class="line">    List languages = Arrays.asList(<span class="string">"Java"</span>, <span class="string">"Scala"</span>, <span class="string">"C++"</span>, <span class="string">"Haskell"</span>, <span class="string">"Lisp"</span>);</span><br><span class="line"> </span><br><span class="line">    System.out.println(<span class="string">"Languages which starts with J :"</span>);</span><br><span class="line">    filter(languages, (str)-&gt;str.startsWith(<span class="string">"J"</span>));</span><br><span class="line"> </span><br><span class="line">    System.out.println(<span class="string">"Languages which ends with a "</span>);</span><br><span class="line">    filter(languages, (str)-&gt;str.endsWith(<span class="string">"a"</span>));</span><br><span class="line"> </span><br><span class="line">    System.out.println(<span class="string">"Print all languages :"</span>);</span><br><span class="line">    filter(languages, (str)-&gt;<span class="keyword">true</span>);</span><br><span class="line"> </span><br><span class="line">    System.out.println(<span class="string">"Print no language : "</span>);</span><br><span class="line">    filter(languages, (str)-&gt;<span class="keyword">false</span>);</span><br><span class="line"> </span><br><span class="line">    System.out.println(<span class="string">"Print language whose length greater than 4:"</span>);</span><br><span class="line">    filter(languages, (str)-&gt;str.length() &gt; <span class="number">4</span>);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">filter</span><span class="params">(List names, Predicate condition)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(String name: names)  &#123;</span><br><span class="line">        <span class="keyword">if</span>(condition.test(name)) &#123;</span><br><span class="line">            System.out.println(name + <span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 更好的办法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">filter</span><span class="params">(List names, Predicate condition)</span> </span>&#123;</span><br><span class="line">    names.stream().filter((name) -&gt; (condition.test(name))).forEach((name) -&gt; &#123;</span><br><span class="line">        System.out.println(name + <span class="string">" "</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">将两个或更多的 Predicate 合成一个</span><br><span class="line"><span class="comment">// 甚至可以用and()、or()和xor()逻辑函数来合并Predicate，</span></span><br><span class="line"><span class="comment">// 例如要找到所有以J开始，长度为四个字母的名字，你可以合并两个Predicate并传入</span></span><br><span class="line">Predicate&lt;String&gt; startsWithJ = (n) -&gt; n.startsWith(<span class="string">"J"</span>);</span><br><span class="line">Predicate&lt;String&gt; fourLetterLong = (n) -&gt; n.length() == <span class="number">4</span>;</span><br><span class="line">names.stream()</span><br><span class="line">    .filter(startsWithJ.and(fourLetterLong))</span><br><span class="line">    .forEach((n) -&gt; </span><br><span class="line">    System.out.print(<span class="string">"nName, which starts with 'J' and four letter long is : "</span> + n));</span><br></pre></td></tr></table></figure>
+<p>5、map、reduce</p>
+<p> reduce() 函数可以将所有值合并成一个</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 不使用lambda表达式为每个订单加上12%的税</span></span><br><span class="line">List costBeforeTax = Arrays.asList(<span class="number">100</span>, <span class="number">200</span>, <span class="number">300</span>, <span class="number">400</span>, <span class="number">500</span>);</span><br><span class="line"><span class="keyword">for</span> (Integer cost : costBeforeTax) &#123;</span><br><span class="line">    <span class="keyword">double</span> price = cost + .<span class="number">12</span>*cost;</span><br><span class="line">    System.out.println(price);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 使用lambda表达式</span></span><br><span class="line">List costBeforeTax = Arrays.asList(<span class="number">100</span>, <span class="number">200</span>, <span class="number">300</span>, <span class="number">400</span>, <span class="number">500</span>);</span><br><span class="line">costBeforeTax.stream().map((cost) -&gt; cost + .<span class="number">12</span>*cost).</span><br><span class="line">forEach(System.out::println);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 为每个订单加上12%的税</span></span><br><span class="line"><span class="comment">// 老方法：</span></span><br><span class="line">List costBeforeTax = Arrays.asList(<span class="number">100</span>, <span class="number">200</span>, <span class="number">300</span>, <span class="number">400</span>, <span class="number">500</span>);</span><br><span class="line"><span class="keyword">double</span> total = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (Integer cost : costBeforeTax) &#123;</span><br><span class="line">    <span class="keyword">double</span> price = cost + .<span class="number">12</span>*cost;</span><br><span class="line">    total = total + price;</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(<span class="string">"Total : "</span> + total);</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 新方法：</span></span><br><span class="line">List costBeforeTax = Arrays.asList(<span class="number">100</span>, <span class="number">200</span>, <span class="number">300</span>, <span class="number">400</span>, <span class="number">500</span>);</span><br><span class="line"><span class="keyword">double</span> bill = costBeforeTax.stream().map((cost) -&gt; cost + .<span class="number">12</span>*cost).</span><br><span class="line">reduce((sum, cost) -&gt; sum + cost).get();</span><br><span class="line">System.out.println(<span class="string">"Total : "</span> + bill);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建一个字符串列表，每个字符串长度大于2</span></span><br><span class="line">List&lt;String&gt; filtered = strList.stream()</span><br><span class="line">.filter(x -&gt; x.length()&gt; <span class="number">2</span>).collect(Collectors.toList());</span><br><span class="line">System.out.printf(<span class="string">"Original List : %s, filtered list : %s %n"</span></span><br><span class="line">, strList, filtered);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将字符串换成大写并用逗号链接起来</span></span><br><span class="line">List&lt;String&gt; G7 = Arrays.asList(<span class="string">"USA"</span>, <span class="string">"Japan"</span>, <span class="string">"France"</span>, <span class="string">"Germany"</span>, <span class="string">"Italy"</span>, <span class="string">"U.K."</span>,<span class="string">"Canada"</span>);</span><br><span class="line">String G7Countries = G7.stream().map(x -&gt; x.toUpperCase()).collect(Collectors.joining(<span class="string">", "</span>));</span><br><span class="line">System.out.println(G7Countries);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 用所有不同的数字创建一个正方形列表</span></span><br><span class="line">List&lt;Integer&gt; numbers = Arrays.asList(<span class="number">9</span>, <span class="number">10</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">7</span>, <span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line">List&lt;Integer&gt; distinct = numbers.stream().map( i -&gt; i*i).distinct().collect(Collectors.toList());</span><br><span class="line">System.out.printf(<span class="string">"Original List : %s,  Square Without duplicates : %s %n"</span>, numbers, distinct);</span><br></pre></td></tr></table></figure>
+<p>6、计算集合元素的最大值、最小值、总和以及平均值</p>
+<p>IntStream、LongStream 和 DoubleStream 等流的类中，有个非常有用的方法叫做 summaryStatistics() 。可以返回 IntSummaryStatistics、LongSummaryStatistics 或者 DoubleSummaryStatistic s，描述流中元素的各种摘要数据。在本例中，我们用这个方法来计算列表的最大值和最小值。它也有 getSum() 和 getAverage() 方法来获得列表的所有元素的总和及平均值。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取数字的个数、最小值、最大值、总和以及平均值</span></span><br><span class="line">List&lt;Integer&gt; primes = Arrays.asList(<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">11</span>, <span class="number">13</span>, <span class="number">17</span>, <span class="number">19</span>, <span class="number">23</span>, <span class="number">29</span>);</span><br><span class="line">IntSummaryStatistics stats = primes.stream().mapToInt((x) -&gt; x).summaryStatistics();</span><br><span class="line">System.out.println(<span class="string">"Highest prime number in List : "</span> + stats.getMax());</span><br><span class="line">System.out.println(<span class="string">"Lowest prime number in List : "</span> + stats.getMin());</span><br><span class="line">System.out.println(<span class="string">"Sum of all prime numbers : "</span> + stats.getSum());</span><br><span class="line">System.out.println(<span class="string">"Average of all prime numbers : "</span> + stats.getAverage());</span><br></pre></td></tr></table></figure>
+<p>7、结束</p>
+<p> 泛型、枚举、自动装箱（Autoboxing）、静态导入、并发API和变量参数</p>
+<p> 1、lambda表达式有个限制，那就是只能引用 final 或 final 局部变量，这就是说不能在lambda内部修改定义在域外的变量</p>
+<p> 2、lambda表达式仅能放入如下代码：预定义使用了 @Functional 注释的函数式接口，自带一个抽象函数的方法，或者SAM（Single Abstract Method 单个抽象方法）类型。这些称为lambda表达式的目标类型，可以用作返回类型，或lambda目标代码的参数。例如，若一个方法接收Runnable、Comparable或者 Callable 接口，都有单个抽象方法，可以传入lambda表达式。类似的，如果一个方法接受声明于 java.util.function 包内的接口，例如 Predicate、Function、Consumer 或 Supplier，那么可以向其传lambda表达式</p>
 
           
         
@@ -652,6 +1144,129 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/mysql总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/shortfeng/2018/03/12/mysql总结/" itemprop="url">mysql常用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-12T17:36:17+08:00">
+                2018-03-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="mysql常用"><a href="#mysql常用" class="headerlink" title="mysql常用"></a>mysql常用</h2><hr>
+<p>1、查找子字符串在字符串中的位置，类似oracle的indexof方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">LOCATE(substr,str), LOCATE(substr,str,pos)</span><br><span class="line"></span><br><span class="line">         第一个语法返回substr在字符串str 的第一个出现的位置。</span><br><span class="line"></span><br><span class="line">         第二个语法返回子符串 substr 在字符串str，从pos处开始的第一次出现的位置。如果substr 不在str 中，则返回值为0 。</span><br></pre></td></tr></table></figure>
+<p>2、ON UPDATE CURRENT_TIMESTAMP<br><code>gmt_modified</code> datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT ‘修改时间’</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/ json序列化、反序列化/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -745,6 +1360,141 @@
 <p>三、<mvc:annotation-driven></mvc:annotation-driven></p>
 <p><mvc:annotation-driven>默认使用jackson序列化、反序列化json</mvc:annotation-driven></p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=<span class="string">"fastJsonConfig"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"com.alibaba.fastjson.support.config.FastJsonConfig"</span>&gt;</span><br><span class="line">    &lt;!-- Default charset --&gt;</span><br><span class="line">    &lt;property name=<span class="string">"charset"</span> value=<span class="string">"UTF-8"</span> /&gt;</span><br><span class="line">    &lt;!-- SerializerFeature --&gt;</span><br><span class="line">    &lt;property name=<span class="string">"serializerFeatures"</span>&gt;</span><br><span class="line">        &lt;list&gt;</span><br><span class="line">            &lt;value&gt;QuoteFieldNames&lt;/value&gt;</span><br><span class="line">            &lt;value&gt;WriteMapNullValue&lt;/value&gt;</span><br><span class="line">        &lt;/list&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- handlermapping，支持<span class="meta">@RequestMapping</span>，<span class="meta">@ResponseBody</span> --&gt;</span><br><span class="line">&lt;mvc:annotation-driven&gt;</span><br><span class="line">    &lt;mvc:message-converters&gt;</span><br><span class="line">        &lt;bean <span class="class"><span class="keyword">class</span></span>=<span class="string">"com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter"</span>&gt;</span><br><span class="line">            &lt;property name=<span class="string">"supportedMediaTypes"</span>&gt;</span><br><span class="line">                &lt;list&gt;</span><br><span class="line">                    &lt;value&gt;application/json;charset=UTF-8&lt;/value&gt;</span><br><span class="line">                    &lt;value&gt;text/html;charset=UTF-8&lt;/value&gt;</span><br><span class="line">                &lt;/list&gt;</span><br><span class="line">            &lt;/property&gt;</span><br><span class="line">            &lt;property name=<span class="string">"fastJsonConfig"</span> ref=<span class="string">"fastJsonConfig"</span>/&gt;</span><br><span class="line">        &lt;/bean&gt;</span><br><span class="line">    &lt;/mvc:message-converters&gt;</span><br><span class="line">&lt;/mvc:annotation-driven&gt;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/dubbo服务调用三次的问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/shortfeng/2018/03/12/dubbo服务调用三次的问题/" itemprop="url">mysql常用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-12T17:36:17+08:00">
+                2018-03-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="dubbo服务被调用三次的问题"><a href="#dubbo服务被调用三次的问题" class="headerlink" title="dubbo服务被调用三次的问题"></a>dubbo服务被调用三次的问题</h2><hr>
+<p>该服务为涉及新增操作的服务，服务调用多次，导致数据保存了多条相同数据<br>出现该问题，排查过程：<br>1、通过查看数据库数据，发现有三条一样的数据，调试服务方代码，发现也进入了三次。<br>最终在服务方打印调用日志，结果为打印了三次</p>
+<p>2、是否消费方也请求了三次，消费方打印日志，消费方且只调用了一次，消费方只调用了一次，服务方且执行了三次，有点摸不到头脑了</p>
+<p>3、百度搜索“dubbo服务莫名调用多次”,发现有人遇到相同问题，网上说有两种情况会导致服务调用多次，一是dubbo架包存在多个，二是服务超时重试导致的</p>
+<p>4、网上说的原因给我提供思路，我就去检查项目中是否存在多个dubbo架包，发现存在两个不同版本的架包，我试着删除其中一个依赖其中一个版本dubbo架包的依赖配置，但是发现不管用，服务方还是调用三次；换另外一种解决方法，在服务提供方配置的暴露的服务地方设置retries属性为0，发现起作用了</p>
+<p>检查修改服务方retries属性为0时</p>
+<p>1、消费方日志：</p>
+<p>org.springframework.web.util.NestedServletException: Request processing failed; nested exception is com.alibaba.dubbo.rpc.RpcException: Failed to invoke the method commitApply in the service com.mhc.spyker.api.service.AdmittanceApplyFacade. Tried 1 times of the providers [192.168.0.105:20882] (1/1) from the registry 172.21.10.42:2181 on the consumer 192.168.0.105 using the dubbo version 2.5.3. Last error is: Invoke remote method timeout. method: commitApply</p>
+<p>Caused by: com.alibaba.dubbo.rpc.RpcException: Failed to invoke the method commitApply in the service com.mhc.spyker.api.service.AdmittanceApplyFacade. Tried 1 times of the providers [192.168.0.105:20882] (1/1) from the registry 172.21.10.42:2181 on the consumer 192.168.0.105 using the dubbo version 2.5.3. Last error is: Invoke remote method timeout. method: commitApply, </p>
+<p>Caused by: com.alibaba.dubbo.remoting.TimeoutException: Waiting server-side response timeout by scan timer. start time: 2018-05-26 00:38:45.035, end time: 2018-05-26 00:38:46.044, client elapsed: 11 ms, server elapsed: 998 ms, timeout: 1000 ms, </p>
+<p>2、服务方日志,打印服务方执行时间，结果为1684ms<br>2018-05-26 00:38:46.697 DEBUG 5913 — [:20882-thread-2] c.m.s.d.d.A.updateById                   : ==&gt; Parameters: 4268340(String), 111(Long)<br>2018-05-26 00:38:46.721 DEBUG 5913 — [:20882-thread-2] c.m.s.d.d.A.updateById                   : &lt;==    Updates: 1<br> Time：24 ms - ID：com.mhc.spyker.dal.dao.AdmittanceApplyRecordDao.updateById<br> Execute SQL： UPDATE b2b_admittance_apply_record SET process_InstanceId=’4268340’ WHERE id=111</p>
+<p>时间：1684<br>2018-05-26 00:39:45.878  INFO 5913 — [dTimer-thread-1] c.a.dubbo.monitor.dubbo.DubboMonitor     :  [DUBBO] Send statistics to monitor zookeeper://172.21.10.42:2181/com.alibaba.dubbo.monitor.MonitorService?dubbo=2.6.0&amp;interface=com.alibaba.dubbo.monitor.MonitorService&amp;pid=5913&amp;timestamp=1527265217854, dubbo version: 2.6.0, current host: 192.168.0.105<br>2018-05-26 00:39:45.880 ERROR 5913 — [dTimer-thread-1] c.a.dubbo.monitor.dubbo.DubboMonitor     :  [DUBBO] Unexpected error occur at send statistic, cause: No provider available from registry 172.21.10.42:2181 for service com.alibaba.dubbo.monitor.MonitorService on consumer 192.168.0.105 use dubbo version 2.6.0, may be providers disabled or not registered ?, dubbo version: 2.6.0, current host: 192.168.0.105</p>
+<p>通过日志能看出服务默认超时时间timeout为1000ms，超时默认最多重试两次，导致该问题的原因服务方的执行时间大于超时时间1000ms，导致重试了两次</p>
+<p>涉及修改操作：</p>
+<p>1、需要把retries设置为0，建议在服务消费方设置</p>
+<p>2、需要在服务方设置timeout属性，建议在服务提供方设置（服务提供方了解服务执行时间）</p>
 
           
         
@@ -1026,543 +1776,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/mysql总结/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="changfeng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/shortfeng/2018/03/12/mysql总结/" itemprop="url">mysql常用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-12T17:36:17+08:00">
-                2018-03-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="mysql常用"><a href="#mysql常用" class="headerlink" title="mysql常用"></a>mysql常用</h2><hr>
-<p>1、查找子字符串在字符串中的位置，类似oracle的indexof方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">LOCATE(substr,str), LOCATE(substr,str,pos)</span><br><span class="line"></span><br><span class="line">         第一个语法返回substr在字符串str 的第一个出现的位置。</span><br><span class="line"></span><br><span class="line">         第二个语法返回子符串 substr 在字符串str，从pos处开始的第一次出现的位置。如果substr 不在str 中，则返回值为0 。</span><br></pre></td></tr></table></figure>
-<p>2、ON UPDATE CURRENT_TIMESTAMP<br><code>gmt_modified</code> datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT ‘修改时间’</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/java lambda/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="changfeng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/shortfeng/2018/03/12/java lambda/" itemprop="url">jdk 8 lambda</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-12T17:36:17+08:00">
-                2018-03-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="jdk-8-lambda"><a href="#jdk-8-lambda" class="headerlink" title="jdk 8 lambda"></a>jdk 8 lambda</h2><hr>
-<p>1、匿名类</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、匿名类</span><br><span class="line"><span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"Before Java8, too much code for too little to do"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;).start();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">2</span>、lambda</span><br><span class="line"><span class="keyword">new</span> Thread( () -&gt; System.out.println(<span class="string">"In Java8, Lambda expression rocks !!"</span>) )</span><br><span class="line">.start();</span><br><span class="line"></span><br><span class="line">lambda可以写出如下代码：</span><br><span class="line">(params) -&gt; expression</span><br><span class="line">(params) -&gt; statement</span><br><span class="line">(params) -&gt; &#123; statements &#125;</span><br></pre></td></tr></table></figure>
-<p>2、事件</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// Java 8之前：</span></span><br><span class="line">JButton show =  <span class="keyword">new</span> JButton(<span class="string">"Show"</span>);</span><br><span class="line">show.addActionListener(<span class="keyword">new</span> ActionListener() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">actionPerformed</span><span class="params">(ActionEvent e)</span> </span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"Event handling without lambda expression is boring"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Java 8方式：</span></span><br><span class="line">show.addActionListener((e) -&gt; &#123;</span><br><span class="line">    System.out.println(<span class="string">"Light, Camera, Action !! Lambda expressions Rocks"</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>3、迭代</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Java 8之前：</span></span><br><span class="line">List features = Arrays.asList(<span class="string">"Lambdas"</span>, <span class="string">"Default Method"</span>, <span class="string">"Stream API"</span>, <span class="string">"Date and Time API"</span>);</span><br><span class="line"><span class="keyword">for</span> (String feature : features) &#123;</span><br><span class="line">    System.out.println(feature);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Java 8之后：</span></span><br><span class="line">List features = Arrays.asList(<span class="string">"Lambdas"</span>, <span class="string">"Default Method"</span>, <span class="string">"Stream API"</span>, <span class="string">"Date and Time API"</span>);</span><br><span class="line">features.forEach(n -&gt; System.out.println(n));</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 使用Java 8的方法引用更方便，方法引用由::双冒号操作符标示，</span></span><br><span class="line"><span class="comment">// 看起来像C++的作用域解析运算符</span></span><br><span class="line">features.forEach(System.out::println);</span><br></pre></td></tr></table></figure>
-<p>4、函数式接口Predicate</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(args[])</span></span>&#123;</span><br><span class="line">    List languages = Arrays.asList(<span class="string">"Java"</span>, <span class="string">"Scala"</span>, <span class="string">"C++"</span>, <span class="string">"Haskell"</span>, <span class="string">"Lisp"</span>);</span><br><span class="line"> </span><br><span class="line">    System.out.println(<span class="string">"Languages which starts with J :"</span>);</span><br><span class="line">    filter(languages, (str)-&gt;str.startsWith(<span class="string">"J"</span>));</span><br><span class="line"> </span><br><span class="line">    System.out.println(<span class="string">"Languages which ends with a "</span>);</span><br><span class="line">    filter(languages, (str)-&gt;str.endsWith(<span class="string">"a"</span>));</span><br><span class="line"> </span><br><span class="line">    System.out.println(<span class="string">"Print all languages :"</span>);</span><br><span class="line">    filter(languages, (str)-&gt;<span class="keyword">true</span>);</span><br><span class="line"> </span><br><span class="line">    System.out.println(<span class="string">"Print no language : "</span>);</span><br><span class="line">    filter(languages, (str)-&gt;<span class="keyword">false</span>);</span><br><span class="line"> </span><br><span class="line">    System.out.println(<span class="string">"Print language whose length greater than 4:"</span>);</span><br><span class="line">    filter(languages, (str)-&gt;str.length() &gt; <span class="number">4</span>);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">filter</span><span class="params">(List names, Predicate condition)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(String name: names)  &#123;</span><br><span class="line">        <span class="keyword">if</span>(condition.test(name)) &#123;</span><br><span class="line">            System.out.println(name + <span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 更好的办法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">filter</span><span class="params">(List names, Predicate condition)</span> </span>&#123;</span><br><span class="line">    names.stream().filter((name) -&gt; (condition.test(name))).forEach((name) -&gt; &#123;</span><br><span class="line">        System.out.println(name + <span class="string">" "</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">将两个或更多的 Predicate 合成一个</span><br><span class="line"><span class="comment">// 甚至可以用and()、or()和xor()逻辑函数来合并Predicate，</span></span><br><span class="line"><span class="comment">// 例如要找到所有以J开始，长度为四个字母的名字，你可以合并两个Predicate并传入</span></span><br><span class="line">Predicate&lt;String&gt; startsWithJ = (n) -&gt; n.startsWith(<span class="string">"J"</span>);</span><br><span class="line">Predicate&lt;String&gt; fourLetterLong = (n) -&gt; n.length() == <span class="number">4</span>;</span><br><span class="line">names.stream()</span><br><span class="line">    .filter(startsWithJ.and(fourLetterLong))</span><br><span class="line">    .forEach((n) -&gt; </span><br><span class="line">    System.out.print(<span class="string">"nName, which starts with 'J' and four letter long is : "</span> + n));</span><br></pre></td></tr></table></figure>
-<p>5、map、reduce</p>
-<p> reduce() 函数可以将所有值合并成一个</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 不使用lambda表达式为每个订单加上12%的税</span></span><br><span class="line">List costBeforeTax = Arrays.asList(<span class="number">100</span>, <span class="number">200</span>, <span class="number">300</span>, <span class="number">400</span>, <span class="number">500</span>);</span><br><span class="line"><span class="keyword">for</span> (Integer cost : costBeforeTax) &#123;</span><br><span class="line">    <span class="keyword">double</span> price = cost + .<span class="number">12</span>*cost;</span><br><span class="line">    System.out.println(price);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 使用lambda表达式</span></span><br><span class="line">List costBeforeTax = Arrays.asList(<span class="number">100</span>, <span class="number">200</span>, <span class="number">300</span>, <span class="number">400</span>, <span class="number">500</span>);</span><br><span class="line">costBeforeTax.stream().map((cost) -&gt; cost + .<span class="number">12</span>*cost).</span><br><span class="line">forEach(System.out::println);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 为每个订单加上12%的税</span></span><br><span class="line"><span class="comment">// 老方法：</span></span><br><span class="line">List costBeforeTax = Arrays.asList(<span class="number">100</span>, <span class="number">200</span>, <span class="number">300</span>, <span class="number">400</span>, <span class="number">500</span>);</span><br><span class="line"><span class="keyword">double</span> total = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (Integer cost : costBeforeTax) &#123;</span><br><span class="line">    <span class="keyword">double</span> price = cost + .<span class="number">12</span>*cost;</span><br><span class="line">    total = total + price;</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(<span class="string">"Total : "</span> + total);</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 新方法：</span></span><br><span class="line">List costBeforeTax = Arrays.asList(<span class="number">100</span>, <span class="number">200</span>, <span class="number">300</span>, <span class="number">400</span>, <span class="number">500</span>);</span><br><span class="line"><span class="keyword">double</span> bill = costBeforeTax.stream().map((cost) -&gt; cost + .<span class="number">12</span>*cost).</span><br><span class="line">reduce((sum, cost) -&gt; sum + cost).get();</span><br><span class="line">System.out.println(<span class="string">"Total : "</span> + bill);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建一个字符串列表，每个字符串长度大于2</span></span><br><span class="line">List&lt;String&gt; filtered = strList.stream()</span><br><span class="line">.filter(x -&gt; x.length()&gt; <span class="number">2</span>).collect(Collectors.toList());</span><br><span class="line">System.out.printf(<span class="string">"Original List : %s, filtered list : %s %n"</span></span><br><span class="line">, strList, filtered);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将字符串换成大写并用逗号链接起来</span></span><br><span class="line">List&lt;String&gt; G7 = Arrays.asList(<span class="string">"USA"</span>, <span class="string">"Japan"</span>, <span class="string">"France"</span>, <span class="string">"Germany"</span>, <span class="string">"Italy"</span>, <span class="string">"U.K."</span>,<span class="string">"Canada"</span>);</span><br><span class="line">String G7Countries = G7.stream().map(x -&gt; x.toUpperCase()).collect(Collectors.joining(<span class="string">", "</span>));</span><br><span class="line">System.out.println(G7Countries);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 用所有不同的数字创建一个正方形列表</span></span><br><span class="line">List&lt;Integer&gt; numbers = Arrays.asList(<span class="number">9</span>, <span class="number">10</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">7</span>, <span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line">List&lt;Integer&gt; distinct = numbers.stream().map( i -&gt; i*i).distinct().collect(Collectors.toList());</span><br><span class="line">System.out.printf(<span class="string">"Original List : %s,  Square Without duplicates : %s %n"</span>, numbers, distinct);</span><br></pre></td></tr></table></figure>
-<p>6、计算集合元素的最大值、最小值、总和以及平均值</p>
-<p>IntStream、LongStream 和 DoubleStream 等流的类中，有个非常有用的方法叫做 summaryStatistics() 。可以返回 IntSummaryStatistics、LongSummaryStatistics 或者 DoubleSummaryStatistic s，描述流中元素的各种摘要数据。在本例中，我们用这个方法来计算列表的最大值和最小值。它也有 getSum() 和 getAverage() 方法来获得列表的所有元素的总和及平均值。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取数字的个数、最小值、最大值、总和以及平均值</span></span><br><span class="line">List&lt;Integer&gt; primes = Arrays.asList(<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">11</span>, <span class="number">13</span>, <span class="number">17</span>, <span class="number">19</span>, <span class="number">23</span>, <span class="number">29</span>);</span><br><span class="line">IntSummaryStatistics stats = primes.stream().mapToInt((x) -&gt; x).summaryStatistics();</span><br><span class="line">System.out.println(<span class="string">"Highest prime number in List : "</span> + stats.getMax());</span><br><span class="line">System.out.println(<span class="string">"Lowest prime number in List : "</span> + stats.getMin());</span><br><span class="line">System.out.println(<span class="string">"Sum of all prime numbers : "</span> + stats.getSum());</span><br><span class="line">System.out.println(<span class="string">"Average of all prime numbers : "</span> + stats.getAverage());</span><br></pre></td></tr></table></figure>
-<p>7、结束</p>
-<p> 泛型、枚举、自动装箱（Autoboxing）、静态导入、并发API和变量参数</p>
-<p> 1、lambda表达式有个限制，那就是只能引用 final 或 final 局部变量，这就是说不能在lambda内部修改定义在域外的变量</p>
-<p> 2、lambda表达式仅能放入如下代码：预定义使用了 @Functional 注释的函数式接口，自带一个抽象函数的方法，或者SAM（Single Abstract Method 单个抽象方法）类型。这些称为lambda表达式的目标类型，可以用作返回类型，或lambda目标代码的参数。例如，若一个方法接收Runnable、Comparable或者 Callable 接口，都有单个抽象方法，可以传入lambda表达式。类似的，如果一个方法接受声明于 java.util.function 包内的接口，例如 Predicate、Function、Consumer 或 Supplier，那么可以向其传lambda表达式</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/mvn/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="changfeng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/shortfeng/2018/03/12/mvn/" itemprop="url">mvn</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-12T17:36:17+08:00">
-                2018-03-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="mvn"><a href="#mvn" class="headerlink" title="mvn"></a>mvn</h2><hr>
-<p>1、使用以下命令做一次构建</p>
-<p>mvn clean install</p>
-<p>2、可以通过以下的构建命令来跳过单元测试</p>
-<p>mvn install -Dmaven.test.skip</p>
-<p>3、架包推送<br>mvn clean package deploy -Dmaven.test.skip=true</p>
-<p>4、冲突解决</p>
-<p>mvn dependency:tree -Dverbose -Dincludes=commons-logging:commons-loggging</p>
-<p>这条命令可以打印出所有依赖了groupId和artifactId都为commons-logging的jar包的依赖路径。</p>
-<p>mvn dependency:tree -Dverbose -Dincludes=org.mybatis:mybatis -l /Users/user/log.txt<br>mvn dependency:tree -Dverbose -Dincludes=org.mybatis:mybatis –&gt; /Users/user/log.txt<br>输出到文件</p>
-<p>-D 指定参数，如 -Dmaven.test.skip=true 跳过单元测试；</p>
-<h4 id="原则："><a href="#原则：" class="headerlink" title="原则："></a>原则：</h4><p>1、第一声明优先原则</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line">&lt;!--   spring-beans-<span class="number">4.2</span>.4 --&gt;</span><br><span class="line">  	&lt;dependency&gt;</span><br><span class="line">  		&lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">  		&lt;artifactId&gt;spring-context&lt;/artifactId&gt;</span><br><span class="line">  		&lt;version&gt;4.2.4.RELEASE&lt;/version&gt;</span><br><span class="line">  	&lt;/dependency&gt;</span><br><span class="line">  </span><br><span class="line">&lt;!--   spring-beans-<span class="number">3.0</span>.5 --&gt;</span><br><span class="line">  	&lt;dependency&gt;</span><br><span class="line">  		&lt;groupId&gt;org.apache.struts&lt;/groupId&gt;</span><br><span class="line">  		&lt;artifactId&gt;struts2-spring-plugin&lt;/artifactId&gt;</span><br><span class="line">  		&lt;version&gt;2.3.24&lt;/version&gt;</span><br><span class="line">  	&lt;/dependency&gt;</span><br><span class="line">&lt;/dependencies&gt;</span><br></pre></td></tr></table></figure>
-<p>2、路径近者优先原则</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  	&lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">  	&lt;artifactId&gt;spring-beans&lt;/artifactId&gt;</span><br><span class="line">  	&lt;version&gt;4.2.4.RELEASE&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
-<p>3、排除原则</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  	&lt;groupId&gt;org.apache.struts&lt;/groupId&gt;</span><br><span class="line">  	&lt;artifactId&gt;struts2-spring-plugin&lt;/artifactId&gt;</span><br><span class="line">  	&lt;version&gt;2.3.24&lt;/version&gt;</span><br><span class="line">  	&lt;exclusions&gt;</span><br><span class="line">  	   &lt;exclusion&gt;</span><br><span class="line">  	      &lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">  	      &lt;artifactId&gt;spring-beans&lt;/artifactId&gt;</span><br><span class="line">  	   &lt;/exclusion&gt;</span><br><span class="line">       &lt;/exclusions&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
-<p>4、版本锁定原则</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;properties&gt;</span><br><span class="line">	&lt;spring.version&gt;4.2.4.RELEASE&lt;/spring.version&gt;</span><br><span class="line">	&lt;hibernate.version&gt;5.0.7.Final&lt;/hibernate.version&gt;</span><br><span class="line">	&lt;struts.version&gt;2.3.24&lt;/struts.version&gt;</span><br><span class="line">&lt;/properties&gt;</span><br><span class="line"> </span><br><span class="line">&lt;!-- 锁定版本，struts2-<span class="number">2.3</span>.24、spring4.2.4、hibernate5.0.7 --&gt;</span><br><span class="line">&lt;dependencyManagement&gt;</span><br><span class="line">	&lt;dependencies&gt;</span><br><span class="line">		&lt;dependency&gt;</span><br><span class="line">			&lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">			&lt;artifactId&gt;spring-context&lt;/artifactId&gt;</span><br><span class="line">			&lt;version&gt;$&#123;spring.version&#125;&lt;/version&gt;</span><br><span class="line">		&lt;/dependency&gt;</span><br><span class="line">        &lt;/dependencies&gt;</span><br><span class="line">&lt;/dependencyManagement&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="dependencies与dependencyManagement区别"><a href="#dependencies与dependencyManagement区别" class="headerlink" title="dependencies与dependencyManagement区别"></a>dependencies与dependencyManagement区别</h4><p>dependencyManagement只会影响现有依赖的配置，但不会引入依赖</p>
-<p>dependencies即使在子项目中不写该依赖项，那么子项目仍然会从父项目中继承该依赖项（全部继承）</p>
-<p>dependencyManagement里只是声明依赖，并不实现引入，因此子项目需要显示的声明需要用的依赖。如果不在子项目中声明依赖，是不会从父项目中继承下来的；只有在子项目中写了该依赖项，并且没有指定具体版本，才会从父项目中继承该项，并且version和scope都读取自父pom;另外如果子项目中指定了版本号，那么会使用子项目中指定的jar版本。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/dubbo服务调用三次的问题/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="changfeng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/shortfeng/2018/03/12/dubbo服务调用三次的问题/" itemprop="url">mysql常用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-12T17:36:17+08:00">
-                2018-03-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="dubbo服务被调用三次的问题"><a href="#dubbo服务被调用三次的问题" class="headerlink" title="dubbo服务被调用三次的问题"></a>dubbo服务被调用三次的问题</h2><hr>
-<p>该服务为涉及新增操作的服务，服务调用多次，导致数据保存了多条相同数据<br>出现该问题，排查过程：<br>1、通过查看数据库数据，发现有三条一样的数据，调试服务方代码，发现也进入了三次。<br>最终在服务方打印调用日志，结果为打印了三次</p>
-<p>2、是否消费方也请求了三次，消费方打印日志，消费方且只调用了一次，消费方只调用了一次，服务方且执行了三次，有点摸不到头脑了</p>
-<p>3、百度搜索“dubbo服务莫名调用多次”,发现有人遇到相同问题，网上说有两种情况会导致服务调用多次，一是dubbo架包存在多个，二是服务超时重试导致的</p>
-<p>4、网上说的原因给我提供思路，我就去检查项目中是否存在多个dubbo架包，发现存在两个不同版本的架包，我试着删除其中一个依赖其中一个版本dubbo架包的依赖配置，但是发现不管用，服务方还是调用三次；换另外一种解决方法，在服务提供方配置的暴露的服务地方设置retries属性为0，发现起作用了</p>
-<p>检查修改服务方retries属性为0时</p>
-<p>1、消费方日志：</p>
-<p>org.springframework.web.util.NestedServletException: Request processing failed; nested exception is com.alibaba.dubbo.rpc.RpcException: Failed to invoke the method commitApply in the service com.mhc.spyker.api.service.AdmittanceApplyFacade. Tried 1 times of the providers [192.168.0.105:20882] (1/1) from the registry 172.21.10.42:2181 on the consumer 192.168.0.105 using the dubbo version 2.5.3. Last error is: Invoke remote method timeout. method: commitApply</p>
-<p>Caused by: com.alibaba.dubbo.rpc.RpcException: Failed to invoke the method commitApply in the service com.mhc.spyker.api.service.AdmittanceApplyFacade. Tried 1 times of the providers [192.168.0.105:20882] (1/1) from the registry 172.21.10.42:2181 on the consumer 192.168.0.105 using the dubbo version 2.5.3. Last error is: Invoke remote method timeout. method: commitApply, </p>
-<p>Caused by: com.alibaba.dubbo.remoting.TimeoutException: Waiting server-side response timeout by scan timer. start time: 2018-05-26 00:38:45.035, end time: 2018-05-26 00:38:46.044, client elapsed: 11 ms, server elapsed: 998 ms, timeout: 1000 ms, </p>
-<p>2、服务方日志,打印服务方执行时间，结果为1684ms<br>2018-05-26 00:38:46.697 DEBUG 5913 — [:20882-thread-2] c.m.s.d.d.A.updateById                   : ==&gt; Parameters: 4268340(String), 111(Long)<br>2018-05-26 00:38:46.721 DEBUG 5913 — [:20882-thread-2] c.m.s.d.d.A.updateById                   : &lt;==    Updates: 1<br> Time：24 ms - ID：com.mhc.spyker.dal.dao.AdmittanceApplyRecordDao.updateById<br> Execute SQL： UPDATE b2b_admittance_apply_record SET process_InstanceId=’4268340’ WHERE id=111</p>
-<p>时间：1684<br>2018-05-26 00:39:45.878  INFO 5913 — [dTimer-thread-1] c.a.dubbo.monitor.dubbo.DubboMonitor     :  [DUBBO] Send statistics to monitor zookeeper://172.21.10.42:2181/com.alibaba.dubbo.monitor.MonitorService?dubbo=2.6.0&amp;interface=com.alibaba.dubbo.monitor.MonitorService&amp;pid=5913&amp;timestamp=1527265217854, dubbo version: 2.6.0, current host: 192.168.0.105<br>2018-05-26 00:39:45.880 ERROR 5913 — [dTimer-thread-1] c.a.dubbo.monitor.dubbo.DubboMonitor     :  [DUBBO] Unexpected error occur at send statistic, cause: No provider available from registry 172.21.10.42:2181 for service com.alibaba.dubbo.monitor.MonitorService on consumer 192.168.0.105 use dubbo version 2.6.0, may be providers disabled or not registered ?, dubbo version: 2.6.0, current host: 192.168.0.105</p>
-<p>通过日志能看出服务默认超时时间timeout为1000ms，超时默认最多重试两次，导致该问题的原因服务方的执行时间大于超时时间1000ms，导致重试了两次</p>
-<p>涉及修改操作：</p>
-<p>1、需要把retries设置为0，建议在服务消费方设置</p>
-<p>2、需要在服务方设置timeout属性，建议在服务提供方设置（服务提供方了解服务执行时间）</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1613,7 +1826,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/shortfeng/archives/">
-                <span class="site-state-item-count">44</span>
+                <span class="site-state-item-count">46</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
