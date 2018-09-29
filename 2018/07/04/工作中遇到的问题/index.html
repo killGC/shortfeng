@@ -101,7 +101,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="工作中遇到的问题1、架包冲突（经常出现）今天遇到了很奇葩的问题，应用部署到预发环境，报mybatis的某个类的方法不存在，检查应用中的mybatis依赖包中是有该方法的，后面尝试用线上的部署应用程序包部署到预发环境，还是报相同的问题；后面检查mvn依赖包关系图，也没有发现有mybatis的包有多个版本，后面实在没有办法，把应用程序包从服务器上下载下来，检查程序包中lib下面有哪些架包，发现myba">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-29T03:45:46.000Z">
+<meta property="og:updated_time" content="2018-09-29T12:15:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="工作中遇到的问题">
 <meta name="twitter:description" content="工作中遇到的问题1、架包冲突（经常出现）今天遇到了很奇葩的问题，应用部署到预发环境，报mybatis的某个类的方法不存在，检查应用中的mybatis依赖包中是有该方法的，后面尝试用线上的部署应用程序包部署到预发环境，还是报相同的问题；后面检查mvn依赖包关系图，也没有发现有mybatis的包有多个版本，后面实在没有办法，把应用程序包从服务器上下载下来，检查程序包中lib下面有哪些架包，发现myba">
@@ -346,8 +346,15 @@
 <p>6、两次相同查询中间插入数据，第一次查询没有查到数据，第二次查询也没有查到数据</p>
 <p>正常结果为第二次查询要能查到数据，导致的原因为mybatis默认针对相同的statementId+sql作为key缓存查询结果，导致第二次查询未到数据执行查询，直接返回缓存中的数据</p>
 <p>解决方法，把mapper中的查询statement的useCache设置成false</p>
-<p>mybatis缓存：<br>1、一级缓存 针对sqlsession，相同sqlsession会缓存相同查询的结果<br>2、二级缓存 针对mapper，全局sqlsession共享</p>
-
+<p>mybatis缓存：<br>（1）、一级缓存 针对sqlsession，相同sqlsession会缓存相同查询的结果<br>（2）、二级缓存 针对mapper，全局sqlsession共享</p>
+<p>7、mysql<br>You can’t specify target table for update in FROM clause</p>
+<p>解决方法：select的结果再通过一个中间表select多一次，就可以避免这个错误</p>
+<p>8、service事务方法上有切面，在切面上有对service方法进行try catch，导致方法抛出异常后事务未回滚</p>
+<p>解决方法：</p>
+<p>（1）、在切面处理中不对service方法调用进行try catch</p>
+<p>（2）、@Order定义service方法的@Transactional注解及切面的执行顺序</p>
+<p>9、service（实现接口）实现方法有自定义注解并且有切面，在切面中获取方法签名，导致通过方法签名获取注解获取不到</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">MethodSignature methodSignature = (MethodSignature) pjp.getSignature();</span><br><span class="line"></span><br><span class="line">InterfaceLog interfaceLog = methodSignature.getMethod().getAnnotation(InterfaceLog.class);</span><br><span class="line"></span><br><span class="line">解决方法：</span><br><span class="line">（<span class="number">1</span>）</span><br><span class="line"><span class="function"><span class="keyword">private</span> Datasource <span class="title">getDatasource</span><span class="params">(JoinPoint joinPoint)</span> <span class="keyword">throws</span> SecurityException,NoSuchMethodException</span>&#123;</span><br><span class="line">Method proxyMethod = ((MethodSignature)joinPoint.getSignature()).getMethod();</span><br><span class="line">Method soruceMethod = joinPoint.getTarget().getClass().getMethod(proxyMethod.getName(), proxyMethod.getParameterTypes());</span><br><span class="line">Datasource datasource = soruceMethod.getAnnotation(Datasource.class);</span><br><span class="line"><span class="keyword">if</span>(datasource!=<span class="keyword">null</span>)&#123;</span><br><span class="line">	<span class="keyword">return</span> datasource ;</span><br><span class="line">&#125;</span><br><span class="line">datasource = joinPoint.getTarget().getClass().getAnnotation(Datasource.class);</span><br><span class="line"><span class="keyword">return</span> datasource;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">（<span class="number">2</span>)、&lt;aop:aspectj-autoproxy proxy-target-<span class="class"><span class="keyword">class</span></span>=<span class="string">"true"</span>/&gt; 改成动态代理</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -460,7 +467,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/shortfeng/archives/">
-                <span class="site-state-item-count">46</span>
+                <span class="site-state-item-count">47</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

@@ -94,17 +94,13 @@
 
 
 
-<meta name="description" content="支付系统的思考 支付系统特点：   写多读少，读写分离方案效果不明显 事务强一致性，事务ACID，强调Consistency（一致性）和Availability（可用性），数据库一般用关系数据库。   防重提交策略  乐观锁：通过唯一索引锁住记录（行级锁），UPDATE tab1 SET col1=1,version=version+1 WHERE id=#id# and version=#ver">
-<meta property="og:type" content="article">
-<meta property="og:title" content="支付">
-<meta property="og:url" content="https://killgc.github.io/shortfeng/2018/04/04/支付/index.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="https://killgc.github.io/shortfeng/archives/2018/09/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="支付系统的思考 支付系统特点：   写多读少，读写分离方案效果不明显 事务强一致性，事务ACID，强调Consistency（一致性）和Availability（可用性），数据库一般用关系数据库。   防重提交策略  乐观锁：通过唯一索引锁住记录（行级锁），UPDATE tab1 SET col1=1,version=version+1 WHERE id=#id# and version=#ver">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-03T16:36:19.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="支付">
-<meta name="twitter:description" content="支付系统的思考 支付系统特点：   写多读少，读写分离方案效果不明显 事务强一致性，事务ACID，强调Consistency（一致性）和Availability（可用性），数据库一般用关系数据库。   防重提交策略  乐观锁：通过唯一索引锁住记录（行级锁），UPDATE tab1 SET col1=1,version=version+1 WHERE id=#id# and version=#ver">
+<meta name="twitter:title" content="Hexo">
 
 
 
@@ -133,13 +129,13 @@
 
 
 
-  <link rel="canonical" href="https://killgc.github.io/shortfeng/2018/04/04/支付/"/>
+  <link rel="canonical" href="https://killgc.github.io/shortfeng/archives/2018/09/"/>
 
 
 
 
 
-  <title>支付 | Hexo</title>
+  <title>归档 | Hexo</title>
   
 
 
@@ -164,7 +160,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail ">
+  <div class="container sidebar-position-left  page-archive  ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -248,166 +244,73 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
+  
+  
+  
+  <div class="post-block archive">
+    <div id="posts" class="posts-collapse">
+      <span class="archive-move-on"></span>
 
-  
+      <span class="archive-page-counter">
+        
+        
+         
+        
+        OK! 目前共计 47 篇日志。 继续努力。
+      </span>
 
-  
-  
-  
+      
+
+        
+        
+        
+
+        
+          
+          <div class="collection-title">
+            <h2 class="archive-year motion-element" id="archive-year-2018">2018</h2>
+          </div>
+        
+        
+
+        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/04/04/支付/">
+    <header class="post-header">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="changfeng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
+      <h2 class="post-title">
         
-        
-          <h1 class="post-title" itemprop="name headline">支付</h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
+            <a class="post-title-link" href="/shortfeng/2018/09/05/解决方案/" itemprop="url">
               
-                <span class="post-meta-item-text">发表于</span>
+                <span itemprop="name">解决方案</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-04T00:03:00+08:00">
-                2018-04-04
-              </time>
-            
+            </a>
+        
+      </h2>
 
-            
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2018-09-05T23:06:00+08:00"
+              content="2018-09-05" >
+          09-05
+        </time>
+      </div>
 
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <h2 id="支付系统的思考"><a href="#支付系统的思考" class="headerlink" title="支付系统的思考"></a>支付系统的思考</h2><hr>
-<p>支付系统特点：</p>
-<blockquote>
-<ul>
-<li>写多读少，读写分离方案效果不明显</li>
-<li>事务强一致性，事务ACID，强调Consistency（一致性）和Availability（可用性），数据库一般用关系数据库。</li>
-</ul>
-</blockquote>
-<h4 id="防重提交策略"><a href="#防重提交策略" class="headerlink" title="防重提交策略"></a>防重提交策略</h4><blockquote>
-<ul>
-<li><p>乐观锁：通过唯一索引锁住记录（行级锁），UPDATE tab1 SET col1=1,version=version+1 WHERE id=#id# and version=#version#</p>
-</li>
-<li><p>悲观锁：select * from table_xxx where id=’xxx’ for update，id字段一定是主键或者唯一索引，不然是锁表，悲观锁使用时一般伴随事务一起使用，数据锁定时间可能会很长，根据实际情况选用</p>
-</li>
-<li><p>防重表：唯一索引导致插入失败</p>
-</li>
-<li>分布式锁：redis分布式锁</li>
-<li>Token：分为两步，第一步申请Token，第二步拿申请到Token发起请求。可以设置Token过期时间</li>
-<li>支付缓冲：把支付请求快速接下来，后续再启异步任务处理，可以过滤掉重复的支付订单。优点是<br>高吞吐；缺点是不能及时返回处理结果，后续需要监听支付结果的异步返回</li>
-<li>状态机：如果状态机已经处于下一个状态，这时候来了一个上一个状态的变更，理论上是不能够变更的</li>
-</ul>
-</blockquote>
-
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/shortfeng/2018/04/01/redis/" rel="next" title="redis">
-                <i class="fa fa-chevron-left"></i> redis
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/shortfeng/2018/04/04/跨域问题/" rel="prev" title="跨域问题">
-                跨域问题 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+    </header>
   </article>
 
 
 
-    <div class="post-spread">
       
+
     </div>
   </div>
+  
+  
+  
+
+  
+
 
 
           </div>
@@ -415,10 +318,6 @@
 
 
           
-  <div class="comments" id="comments">
-    
-  </div>
-
 
         </div>
         
@@ -439,17 +338,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/shortfeng/images/avatar.gif"
@@ -493,22 +383,6 @@
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#支付系统的思考"><span class="nav-number">1.</span> <span class="nav-text">支付系统的思考</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#防重提交策略"><span class="nav-number">1.0.1.</span> <span class="nav-text">防重提交策略</span></a></li></ol></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -622,9 +496,11 @@
   
 
   
-  <script type="text/javascript" src="/shortfeng/js/src/scrollspy.js?v=5.1.2"></script>
-<script type="text/javascript" src="/shortfeng/js/src/post-details.js?v=5.1.2"></script>
-
+  
+    <script type="text/javascript" id="motion.page.archive">
+      $('.archive-year').velocity('transition.slideLeftIn');
+    </script>
+  
 
 
   

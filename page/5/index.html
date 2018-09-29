@@ -260,7 +260,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/ThreadLocal/">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/OLTP、OLAP/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="changfeng">
@@ -279,7 +279,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/shortfeng/2018/03/12/ThreadLocal/" itemprop="url">ThreadLocal</a></h1>
+                <a class="post-title-link" href="/shortfeng/2018/03/12/OLTP、OLAP/" itemprop="url">OLTP、OLAP</a></h1>
         
 
         <div class="post-meta">
@@ -331,22 +331,17 @@
       
         
           
-            <h2 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h2><hr>
-<blockquote>
-<ul>
-<li>synchronized 以时间换空间</li>
-<li>ThreadLocal 以空间换时间</li>
-</ul>
-</blockquote>
-<p>Thread类保存了ThreadLocalMap类型的变量, ThreadLocalMap的key为ThreadLoacal对象</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ThreadLocal.ThreadLocalMap threadLocals = <span class="keyword">null</span>;</span><br></pre></td></tr></table></figure>
-<p>ThreadLocal类，支持范型</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>) &#123;</span><br><span class="line">        ThreadLocalMap.Entry e = map.getEntry(<span class="keyword">this</span>);</span><br><span class="line">        <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">            T result = (T)e.value;</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> setInitialValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(T value)</span> </span>&#123;</span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>)</span><br><span class="line">        map.set(<span class="keyword">this</span>, value);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        createMap(t, value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ThreadLocalMap <span class="title">getMap</span><span class="params">(Thread t)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> t.threadLocals;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> T <span class="title">setInitialValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    T value = initialValue();</span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>)</span><br><span class="line">        map.set(<span class="keyword">this</span>, value);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        createMap(t, value);</span><br><span class="line">    <span class="keyword">return</span> value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.sql.Connection;</span><br><span class="line"><span class="keyword">import</span> java.sql.DriverManager;</span><br><span class="line"><span class="keyword">import</span> java.sql.SQLException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConnectionManager</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> ThreadLocal&lt;Connection&gt; connectionHolder = <span class="keyword">new</span> ThreadLocal&lt;Connection&gt;() &#123;</span><br><span class="line">		<span class="meta">@Override</span></span><br><span class="line">		<span class="function"><span class="keyword">protected</span> Connection <span class="title">initialValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			Connection conn = <span class="keyword">null</span>;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				conn = DriverManager.getConnection(</span><br><span class="line">						<span class="string">"jdbc:mysql://localhost:3306/test"</span>, <span class="string">"username"</span>,</span><br><span class="line">						<span class="string">"password"</span>);</span><br><span class="line">			&#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">return</span> conn;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Connection <span class="title">getConnection</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> connectionHolder.get();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setConnection</span><span class="params">(Connection conn)</span> </span>&#123;</span><br><span class="line">		connectionHolder.set(conn);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以创建不同的ThreadLocal实例来实现多个变量在不同线程间的访问隔离，为什么可以这么做？因为不同的ThreadLocal对象作为不同键，当然也可以在线程的ThreadLocalMap对象中设置不同的值了。通过ThreadLocal对象，在多线程中共享一个值和多个值的区别，就像你在一个HashMap对象中存储一个键值对和多个键值对一样，仅此而已</p>
+            <h2 id="OLTP、OLAP"><a href="#OLTP、OLAP" class="headerlink" title="OLTP、OLAP"></a>OLTP、OLAP</h2><hr>
+<p>OLTP（on-line transaction processing），联机事务处理</p>
+<p>特点：</p>
+<p>1、实时性要求高</p>
+<p>2、DML多</p>
+<p>3、处理时间短</p>
+<p>OLAP（On-Line Analytical Processing），联机分析处理</p>
+<p>特点：</p>
+<p>1、实时性要求不是很高</p>
+<p>2、DML少，读多</p>
+<p>3、数据量大</p>
 
           
         
@@ -395,7 +390,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/mvn/">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/ json序列化、反序列化/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="changfeng">
@@ -414,7 +409,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/shortfeng/2018/03/12/mvn/" itemprop="url">mvn</a></h1>
+                <a class="post-title-link" href="/shortfeng/2018/03/12/ json序列化、反序列化/" itemprop="url">json序列化、反序列化</a></h1>
         
 
         <div class="post-meta">
@@ -466,28 +461,154 @@
       
         
           
-            <h2 id="mvn"><a href="#mvn" class="headerlink" title="mvn"></a>mvn</h2><hr>
-<p>1、使用以下命令做一次构建</p>
-<p>mvn clean install</p>
-<p>2、可以通过以下的构建命令来跳过单元测试</p>
-<p>mvn install -Dmaven.test.skip</p>
-<p>3、架包推送<br>mvn clean package deploy -Dmaven.test.skip=true</p>
-<p>4、冲突解决</p>
-<p>mvn dependency:tree -Dverbose -Dincludes=commons-logging:commons-loggging</p>
-<p>这条命令可以打印出所有依赖了groupId和artifactId都为commons-logging的jar包的依赖路径。</p>
-<p>mvn dependency:tree -Dverbose -Dincludes=org.mybatis:mybatis -l /Users/user/log.txt<br>mvn dependency:tree -Dverbose -Dincludes=org.mybatis:mybatis –&gt; /Users/user/log.txt<br>输出到文件</p>
-<p>-D 指定参数，如 -Dmaven.test.skip=true 跳过单元测试；</p>
-<h4 id="原则："><a href="#原则：" class="headerlink" title="原则："></a>原则：</h4><p>1、第一声明优先原则</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line">&lt;!--   spring-beans-<span class="number">4.2</span>.4 --&gt;</span><br><span class="line">  	&lt;dependency&gt;</span><br><span class="line">  		&lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">  		&lt;artifactId&gt;spring-context&lt;/artifactId&gt;</span><br><span class="line">  		&lt;version&gt;4.2.4.RELEASE&lt;/version&gt;</span><br><span class="line">  	&lt;/dependency&gt;</span><br><span class="line">  </span><br><span class="line">&lt;!--   spring-beans-<span class="number">3.0</span>.5 --&gt;</span><br><span class="line">  	&lt;dependency&gt;</span><br><span class="line">  		&lt;groupId&gt;org.apache.struts&lt;/groupId&gt;</span><br><span class="line">  		&lt;artifactId&gt;struts2-spring-plugin&lt;/artifactId&gt;</span><br><span class="line">  		&lt;version&gt;2.3.24&lt;/version&gt;</span><br><span class="line">  	&lt;/dependency&gt;</span><br><span class="line">&lt;/dependencies&gt;</span><br></pre></td></tr></table></figure>
-<p>2、路径近者优先原则</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  	&lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">  	&lt;artifactId&gt;spring-beans&lt;/artifactId&gt;</span><br><span class="line">  	&lt;version&gt;4.2.4.RELEASE&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
-<p>3、排除原则</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  	&lt;groupId&gt;org.apache.struts&lt;/groupId&gt;</span><br><span class="line">  	&lt;artifactId&gt;struts2-spring-plugin&lt;/artifactId&gt;</span><br><span class="line">  	&lt;version&gt;2.3.24&lt;/version&gt;</span><br><span class="line">  	&lt;exclusions&gt;</span><br><span class="line">  	   &lt;exclusion&gt;</span><br><span class="line">  	      &lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">  	      &lt;artifactId&gt;spring-beans&lt;/artifactId&gt;</span><br><span class="line">  	   &lt;/exclusion&gt;</span><br><span class="line">       &lt;/exclusions&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
-<p>4、版本锁定原则</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;properties&gt;</span><br><span class="line">	&lt;spring.version&gt;4.2.4.RELEASE&lt;/spring.version&gt;</span><br><span class="line">	&lt;hibernate.version&gt;5.0.7.Final&lt;/hibernate.version&gt;</span><br><span class="line">	&lt;struts.version&gt;2.3.24&lt;/struts.version&gt;</span><br><span class="line">&lt;/properties&gt;</span><br><span class="line"> </span><br><span class="line">&lt;!-- 锁定版本，struts2-<span class="number">2.3</span>.24、spring4.2.4、hibernate5.0.7 --&gt;</span><br><span class="line">&lt;dependencyManagement&gt;</span><br><span class="line">	&lt;dependencies&gt;</span><br><span class="line">		&lt;dependency&gt;</span><br><span class="line">			&lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">			&lt;artifactId&gt;spring-context&lt;/artifactId&gt;</span><br><span class="line">			&lt;version&gt;$&#123;spring.version&#125;&lt;/version&gt;</span><br><span class="line">		&lt;/dependency&gt;</span><br><span class="line">        &lt;/dependencies&gt;</span><br><span class="line">&lt;/dependencyManagement&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="dependencies与dependencyManagement区别"><a href="#dependencies与dependencyManagement区别" class="headerlink" title="dependencies与dependencyManagement区别"></a>dependencies与dependencyManagement区别</h4><p>dependencyManagement只会影响现有依赖的配置，但不会引入依赖</p>
-<p>dependencies即使在子项目中不写该依赖项，那么子项目仍然会从父项目中继承该依赖项（全部继承）</p>
-<p>dependencyManagement里只是声明依赖，并不实现引入，因此子项目需要显示的声明需要用的依赖。如果不在子项目中声明依赖，是不会从父项目中继承下来的；只有在子项目中写了该依赖项，并且没有指定具体版本，才会从父项目中继承该项，并且version和scope都读取自父pom;另外如果子项目中指定了版本号，那么会使用子项目中指定的jar版本。</p>
+            <h2 id="json序列化、反序列化"><a href="#json序列化、反序列化" class="headerlink" title="json序列化、反序列化"></a>json序列化、反序列化</h2><hr>
+<p>一、fastjson：</p>
+<p>1、序列化 设置某些字段不需要序列化<br>在属性上面加@JSONField(serialize = false)注解</p>
+<p>2、是否输出值为null的字段,默认为false<br>null对应的key已经被过滤掉；这明显不是我们想要的结果，这时我们就需要用到fastjson的SerializerFeature序列化属性</p>
+<p>也就是这个方法：JSONObject.toJSONString(Object object, SerializerFeature… features)</p>
+<p>Fastjson的SerializerFeature序列化属性-</p>
+<p>QuoteFieldNames———-输出key时是否使用双引号,默认为true<br>WriteMapNullValue——–是否输出值为null的字段,默认为false<br>WriteNullNumberAsZero—-数值字段如果为null,输出为0,而非null<br>WriteNullListAsEmpty—–List字段如果为null,输出为[],而非null<br>WriteNullStringAsEmpty—字符类型字段如果为null,输出为”“,而非null<br>WriteNullBooleanAsFalse–Boolean字段如果为null,输出为false,而非null</p>
+<p><bean id="fastJsonConfig" class="com.alibaba.fastjson.support.config.FastJsonConfig"><br>    <!-- Default charset --><br>    <property name="charset" value="UTF-8"><br>    <!-- SerializerFeature --><br>    <property name="serializerFeatures"><br>        <list><br>            <value>QuoteFieldNames</value><br>            <value>WriteMapNullValue</value><br>        </list><br>    </property><br></property></bean></p>
+<p><mvc:annotation-driven><br>    <mvc:message-converters register-defaults="true"><br>         <!--将StringHttpMessageConverter的默认编码设为UTF-8--><br>        <bean class="org.springframework.http.converter.StringHttpMessageConverter"><br>            <constructor-arg value="UTF-8"><br>        </constructor-arg></bean><br>        <!-- 配置Fastjson支持 --><br>        <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter"><br>            <property name="supportedMediaTypes"><br>                <list><br>                    <value>application/json</value><br>                </list><br>            </property><br>            <property name="fastJsonConfig" ref="fastJsonConfig"><br>        </property></bean><br>    </mvc:message-converters><br></mvc:annotation-driven></p>
+<p>二、Gson</p>
+<p>gsonBuilder.setLongSerializationPolicy(LongSerializationPolicy.STRING)<br>                .setDateFormat(“yyyy-MM-dd HH:mm”)<br>                .serializeNulls();</p>
+<p>在对象序列化为json字符串时，默认是不序列化NULL对象的，如果在序列化时设置serializeNulls了，就可以支持NULL的序列化。注意serializeNulls对反序列化没有影响</p>
+<p>setPrettyPrinting:把json无格式字符串转换为带格式的字符串</p>
+<p>excludeFieldsWithModifiers(Modifier.PRIVATE):Gson在解析时，把类中字段的PRIVATE访问权限排除，就是遇到private修饰的字段时，Gson不做解析；（还可以对有final，static等修饰的变量，或者修饰类的abstract，或者类是接口的等等，都可以做出控制解析</p>
+<p>setLongSerializationPolicy:设置对Long类型的变量，是解析成字符串还是解析为long类型，可以这样设置如下：Gson gson = newGsonBuilder. setLongSerializationPolicy(LongSerializationPolicy.DEFAULT).create(),其中LongSerializationPolicy.DEFAULT为默认值，Long类型转换为Long型，LongSerializationPolicy.STRING为字符串型，就是把Long类型的值强制转换为字符串类型</p>
+<p>默认情况下@Expose注解是不起作用的,除非你用GsonBuilder创建Gson的时候调用了GsonBuilder.excludeFieldsWithoutExposeAnnotation()方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;  </span><br><span class="line">    <span class="keyword">private</span> String  id;  </span><br><span class="line">    <span class="meta">@Expose</span>  <span class="comment">//默认情况下序列化和反序列化都会使用  </span></span><br><span class="line">    <span class="keyword">private</span> String  userName;  </span><br><span class="line">    <span class="meta">@Expose</span>(serialize=<span class="keyword">true</span>,deserialize=<span class="keyword">false</span>)<span class="comment">//序列化时使用，反序列化不使用  </span></span><br><span class="line">    <span class="keyword">private</span> String  userPwd;  </span><br><span class="line">    <span class="meta">@Expose</span>  </span><br><span class="line">    <span class="keyword">private</span> Integer age;  </span><br><span class="line">    <span class="keyword">private</span> Float   price;  </span><br><span class="line">    <span class="meta">@Expose</span>  </span><br><span class="line">    <span class="keyword">private</span> Date    birthday;  </span><br><span class="line">      </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">User</span><span class="params">(String id, String userName, String userPwd, Integer age,  </span></span></span><br><span class="line"><span class="function"><span class="params">            Float price, Date birthday)</span> </span>&#123;  </span><br><span class="line">        <span class="keyword">this</span>.id = id;  </span><br><span class="line">        <span class="keyword">this</span>.userName = userName;  </span><br><span class="line">        <span class="keyword">this</span>.userPwd = userPwd;  </span><br><span class="line">        <span class="keyword">this</span>.age = age;  </span><br><span class="line">        <span class="keyword">this</span>.price = price;  </span><br><span class="line">        <span class="keyword">this</span>.birthday = birthday;  </span><br><span class="line">    &#125;  </span><br><span class="line">    get()和set()方法省略！  </span><br><span class="line">    <span class="meta">@Override</span>  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">        <span class="keyword">return</span> <span class="string">"User [id="</span> + id + <span class="string">", userName="</span> + userName + <span class="string">", userPwd="</span>  </span><br><span class="line">                + userPwd + <span class="string">", age="</span> + age + <span class="string">", price="</span> + price + <span class="string">", birthday="</span>  </span><br><span class="line">                + birthday + <span class="string">"]"</span>;  </span><br><span class="line">    &#125;  </span><br><span class="line">      </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Gson gson = <span class="keyword">new</span> GsonBuilder()  </span><br><span class="line">.excludeFieldsWithoutExposeAnnotation() <span class="comment">//不导出实体中没有用@Expose注解的属性  </span></span><br><span class="line">.serializeNulls()                       <span class="comment">//当需要序列化的值为空时，采用null映射，否则会把该字段省略  </span></span><br><span class="line">.setDateFormat(<span class="string">"yyyy-MM-dd HH:mm:ss"</span>)   <span class="comment">//日期格式转换  </span></span><br><span class="line">.setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE) <span class="comment">//将属性的首字母大写  </span></span><br><span class="line">.setPrettyPrinting()   <span class="comment">//将结果进行格式化        </span></span><br><span class="line">.create();  </span><br><span class="line">User user = <span class="keyword">new</span> User(<span class="string">"A001"</span>, <span class="string">"xl"</span>,<span class="string">"xl_123"</span>,<span class="number">24</span>,<span class="number">12000F</span>,<span class="keyword">new</span> Date());  </span><br><span class="line">user.setAge(<span class="keyword">null</span>);   </span><br><span class="line">String json = gson.toJson(user);  </span><br><span class="line">System.out.println(<span class="string">"序列化:"</span>+json);  </span><br><span class="line">  </span><br><span class="line">user = gson.fromJson(json,User.class);  </span><br><span class="line">System.out.println(<span class="string">"反序列化：\n"</span>+user);</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;  </span><br><span class="line">    <span class="keyword">private</span> String  id;  </span><br><span class="line">    <span class="meta">@Expose</span>  </span><br><span class="line">    <span class="meta">@SerializedName</span>(<span class="string">"name"</span>) <span class="comment">//序列化时会把userName字段名映射为name  </span></span><br><span class="line">    <span class="keyword">private</span> String  userName;  </span><br><span class="line">        <span class="comment">//序列化时使用，反序列化不使用该字段,默认都等于true  </span></span><br><span class="line">    <span class="meta">@Expose</span>(serialize=<span class="keyword">true</span>,deserialize=<span class="keyword">false</span>)  </span><br><span class="line">    <span class="keyword">private</span> String  userPwd;  </span><br><span class="line">    <span class="meta">@Expose</span>  </span><br><span class="line">    <span class="keyword">private</span> Integer age;  </span><br><span class="line">    <span class="keyword">private</span> Float   price;  </span><br><span class="line">    <span class="meta">@Expose</span>  </span><br><span class="line">    <span class="keyword">private</span> Date    birthday;  </span><br><span class="line">        get()和set()方法省略......!  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>三、<mvc:annotation-driven></mvc:annotation-driven></p>
+<p><mvc:annotation-driven>默认使用jackson序列化、反序列化json</mvc:annotation-driven></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=<span class="string">"fastJsonConfig"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"com.alibaba.fastjson.support.config.FastJsonConfig"</span>&gt;</span><br><span class="line">    &lt;!-- Default charset --&gt;</span><br><span class="line">    &lt;property name=<span class="string">"charset"</span> value=<span class="string">"UTF-8"</span> /&gt;</span><br><span class="line">    &lt;!-- SerializerFeature --&gt;</span><br><span class="line">    &lt;property name=<span class="string">"serializerFeatures"</span>&gt;</span><br><span class="line">        &lt;list&gt;</span><br><span class="line">            &lt;value&gt;QuoteFieldNames&lt;/value&gt;</span><br><span class="line">            &lt;value&gt;WriteMapNullValue&lt;/value&gt;</span><br><span class="line">        &lt;/list&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- handlermapping，支持<span class="meta">@RequestMapping</span>，<span class="meta">@ResponseBody</span> --&gt;</span><br><span class="line">&lt;mvc:annotation-driven&gt;</span><br><span class="line">    &lt;mvc:message-converters&gt;</span><br><span class="line">        &lt;bean <span class="class"><span class="keyword">class</span></span>=<span class="string">"com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter"</span>&gt;</span><br><span class="line">            &lt;property name=<span class="string">"supportedMediaTypes"</span>&gt;</span><br><span class="line">                &lt;list&gt;</span><br><span class="line">                    &lt;value&gt;application/json;charset=UTF-8&lt;/value&gt;</span><br><span class="line">                    &lt;value&gt;text/html;charset=UTF-8&lt;/value&gt;</span><br><span class="line">                &lt;/list&gt;</span><br><span class="line">            &lt;/property&gt;</span><br><span class="line">            &lt;property name=<span class="string">"fastJsonConfig"</span> ref=<span class="string">"fastJsonConfig"</span>/&gt;</span><br><span class="line">        &lt;/bean&gt;</span><br><span class="line">    &lt;/mvc:message-converters&gt;</span><br><span class="line">&lt;/mvc:annotation-driven&gt;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/mac linux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/shortfeng/2018/03/12/mac linux/" itemprop="url">mac linux</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-12T17:36:17+08:00">
+                2018-03-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="linux"><a href="#linux" class="headerlink" title="linux"></a>linux</h2><hr>
+<p>1、端口占用及杀死占用进程<br>sudo lsof -i:8080<br>sudo kill -9 2123</p>
+<p>2、搜索日志，并打印前后100行的内容<br>cat jetty_stdout.log | grep -C 100 注意接受到流程消息 </p>
+<p>3、从服务器上下载文件<br>scp publish@172.21.10.70:/home/publish/antx/finance/dev/antx-volks.properties /Users/user/</p>
+<p>4、docker容器命令<br>docker logs -f  ld9 看日志</p>
+<p>docker ps -a | grep volks 查看应用id<br>docker exec -it 1d9 /bin/bash 执行指定应用id的应用</p>
+<p>sudo su - admin 切换admin后才能执行docker命令</p>
 
           
         
@@ -1168,7 +1289,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/shortfeng/archives/">
-                <span class="site-state-item-count">46</span>
+                <span class="site-state-item-count">47</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

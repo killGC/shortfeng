@@ -94,17 +94,17 @@
 
 
 
-<meta name="description" content="跨域问题 同源同源政策的目的，是为了保证用户信息的安全，防止恶意的网站窃取数据 同源是指以下三个信息都必须相同：   协议相同 域名相同 端口相同   如果非同源，共有三种行为受到限制：   Cookie、LocalStorage 和 IndexDB 无法读取 DOM 无法获得 AJAX 请求不能发送   虽然这些限制是必要的，但是有时很不方便，合理的用途也受到影响。如何规避上面三种限制 设置do">
+<meta name="description" content="解决方案1、某天在同一商店购买三种以上商品的用户 123456789表tbl_purchase：用户id user_id商店id shop_id商品id commodity_id购买数量 purchase_num单价 priceselect a.user_id from tbl_purchase a group by a.user_id,a.shop_id,DATE_FORMAT(date,&apos;%Y">
 <meta property="og:type" content="article">
-<meta property="og:title" content="跨域问题">
-<meta property="og:url" content="https://killgc.github.io/shortfeng/2018/04/04/跨域问题/index.html">
+<meta property="og:title" content="解决方案">
+<meta property="og:url" content="https://killgc.github.io/shortfeng/2018/09/05/解决方案/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="跨域问题 同源同源政策的目的，是为了保证用户信息的安全，防止恶意的网站窃取数据 同源是指以下三个信息都必须相同：   协议相同 域名相同 端口相同   如果非同源，共有三种行为受到限制：   Cookie、LocalStorage 和 IndexDB 无法读取 DOM 无法获得 AJAX 请求不能发送   虽然这些限制是必要的，但是有时很不方便，合理的用途也受到影响。如何规避上面三种限制 设置do">
+<meta property="og:description" content="解决方案1、某天在同一商店购买三种以上商品的用户 123456789表tbl_purchase：用户id user_id商店id shop_id商品id commodity_id购买数量 purchase_num单价 priceselect a.user_id from tbl_purchase a group by a.user_id,a.shop_id,DATE_FORMAT(date,&apos;%Y">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-04T15:01:36.000Z">
+<meta property="og:updated_time" content="2018-09-05T15:15:46.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="跨域问题">
-<meta name="twitter:description" content="跨域问题 同源同源政策的目的，是为了保证用户信息的安全，防止恶意的网站窃取数据 同源是指以下三个信息都必须相同：   协议相同 域名相同 端口相同   如果非同源，共有三种行为受到限制：   Cookie、LocalStorage 和 IndexDB 无法读取 DOM 无法获得 AJAX 请求不能发送   虽然这些限制是必要的，但是有时很不方便，合理的用途也受到影响。如何规避上面三种限制 设置do">
+<meta name="twitter:title" content="解决方案">
+<meta name="twitter:description" content="解决方案1、某天在同一商店购买三种以上商品的用户 123456789表tbl_purchase：用户id user_id商店id shop_id商品id commodity_id购买数量 purchase_num单价 priceselect a.user_id from tbl_purchase a group by a.user_id,a.shop_id,DATE_FORMAT(date,&apos;%Y">
 
 
 
@@ -133,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="https://killgc.github.io/shortfeng/2018/04/04/跨域问题/"/>
+  <link rel="canonical" href="https://killgc.github.io/shortfeng/2018/09/05/解决方案/"/>
 
 
 
 
 
-  <title>跨域问题 | Hexo</title>
+  <title>解决方案 | Hexo</title>
   
 
 
@@ -262,7 +262,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/04/04/跨域问题/">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/09/05/解决方案/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="changfeng">
@@ -279,7 +279,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">跨域问题</h1>
+          <h1 class="post-title" itemprop="name headline">解决方案</h1>
         
 
         <div class="post-meta">
@@ -291,8 +291,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-04T10:48:32+08:00">
-                2018-04-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-05T23:06:00+08:00">
+                2018-09-05
               </time>
             
 
@@ -329,66 +329,11 @@
       
 
       
-        <h2 id="跨域问题"><a href="#跨域问题" class="headerlink" title="跨域问题"></a>跨域问题</h2><hr>
-<h4 id="同源"><a href="#同源" class="headerlink" title="同源"></a>同源</h4><p>同源政策的目的，是为了保证用户信息的安全，防止恶意的网站窃取数据</p>
-<p>同源是指以下三个信息都必须相同：</p>
-<blockquote>
-<ul>
-<li>协议相同</li>
-<li>域名相同</li>
-<li>端口相同</li>
-</ul>
-</blockquote>
-<p>如果非同源，共有三种行为受到限制：</p>
-<blockquote>
-<ul>
-<li>Cookie、LocalStorage 和 IndexDB 无法读取</li>
-<li>DOM 无法获得</li>
-<li>AJAX 请求不能发送</li>
-</ul>
-</blockquote>
-<p>虽然这些限制是必要的，但是有时很不方便，合理的用途也受到影响。如何规避上面三种限制</p>
-<h5 id="设置document-domain"><a href="#设置document-domain" class="headerlink" title="设置document.domain"></a>设置document.domain</h5><p>这种方案只适用Cookie与iframe</p>
-<p>A网页是<a href="http://w1.example.com/a.html，B网页是http://w2.example.com/b.html，那么只要设置相同的document.domain，两个网页就可以共享Cookie" target="_blank" rel="noopener">http://w1.example.com/a.html，B网页是http://w2.example.com/b.html，那么只要设置相同的document.domain，两个网页就可以共享Cookie</a></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">document.domain = <span class="string">'example.com'</span>;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<ul>
-<li>Cookie 是服务器写入浏览器的一小段信息，只有同源的网页才能共享。但是，两个网页一级域名相同，只是二级域名不同，浏览器允许通过设置document.domain共享 Cookie</li>
-<li>如果两个网页不同源，就无法拿到对方的DOM。典型的例子是iframe窗口和window.open方法打开的窗口，它们与父窗口无法通信</li>
-</ul>
-</blockquote>
-<h5 id="完全不同源"><a href="#完全不同源" class="headerlink" title="完全不同源"></a>完全不同源</h5><blockquote>
-<ul>
-<li>window.name</li>
-<li>window.postMessage：HTML5为了解决这个问题，引入了一个全新的API：跨文档通信 API（Cross-document messaging）。<br>这个API为window对象新增了一个window.postMessage方法，允许跨窗口通信，不论这两个窗口是否同源</li>
-</ul>
-</blockquote>
-<p>AJAX：</p>
-<blockquote>
-<ul>
-<li><p>JSONP ： 简单适用，老式浏览器全部支持，服务器改造非常小;网页通过添加一个script元素，向服务器请求JSON数据，这种做法不受同源政策限制；服务器收到请求后，将数据放在一个指定名字的回调函数里传回来</p>
-</li>
-<li><p>WebSocket：WebSocket是一种通信协议，使用ws://（非加密）和wss://（加密）作为协议前缀。该协议不实行同源政策，只要服务器支持，就可以通过它进行跨源通信</p>
-</li>
-<li>CORS：跨源资源分享（Cross-Origin Resource Sharing）的缩写。它是W3C标准，是跨源AJAX请求的根本解决方法。相比JSONP只能发GET请求，CORS允许任何类型的请求</li>
-</ul>
-</blockquote>
-<p>JSONP例子:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">function <span class="title">addScriptTag</span><span class="params">(src)</span> </span>&#123;</span><br><span class="line">  var script = document.createElement(<span class="string">'script'</span>);</span><br><span class="line">  script.setAttribute(<span class="string">"type"</span>,<span class="string">"text/javascript"</span>);</span><br><span class="line">  script.src = src;</span><br><span class="line">  document.body.appendChild(script);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">window.onload = function () &#123;</span><br><span class="line">  addScriptTag(<span class="string">'http://example.com/ip?callback=foo'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">function <span class="title">foo</span><span class="params">(data)</span> </span>&#123;</span><br><span class="line">  console.log(<span class="string">'Your public IP address is: '</span> + data.ip);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h4 id="X-Frame-Options"><a href="#X-Frame-Options" class="headerlink" title="X-Frame-Options"></a>X-Frame-Options</h4><p>nginx中设置X-Frame-Options ，防止网站被别人用iframe嵌入使用</p>
-<p>X-Frame-Options 响应头</p>
-<p>X-Frame-Options HTTP 响应头是用来给浏览器指示允许一个页面可否在 iframe 或者 object标签中展现的标记。网站可以使用此功能，来确保自己网站的内容没有被嵌到别人的网站中去，也从而避免了点击劫持 (clickjacking) 的攻击。</p>
-<p>X-Frame-Options 有三个值:</p>
-<blockquote>
-<ul>
-<li><p>DENY<br>表示该页面不允许在 frame 中展示，即便是在相同域名的页面中嵌套也不允许。</p>
-</li>
-<li><p>SAMEORIGIN<br>表示该页面可以在相同域名页面的 frame 中展示。</p>
-</li>
-<li><p>ALLOW-FROM uri<br>表示该页面可以在指定来源的 frame 中展示。<br>换一句话说，如果设置为 DENY，不光在别人的网站 frame 嵌入时会无法加载，在同域名页面中同样会无法加载。另一方面，如果设置为 SAMEORIGIN，那么页面就可以在同域名页面的 frame 中嵌套。</p>
-</li>
-</ul>
-</blockquote>
+        <h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>1、某天在同一商店购买三种以上商品的用户</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">表tbl_purchase：</span><br><span class="line">用户id user_id</span><br><span class="line">商店id shop_id</span><br><span class="line">商品id commodity_id</span><br><span class="line">购买数量 purchase_num</span><br><span class="line">单价 price</span><br><span class="line"></span><br><span class="line">select a.user_id from tbl_purchase a </span><br><span class="line">group by a.user_id,a.shop_id,DATE_FORMAT(date,<span class="string">'%Y-%m-%d'</span>) <span class="function">having <span class="title">count</span><span class="params">(DISTINCT(a.commodity_id)</span>)&gt;</span>=<span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>2、支付幂等性</p>
+<p>3、对账</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">上游下发的对账文件</span><br><span class="line">读取对账文件入库到数据库表</span><br><span class="line">从入库的数据按业务类型导入中间表</span><br><span class="line">与本地数据库数据对账</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -413,8 +358,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/shortfeng/2018/04/04/支付/" rel="next" title="支付">
-                <i class="fa fa-chevron-left"></i> 支付
+              <a href="/shortfeng/2018/08/31/spring事务实践/" rel="next" title="spring事务实践">
+                <i class="fa fa-chevron-left"></i> spring事务实践
               </a>
             
           </div>
@@ -422,10 +367,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/shortfeng/2018/06/22/Comparable接口与Comparator/" rel="prev" title="Comparable接口、Comparator接口">
-                Comparable接口、Comparator接口 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -541,7 +482,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#跨域问题"><span class="nav-number">1.</span> <span class="nav-text">跨域问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#同源"><span class="nav-number">1.0.1.</span> <span class="nav-text">同源</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#设置document-domain"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">设置document.domain</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#完全不同源"><span class="nav-number">1.0.1.2.</span> <span class="nav-text">完全不同源</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#X-Frame-Options"><span class="nav-number">1.0.2.</span> <span class="nav-text">X-Frame-Options</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方案"><span class="nav-number">1.</span> <span class="nav-text">解决方案</span></a></li></ol></div>
             
 
           </div>
