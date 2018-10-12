@@ -1868,6 +1868,7 @@
 <p>2、sourceTree和idea 拉取和提交代码反复提示输入用户名和密码</p>
 <p>在命令终端执行以下命令解决<br>git config –global credential.helper store</p>
 <p>3、回退git库上已经推送的提交<br>git pull<br>git reset –hard [commit] [commit]为前一个提交<br>$ git push [remote] –force #强行推送当前分支到远程仓库，即使有冲突</p>
+<p>4、提交文件报“0 files committed, 1 file failed to commit”<br>删除.git文件夹中的index.lock 即可</p>
 
           
         
