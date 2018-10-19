@@ -101,7 +101,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="mysql常用 1、查找子字符串在字符串中的位置，类似oracle的indexof方法 12345LOCATE(substr,str), LOCATE(substr,str,pos)         第一个语法返回substr在字符串str 的第一个出现的位置。         第二个语法返回子符串 substr 在字符串str，从pos处开始的第一次出现的位置。如果substr 不在str 中，">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-30T07:31:14.000Z">
+<meta property="og:updated_time" content="2018-10-19T06:08:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql常用">
 <meta name="twitter:description" content="mysql常用 1、查找子字符串在字符串中的位置，类似oracle的indexof方法 12345LOCATE(substr,str), LOCATE(substr,str,pos)         第一个语法返回substr在字符串str 的第一个出现的位置。         第二个语法返回子符串 substr 在字符串str，从pos处开始的第一次出现的位置。如果substr 不在str 中，">
@@ -333,6 +333,7 @@
 <p>1、查找子字符串在字符串中的位置，类似oracle的indexof方法</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">LOCATE(substr,str), LOCATE(substr,str,pos)</span><br><span class="line"></span><br><span class="line">         第一个语法返回substr在字符串str 的第一个出现的位置。</span><br><span class="line"></span><br><span class="line">         第二个语法返回子符串 substr 在字符串str，从pos处开始的第一次出现的位置。如果substr 不在str 中，则返回值为0 。</span><br></pre></td></tr></table></figure>
 <p>2、ON UPDATE CURRENT_TIMESTAMP<br><code>gmt_modified</code> datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT ‘修改时间’</p>
+<p>3、 char_length、length函数<br>length:是计算字段的长度一个汉字是算三个字符,一个数字或字母算一个字符<br>char_length:不管汉字还是数字或者是字母都算是一个字符</p>
 
       
     </div>
@@ -357,8 +358,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/shortfeng/2018/03/12/OLTP、OLAP/" rel="next" title="OLTP、OLAP">
-                <i class="fa fa-chevron-left"></i> OLTP、OLAP
+              <a href="/shortfeng/2018/03/11/spring aop/" rel="next" title="spring aop">
+                <i class="fa fa-chevron-left"></i> spring aop
               </a>
             
           </div>
@@ -367,8 +368,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/shortfeng/2018/03/12/mac linux/" rel="prev" title="mac linux">
-                mac linux <i class="fa fa-chevron-right"></i>
+              <a href="/shortfeng/2018/03/12/dubbo服务调用三次的问题/" rel="prev" title="mysql常用">
+                mysql常用 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

@@ -260,141 +260,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/dubbo服务调用三次的问题/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="changfeng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/shortfeng/2018/03/12/dubbo服务调用三次的问题/" itemprop="url">mysql常用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-12T17:36:17+08:00">
-                2018-03-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="dubbo服务被调用三次的问题"><a href="#dubbo服务被调用三次的问题" class="headerlink" title="dubbo服务被调用三次的问题"></a>dubbo服务被调用三次的问题</h2><hr>
-<p>该服务为涉及新增操作的服务，服务调用多次，导致数据保存了多条相同数据<br>出现该问题，排查过程：<br>1、通过查看数据库数据，发现有三条一样的数据，调试服务方代码，发现也进入了三次。<br>最终在服务方打印调用日志，结果为打印了三次</p>
-<p>2、是否消费方也请求了三次，消费方打印日志，消费方且只调用了一次，消费方只调用了一次，服务方且执行了三次，有点摸不到头脑了</p>
-<p>3、百度搜索“dubbo服务莫名调用多次”,发现有人遇到相同问题，网上说有两种情况会导致服务调用多次，一是dubbo架包存在多个，二是服务超时重试导致的</p>
-<p>4、网上说的原因给我提供思路，我就去检查项目中是否存在多个dubbo架包，发现存在两个不同版本的架包，我试着删除其中一个依赖其中一个版本dubbo架包的依赖配置，但是发现不管用，服务方还是调用三次；换另外一种解决方法，在服务提供方配置的暴露的服务地方设置retries属性为0，发现起作用了</p>
-<p>检查修改服务方retries属性为0时</p>
-<p>1、消费方日志：</p>
-<p>org.springframework.web.util.NestedServletException: Request processing failed; nested exception is com.alibaba.dubbo.rpc.RpcException: Failed to invoke the method commitApply in the service com.mhc.spyker.api.service.AdmittanceApplyFacade. Tried 1 times of the providers [192.168.0.105:20882] (1/1) from the registry 172.21.10.42:2181 on the consumer 192.168.0.105 using the dubbo version 2.5.3. Last error is: Invoke remote method timeout. method: commitApply</p>
-<p>Caused by: com.alibaba.dubbo.rpc.RpcException: Failed to invoke the method commitApply in the service com.mhc.spyker.api.service.AdmittanceApplyFacade. Tried 1 times of the providers [192.168.0.105:20882] (1/1) from the registry 172.21.10.42:2181 on the consumer 192.168.0.105 using the dubbo version 2.5.3. Last error is: Invoke remote method timeout. method: commitApply, </p>
-<p>Caused by: com.alibaba.dubbo.remoting.TimeoutException: Waiting server-side response timeout by scan timer. start time: 2018-05-26 00:38:45.035, end time: 2018-05-26 00:38:46.044, client elapsed: 11 ms, server elapsed: 998 ms, timeout: 1000 ms, </p>
-<p>2、服务方日志,打印服务方执行时间，结果为1684ms<br>2018-05-26 00:38:46.697 DEBUG 5913 — [:20882-thread-2] c.m.s.d.d.A.updateById                   : ==&gt; Parameters: 4268340(String), 111(Long)<br>2018-05-26 00:38:46.721 DEBUG 5913 — [:20882-thread-2] c.m.s.d.d.A.updateById                   : &lt;==    Updates: 1<br> Time：24 ms - ID：com.mhc.spyker.dal.dao.AdmittanceApplyRecordDao.updateById<br> Execute SQL： UPDATE b2b_admittance_apply_record SET process_InstanceId=’4268340’ WHERE id=111</p>
-<p>时间：1684<br>2018-05-26 00:39:45.878  INFO 5913 — [dTimer-thread-1] c.a.dubbo.monitor.dubbo.DubboMonitor     :  [DUBBO] Send statistics to monitor zookeeper://172.21.10.42:2181/com.alibaba.dubbo.monitor.MonitorService?dubbo=2.6.0&amp;interface=com.alibaba.dubbo.monitor.MonitorService&amp;pid=5913&amp;timestamp=1527265217854, dubbo version: 2.6.0, current host: 192.168.0.105<br>2018-05-26 00:39:45.880 ERROR 5913 — [dTimer-thread-1] c.a.dubbo.monitor.dubbo.DubboMonitor     :  [DUBBO] Unexpected error occur at send statistic, cause: No provider available from registry 172.21.10.42:2181 for service com.alibaba.dubbo.monitor.MonitorService on consumer 192.168.0.105 use dubbo version 2.6.0, may be providers disabled or not registered ?, dubbo version: 2.6.0, current host: 192.168.0.105</p>
-<p>通过日志能看出服务默认超时时间timeout为1000ms，超时默认最多重试两次，导致该问题的原因服务方的执行时间大于超时时间1000ms，导致重试了两次</p>
-<p>涉及修改操作：</p>
-<p>1、需要把retries设置为0，建议在服务消费方设置</p>
-<p>2、需要在服务方设置timeout属性，建议在服务提供方设置（服务提供方了解服务执行时间）</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/ThreadLocal/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -530,7 +395,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/ json序列化、反序列化/">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/dubbo服务调用三次的问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="changfeng">
@@ -549,7 +414,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/shortfeng/2018/03/12/ json序列化、反序列化/" itemprop="url">json序列化、反序列化</a></h1>
+                <a class="post-title-link" href="/shortfeng/2018/03/12/dubbo服务调用三次的问题/" itemprop="url">mysql常用</a></h1>
         
 
         <div class="post-meta">
@@ -601,28 +466,146 @@
       
         
           
-            <h2 id="json序列化、反序列化"><a href="#json序列化、反序列化" class="headerlink" title="json序列化、反序列化"></a>json序列化、反序列化</h2><hr>
-<p>一、fastjson：</p>
-<p>1、序列化 设置某些字段不需要序列化<br>在属性上面加@JSONField(serialize = false)注解</p>
-<p>2、是否输出值为null的字段,默认为false<br>null对应的key已经被过滤掉；这明显不是我们想要的结果，这时我们就需要用到fastjson的SerializerFeature序列化属性</p>
-<p>也就是这个方法：JSONObject.toJSONString(Object object, SerializerFeature… features)</p>
-<p>Fastjson的SerializerFeature序列化属性-</p>
-<p>QuoteFieldNames———-输出key时是否使用双引号,默认为true<br>WriteMapNullValue——–是否输出值为null的字段,默认为false<br>WriteNullNumberAsZero—-数值字段如果为null,输出为0,而非null<br>WriteNullListAsEmpty—–List字段如果为null,输出为[],而非null<br>WriteNullStringAsEmpty—字符类型字段如果为null,输出为”“,而非null<br>WriteNullBooleanAsFalse–Boolean字段如果为null,输出为false,而非null</p>
-<p><bean id="fastJsonConfig" class="com.alibaba.fastjson.support.config.FastJsonConfig"><br>    <!-- Default charset --><br>    <property name="charset" value="UTF-8"><br>    <!-- SerializerFeature --><br>    <property name="serializerFeatures"><br>        <list><br>            <value>QuoteFieldNames</value><br>            <value>WriteMapNullValue</value><br>        </list><br>    </property><br></property></bean></p>
-<p><mvc:annotation-driven><br>    <mvc:message-converters register-defaults="true"><br>         <!--将StringHttpMessageConverter的默认编码设为UTF-8--><br>        <bean class="org.springframework.http.converter.StringHttpMessageConverter"><br>            <constructor-arg value="UTF-8"><br>        </constructor-arg></bean><br>        <!-- 配置Fastjson支持 --><br>        <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter"><br>            <property name="supportedMediaTypes"><br>                <list><br>                    <value>application/json</value><br>                </list><br>            </property><br>            <property name="fastJsonConfig" ref="fastJsonConfig"><br>        </property></bean><br>    </mvc:message-converters><br></mvc:annotation-driven></p>
-<p>二、Gson</p>
-<p>gsonBuilder.setLongSerializationPolicy(LongSerializationPolicy.STRING)<br>                .setDateFormat(“yyyy-MM-dd HH:mm”)<br>                .serializeNulls();</p>
-<p>在对象序列化为json字符串时，默认是不序列化NULL对象的，如果在序列化时设置serializeNulls了，就可以支持NULL的序列化。注意serializeNulls对反序列化没有影响</p>
-<p>setPrettyPrinting:把json无格式字符串转换为带格式的字符串</p>
-<p>excludeFieldsWithModifiers(Modifier.PRIVATE):Gson在解析时，把类中字段的PRIVATE访问权限排除，就是遇到private修饰的字段时，Gson不做解析；（还可以对有final，static等修饰的变量，或者修饰类的abstract，或者类是接口的等等，都可以做出控制解析</p>
-<p>setLongSerializationPolicy:设置对Long类型的变量，是解析成字符串还是解析为long类型，可以这样设置如下：Gson gson = newGsonBuilder. setLongSerializationPolicy(LongSerializationPolicy.DEFAULT).create(),其中LongSerializationPolicy.DEFAULT为默认值，Long类型转换为Long型，LongSerializationPolicy.STRING为字符串型，就是把Long类型的值强制转换为字符串类型</p>
-<p>默认情况下@Expose注解是不起作用的,除非你用GsonBuilder创建Gson的时候调用了GsonBuilder.excludeFieldsWithoutExposeAnnotation()方法</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;  </span><br><span class="line">    <span class="keyword">private</span> String  id;  </span><br><span class="line">    <span class="meta">@Expose</span>  <span class="comment">//默认情况下序列化和反序列化都会使用  </span></span><br><span class="line">    <span class="keyword">private</span> String  userName;  </span><br><span class="line">    <span class="meta">@Expose</span>(serialize=<span class="keyword">true</span>,deserialize=<span class="keyword">false</span>)<span class="comment">//序列化时使用，反序列化不使用  </span></span><br><span class="line">    <span class="keyword">private</span> String  userPwd;  </span><br><span class="line">    <span class="meta">@Expose</span>  </span><br><span class="line">    <span class="keyword">private</span> Integer age;  </span><br><span class="line">    <span class="keyword">private</span> Float   price;  </span><br><span class="line">    <span class="meta">@Expose</span>  </span><br><span class="line">    <span class="keyword">private</span> Date    birthday;  </span><br><span class="line">      </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">User</span><span class="params">(String id, String userName, String userPwd, Integer age,  </span></span></span><br><span class="line"><span class="function"><span class="params">            Float price, Date birthday)</span> </span>&#123;  </span><br><span class="line">        <span class="keyword">this</span>.id = id;  </span><br><span class="line">        <span class="keyword">this</span>.userName = userName;  </span><br><span class="line">        <span class="keyword">this</span>.userPwd = userPwd;  </span><br><span class="line">        <span class="keyword">this</span>.age = age;  </span><br><span class="line">        <span class="keyword">this</span>.price = price;  </span><br><span class="line">        <span class="keyword">this</span>.birthday = birthday;  </span><br><span class="line">    &#125;  </span><br><span class="line">    get()和set()方法省略！  </span><br><span class="line">    <span class="meta">@Override</span>  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">        <span class="keyword">return</span> <span class="string">"User [id="</span> + id + <span class="string">", userName="</span> + userName + <span class="string">", userPwd="</span>  </span><br><span class="line">                + userPwd + <span class="string">", age="</span> + age + <span class="string">", price="</span> + price + <span class="string">", birthday="</span>  </span><br><span class="line">                + birthday + <span class="string">"]"</span>;  </span><br><span class="line">    &#125;  </span><br><span class="line">      </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Gson gson = <span class="keyword">new</span> GsonBuilder()  </span><br><span class="line">.excludeFieldsWithoutExposeAnnotation() <span class="comment">//不导出实体中没有用@Expose注解的属性  </span></span><br><span class="line">.serializeNulls()                       <span class="comment">//当需要序列化的值为空时，采用null映射，否则会把该字段省略  </span></span><br><span class="line">.setDateFormat(<span class="string">"yyyy-MM-dd HH:mm:ss"</span>)   <span class="comment">//日期格式转换  </span></span><br><span class="line">.setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE) <span class="comment">//将属性的首字母大写  </span></span><br><span class="line">.setPrettyPrinting()   <span class="comment">//将结果进行格式化        </span></span><br><span class="line">.create();  </span><br><span class="line">User user = <span class="keyword">new</span> User(<span class="string">"A001"</span>, <span class="string">"xl"</span>,<span class="string">"xl_123"</span>,<span class="number">24</span>,<span class="number">12000F</span>,<span class="keyword">new</span> Date());  </span><br><span class="line">user.setAge(<span class="keyword">null</span>);   </span><br><span class="line">String json = gson.toJson(user);  </span><br><span class="line">System.out.println(<span class="string">"序列化:"</span>+json);  </span><br><span class="line">  </span><br><span class="line">user = gson.fromJson(json,User.class);  </span><br><span class="line">System.out.println(<span class="string">"反序列化：\n"</span>+user);</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;  </span><br><span class="line">    <span class="keyword">private</span> String  id;  </span><br><span class="line">    <span class="meta">@Expose</span>  </span><br><span class="line">    <span class="meta">@SerializedName</span>(<span class="string">"name"</span>) <span class="comment">//序列化时会把userName字段名映射为name  </span></span><br><span class="line">    <span class="keyword">private</span> String  userName;  </span><br><span class="line">        <span class="comment">//序列化时使用，反序列化不使用该字段,默认都等于true  </span></span><br><span class="line">    <span class="meta">@Expose</span>(serialize=<span class="keyword">true</span>,deserialize=<span class="keyword">false</span>)  </span><br><span class="line">    <span class="keyword">private</span> String  userPwd;  </span><br><span class="line">    <span class="meta">@Expose</span>  </span><br><span class="line">    <span class="keyword">private</span> Integer age;  </span><br><span class="line">    <span class="keyword">private</span> Float   price;  </span><br><span class="line">    <span class="meta">@Expose</span>  </span><br><span class="line">    <span class="keyword">private</span> Date    birthday;  </span><br><span class="line">        get()和set()方法省略......!  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>三、<mvc:annotation-driven></mvc:annotation-driven></p>
-<p><mvc:annotation-driven>默认使用jackson序列化、反序列化json</mvc:annotation-driven></p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=<span class="string">"fastJsonConfig"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"com.alibaba.fastjson.support.config.FastJsonConfig"</span>&gt;</span><br><span class="line">    &lt;!-- Default charset --&gt;</span><br><span class="line">    &lt;property name=<span class="string">"charset"</span> value=<span class="string">"UTF-8"</span> /&gt;</span><br><span class="line">    &lt;!-- SerializerFeature --&gt;</span><br><span class="line">    &lt;property name=<span class="string">"serializerFeatures"</span>&gt;</span><br><span class="line">        &lt;list&gt;</span><br><span class="line">            &lt;value&gt;QuoteFieldNames&lt;/value&gt;</span><br><span class="line">            &lt;value&gt;WriteMapNullValue&lt;/value&gt;</span><br><span class="line">        &lt;/list&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- handlermapping，支持<span class="meta">@RequestMapping</span>，<span class="meta">@ResponseBody</span> --&gt;</span><br><span class="line">&lt;mvc:annotation-driven&gt;</span><br><span class="line">    &lt;mvc:message-converters&gt;</span><br><span class="line">        &lt;bean <span class="class"><span class="keyword">class</span></span>=<span class="string">"com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter"</span>&gt;</span><br><span class="line">            &lt;property name=<span class="string">"supportedMediaTypes"</span>&gt;</span><br><span class="line">                &lt;list&gt;</span><br><span class="line">                    &lt;value&gt;application/json;charset=UTF-8&lt;/value&gt;</span><br><span class="line">                    &lt;value&gt;text/html;charset=UTF-8&lt;/value&gt;</span><br><span class="line">                &lt;/list&gt;</span><br><span class="line">            &lt;/property&gt;</span><br><span class="line">            &lt;property name=<span class="string">"fastJsonConfig"</span> ref=<span class="string">"fastJsonConfig"</span>/&gt;</span><br><span class="line">        &lt;/bean&gt;</span><br><span class="line">    &lt;/mvc:message-converters&gt;</span><br><span class="line">&lt;/mvc:annotation-driven&gt;</span><br></pre></td></tr></table></figure>
+            <h2 id="dubbo服务被调用三次的问题"><a href="#dubbo服务被调用三次的问题" class="headerlink" title="dubbo服务被调用三次的问题"></a>dubbo服务被调用三次的问题</h2><hr>
+<p>该服务为涉及新增操作的服务，服务调用多次，导致数据保存了多条相同数据<br>出现该问题，排查过程：<br>1、通过查看数据库数据，发现有三条一样的数据，调试服务方代码，发现也进入了三次。<br>最终在服务方打印调用日志，结果为打印了三次</p>
+<p>2、是否消费方也请求了三次，消费方打印日志，消费方且只调用了一次，消费方只调用了一次，服务方且执行了三次，有点摸不到头脑了</p>
+<p>3、百度搜索“dubbo服务莫名调用多次”,发现有人遇到相同问题，网上说有两种情况会导致服务调用多次，一是dubbo架包存在多个，二是服务超时重试导致的</p>
+<p>4、网上说的原因给我提供思路，我就去检查项目中是否存在多个dubbo架包，发现存在两个不同版本的架包，我试着删除其中一个依赖其中一个版本dubbo架包的依赖配置，但是发现不管用，服务方还是调用三次；换另外一种解决方法，在服务提供方配置的暴露的服务地方设置retries属性为0，发现起作用了</p>
+<p>检查修改服务方retries属性为0时</p>
+<p>1、消费方日志：</p>
+<p>org.springframework.web.util.NestedServletException: Request processing failed; nested exception is com.alibaba.dubbo.rpc.RpcException: Failed to invoke the method commitApply in the service com.mhc.spyker.api.service.AdmittanceApplyFacade. Tried 1 times of the providers [192.168.0.105:20882] (1/1) from the registry 172.21.10.42:2181 on the consumer 192.168.0.105 using the dubbo version 2.5.3. Last error is: Invoke remote method timeout. method: commitApply</p>
+<p>Caused by: com.alibaba.dubbo.rpc.RpcException: Failed to invoke the method commitApply in the service com.mhc.spyker.api.service.AdmittanceApplyFacade. Tried 1 times of the providers [192.168.0.105:20882] (1/1) from the registry 172.21.10.42:2181 on the consumer 192.168.0.105 using the dubbo version 2.5.3. Last error is: Invoke remote method timeout. method: commitApply, </p>
+<p>Caused by: com.alibaba.dubbo.remoting.TimeoutException: Waiting server-side response timeout by scan timer. start time: 2018-05-26 00:38:45.035, end time: 2018-05-26 00:38:46.044, client elapsed: 11 ms, server elapsed: 998 ms, timeout: 1000 ms, </p>
+<p>2、服务方日志,打印服务方执行时间，结果为1684ms<br>2018-05-26 00:38:46.697 DEBUG 5913 — [:20882-thread-2] c.m.s.d.d.A.updateById                   : ==&gt; Parameters: 4268340(String), 111(Long)<br>2018-05-26 00:38:46.721 DEBUG 5913 — [:20882-thread-2] c.m.s.d.d.A.updateById                   : &lt;==    Updates: 1<br> Time：24 ms - ID：com.mhc.spyker.dal.dao.AdmittanceApplyRecordDao.updateById<br> Execute SQL： UPDATE b2b_admittance_apply_record SET process_InstanceId=’4268340’ WHERE id=111</p>
+<p>时间：1684<br>2018-05-26 00:39:45.878  INFO 5913 — [dTimer-thread-1] c.a.dubbo.monitor.dubbo.DubboMonitor     :  [DUBBO] Send statistics to monitor zookeeper://172.21.10.42:2181/com.alibaba.dubbo.monitor.MonitorService?dubbo=2.6.0&amp;interface=com.alibaba.dubbo.monitor.MonitorService&amp;pid=5913&amp;timestamp=1527265217854, dubbo version: 2.6.0, current host: 192.168.0.105<br>2018-05-26 00:39:45.880 ERROR 5913 — [dTimer-thread-1] c.a.dubbo.monitor.dubbo.DubboMonitor     :  [DUBBO] Unexpected error occur at send statistic, cause: No provider available from registry 172.21.10.42:2181 for service com.alibaba.dubbo.monitor.MonitorService on consumer 192.168.0.105 use dubbo version 2.6.0, may be providers disabled or not registered ?, dubbo version: 2.6.0, current host: 192.168.0.105</p>
+<p>通过日志能看出服务默认超时时间timeout为1000ms，超时默认最多重试两次，导致该问题的原因服务方的执行时间大于超时时间1000ms，导致重试了两次</p>
+<p>涉及修改操作：</p>
+<p>1、需要把retries设置为0，建议在服务消费方设置</p>
+<p>2、需要在服务方设置timeout属性，建议在服务提供方设置（服务提供方了解服务执行时间）</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/mysql总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/shortfeng/2018/03/12/mysql总结/" itemprop="url">mysql常用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-12T17:36:17+08:00">
+                2018-03-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="mysql常用"><a href="#mysql常用" class="headerlink" title="mysql常用"></a>mysql常用</h2><hr>
+<p>1、查找子字符串在字符串中的位置，类似oracle的indexof方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">LOCATE(substr,str), LOCATE(substr,str,pos)</span><br><span class="line"></span><br><span class="line">         第一个语法返回substr在字符串str 的第一个出现的位置。</span><br><span class="line"></span><br><span class="line">         第二个语法返回子符串 substr 在字符串str，从pos处开始的第一次出现的位置。如果substr 不在str 中，则返回值为0 。</span><br></pre></td></tr></table></figure>
+<p>2、ON UPDATE CURRENT_TIMESTAMP<br><code>gmt_modified</code> datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT ‘修改时间’</p>
+<p>3、 char_length、length函数<br>length:是计算字段的长度一个汉字是算三个字符,一个数字或字母算一个字符<br>char_length:不管汉字还是数字或者是字母都算是一个字符</p>
 
           
         
