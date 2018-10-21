@@ -338,7 +338,7 @@
 <p>park方法支持中断，如果调用线程被中断，则park方法会返回。同时park也拥有可以设置超时时间的版本。</p>
 <blockquote>
 <ul>
-<li><p>其实park/unpark的设计原理核心是“许可”：park是等待一个许可，unpark是为某线程提供一个许可。如果某线程A调用park，那么除非另外一个线程调用unpark(A)给A一个许可，否则线程A将阻塞在park操作上。</p>
+<li><p>其实park/unpark的设计原理核心是“许可”：<br>park是等待一个许可，unpark是为某线程提供一个许可。如果某线程A调用park，那么除非另外一个线程调用unpark(A)给A一个许可，否则线程A将阻塞在park操作上。</p>
 </li>
 <li><p>有一点比较难理解的，是unpark操作可以再park操作之前。<br>也就是说，先提供许可。当某线程调用park时，已经有许可了，它就消费这个许可，然后可以继续运行。这其实是必须的。考虑最简单的生产者(Producer)消费者(Consumer)模型：Consumer需要消费一个资源，于是调用park操作等待；Producer则生产资源，然后调用unpark给予Consumer使用的许可。非常有可能的一种情况是，Producer先生产，这时候Consumer可能还没有构造好（比如线程还没启动，或者还没切换到该线程）。那么等Consumer准备好要消费时，显然这时候资源已经生产好了，可以直接用，那么park操作当然可以直接运行下去。如果没有这个语义，那将非常难以操作。</p>
 </li>
