@@ -260,6 +260,146 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/10/21/LockSupport/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/shortfeng/2018/10/21/LockSupport/" itemprop="url">LockSupport</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-21T22:00:57+08:00">
+                2018-10-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="LockSupport"><a href="#LockSupport" class="headerlink" title="LockSupport"></a>LockSupport</h3><p>LockSupport 和 CAS 是Java并发包中很多并发工具控制机制的基础，它们底层其实都是依赖Unsafe实现。</p>
+<p>LockSupport是用来创建锁和其它同步类的基础阻塞原语。LockSupport提供park()和unpark()方法实现阻塞线程和解除线程阻塞，LockSupport和每个使用它的线程都与一个许可（permit）关联，permit相等于1、0的开关，默认为0，调用一次unpark就加1变成1，调用一次park会消费permit，将1变成0，同时park立即返回。再次调用park会变成block（因为permit为0了，会阻塞在这里，直到permit变为1）, 这时调用unpark会把permit置为1。每个线程都有一个相关的permit, permit最多只有一个，重复调用unpark也不会积累。</p>
+<p>LockSupport是不可重入的，如果一个线程连续2次调用LockSupport.park()，那么该线程一定会一直阻塞下去</p>
+<p>park()和unpark()不会有 “Thread.suspend和Thread.resume所可能引发的死锁” 问题，由于许可的存在，调用 park 的线程和另一个试图将其 unpark 的线程之间的竞争将保持活性。</p>
+<p>park方法支持中断，如果调用线程被中断，则park方法会返回。同时park也拥有可以设置超时时间的版本。</p>
+<blockquote>
+<ul>
+<li><p>其实park/unpark的设计原理核心是“许可”：park是等待一个许可，unpark是为某线程提供一个许可。如果某线程A调用park，那么除非另外一个线程调用unpark(A)给A一个许可，否则线程A将阻塞在park操作上。</p>
+</li>
+<li><p>有一点比较难理解的，是unpark操作可以再park操作之前。<br>也就是说，先提供许可。当某线程调用park时，已经有许可了，它就消费这个许可，然后可以继续运行。这其实是必须的。考虑最简单的生产者(Producer)消费者(Consumer)模型：Consumer需要消费一个资源，于是调用park操作等待；Producer则生产资源，然后调用unpark给予Consumer使用的许可。非常有可能的一种情况是，Producer先生产，这时候Consumer可能还没有构造好（比如线程还没启动，或者还没切换到该线程）。那么等Consumer准备好要消费时，显然这时候资源已经生产好了，可以直接用，那么park操作当然可以直接运行下去。如果没有这个语义，那将非常难以操作。</p>
+</li>
+<li><p>但是这个“许可”是不能叠加的，“许可”是一次性的。<br>比如线程B连续调用了三次unpark函数，当线程A调用park函数就使用掉这个“许可”，如果线程A再次调用park，则进入等待状态</p>
+</li>
+</ul>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LockSupport</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Makes available the permit for the given thread, if it</span></span><br><span class="line"><span class="comment">     * was not already available.  If the thread was blocked on</span></span><br><span class="line"><span class="comment">     * &#123;<span class="doctag">@code</span> park&#125; then it will unblock.  Otherwise, its next call</span></span><br><span class="line"><span class="comment">     * to &#123;<span class="doctag">@code</span> park&#125; is guaranteed not to block. This operation</span></span><br><span class="line"><span class="comment">     * is not guaranteed to have any effect at all if the given</span></span><br><span class="line"><span class="comment">     * thread has not been started.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> thread the thread to unpark, or &#123;<span class="doctag">@code</span> null&#125;, in which case</span></span><br><span class="line"><span class="comment">     *        this operation has no effect</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">unpark</span><span class="params">(Thread thread)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (thread != <span class="keyword">null</span>)</span><br><span class="line">            UNSAFE.unpark(thread);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Disables the current thread for thread scheduling purposes unless the</span></span><br><span class="line"><span class="comment">     * permit is available.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * &lt;p&gt;If the permit is available then it is consumed and the call returns</span></span><br><span class="line"><span class="comment">     * immediately; otherwise</span></span><br><span class="line"><span class="comment">     * the current thread becomes disabled for thread scheduling</span></span><br><span class="line"><span class="comment">     * purposes and lies dormant until one of three things happens:</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * &lt;ul&gt;</span></span><br><span class="line"><span class="comment">     * &lt;li&gt;Some other thread invokes &#123;<span class="doctag">@link</span> #unpark unpark&#125; with the</span></span><br><span class="line"><span class="comment">     * current thread as the target; or</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * &lt;li&gt;Some other thread &#123;<span class="doctag">@linkplain</span> Thread#interrupt interrupts&#125;</span></span><br><span class="line"><span class="comment">     * the current thread; or</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * &lt;li&gt;The call spuriously (that is, for no reason) returns.</span></span><br><span class="line"><span class="comment">     * &lt;/ul&gt;</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * &lt;p&gt;This method does &lt;em&gt;not&lt;/em&gt; report which of these caused the</span></span><br><span class="line"><span class="comment">     * method to return. Callers should re-check the conditions which caused</span></span><br><span class="line"><span class="comment">     * the thread to park in the first place. Callers may also determine,</span></span><br><span class="line"><span class="comment">     * for example, the interrupt status of the thread upon return.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> blocker the synchronization object responsible for this</span></span><br><span class="line"><span class="comment">     *        thread parking</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@since</span> 1.6</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">park</span><span class="params">(Object blocker)</span> </span>&#123;</span><br><span class="line">        Thread t = Thread.currentThread();</span><br><span class="line">        setBlocker(t, blocker);</span><br><span class="line">        UNSAFE.park(<span class="keyword">false</span>, <span class="number">0L</span>);</span><br><span class="line">        setBlocker(t, <span class="keyword">null</span>);</span><br><span class="line">    &#125;  </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> sun.misc.Unsafe UNSAFE;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> parkBlockerOffset;</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            UNSAFE = sun.misc.Unsafe.getUnsafe();</span><br><span class="line">            Class&lt;?&gt; tk = Thread.class;</span><br><span class="line">            parkBlockerOffset = UNSAFE.objectFieldOffset</span><br><span class="line">                (tk.getDeclaredField(<span class="string">"parkBlocker"</span>));</span><br><span class="line">            SEED = UNSAFE.objectFieldOffset</span><br><span class="line">                (tk.getDeclaredField(<span class="string">"threadLocalRandomSeed"</span>));</span><br><span class="line">            PROBE = UNSAFE.objectFieldOffset</span><br><span class="line">                (tk.getDeclaredField(<span class="string">"threadLocalRandomProbe"</span>));</span><br><span class="line">            SECONDARY = UNSAFE.objectFieldOffset</span><br><span class="line">                (tk.getDeclaredField(<span class="string">"threadLocalRandomSecondarySeed"</span>));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception ex) &#123; <span class="keyword">throw</span> <span class="keyword">new</span> Error(ex); &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>Thread中的parkBlocker用于记录线程被谁阻塞的，用于线程监控和分析工具来定位原因的，可以通过LockSupport的getBlocker获取到阻塞的对象。</p>
+<p>Unsafe类中的对应方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//park</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title">park</span><span class="params">(<span class="keyword">boolean</span> isAbsolute, <span class="keyword">long</span> time)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//unpack</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title">unpark</span><span class="params">(Object var1)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>park函数是将当前调用Thread阻塞，而unpark函数则是将指定线程Thread唤醒。</p>
+<h4 id="与Object中wait和notify的区别"><a href="#与Object中wait和notify的区别" class="headerlink" title="与Object中wait和notify的区别"></a>与Object中wait和notify的区别</h4><p>比wait/notify更加轻便灵活。LockSupport直接操作线程，而wait/notify则是需要一个Object对线程进行操作。<br>不依赖监视器（锁）。wait/notify需要在synchronized中进行调用，它首先需要获取到锁，才能进行下面的操作。而LockSupport则是直接进行调用。（synchronized与wait/notify配合使用，ReentrantLock与Condition配合使用。而Condition就是使用LockSupport实现等待与唤醒的</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/10/21/ReentrantRock/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1438,220 +1578,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/07/08/java面试题第五套/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="changfeng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/shortfeng/2018/07/08/java面试题第五套/" itemprop="url">java面试题第五套</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-08T22:05:38+08:00">
-                2018-07-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="java面试题第五套"><a href="#java面试题第五套" class="headerlink" title="java面试题第五套"></a>java面试题第五套</h3><p>一、Java相关</p>
-<p>乐观悲观锁的设计，如何保证原子性，解决的问题；</p>
-<p>char和double的字节，以及在内存的分布是怎样；</p>
-<p>对象内存布局，然后讲下对象的死亡过程？</p>
-<p>对象头，详细讲下；</p>
-<p>sync原理详细，sync内抛异常会怎样，死锁吗？还是释放掉？怎么排查死锁？死锁会怎样？有没有什么更好的替代方案？</p>
-<p>详细讲一下集合，HashSet源码，HashMap源码，如果要线程安全需要怎么做？</p>
-<p>多线程是解决什么问题的？线程池解决什么问题？</p>
-<p>线程池，如何设计的，里面的参数有多少种，里面的工作队列和线程队列是怎样的结构，如果给你，怎样设计线程池？</p>
-<p>AQS原理，ReentranLock源码，设计原理，整体过程。</p>
-<p>继续聊多线程源码，sync原理，然后一个场景设计题；</p>
-<p>float f = 1.4f;double d = 1.4d; 与 float f = 1.5f;double d = 1.5d; 是否为true，内存是怎样的；</p>
-<p>split的源码，split(“a|b|c”);得出多少个数组；</p>
-<p>把所有认识熟用的JUC( java.util.concurrent(简称JUC)包)下的类写出来，讲下使用，然后讲下原生的线程操作;</p>
-<p>开闭原则，解析工厂方法模式，建造者模式，区别。手撸出来。</p>
-<p>讲下JVM的大页模式，JVM内存模型;</p>
-<p>什么是敏捷开发，防御性编程，并行编程。Team Leader的思考;</p>
-<p>逃逸分析是什么，作用是什么，用途是什么;</p>
-<p>怎么认为一个类是线程安全？线程安全的定义是什么？Java有多少个关键字进行同步？为什么这样设计？（聊了一大堆，一堆为什么）；</p>
-<p>两个线程设计题。记得一个是：t1,t2,t3，让t1，t2执行完才执行t3，原生实现。</p>
-<p>写个后缀表达式，为什么要设计后缀表达式，有什么好处？然后写下中缀。</p>
-<p>我看你做过性能优化，比如你怎么分析项目里面的OOM的，内存泄露呢？详细说思路;</p>
-<p>说下多线程，我们什么时候需要分析线程数，怎么分析，分析什么因素;</p>
-<p>抽象方法和类方法的区别，static的抽象方法可以吗？</p>
-<p>说下Java的克隆体系;</p>
-<p>涉及OOM、JVM优化、源码问题、数据库优化、多线程等问题;</p>
-<p>CPU高？什么情况CPU高？解决什么问题？</p>
-<p>你有遇到过临界区问题吗？有遇到过吗？你在项目遇到这个问题是怎样解决的？</p>
-<p>volatile关键字作用;</p>
-<p>Java的多态怎么实现;</p>
-<p>解释一下自旋;</p>
-<p>解释一下信号量;</p>
-<p>什么情况下会触发类加载；</p>
-<p>Java内存抖动严重，优化的思路；</p>
-<p>二、数据库相关</p>
-<p>SQL优化思路，联合索引与底层树结构的映像关系，索引结构（B+、B-），为什么用这样的结构；</p>
-<p>讲下MySQL的集群？集群遇到过什么问题？sql的优化？</p>
-<p>你目前为止遇到的最大数据量是多少？知道100万时候怎么设计吗？1000万呢？过几十亿呢？</p>
-<p>MySQL有多少个参数可调，除了最大连接数。全部列出来，一个个分析。</p>
-<p>聊下优化过的索引，怎么优化;</p>
-<p>红黑树和平衡树的区别，为什么数据库不用红黑树;</p>
-<p>mysql有哪些锁，意向锁有什么用;</p>
-<p>数据库高并发下的优化思路;</p>
-<p>数据库什么情况下索引会失效;</p>
-<p>三、数据结构和操作系统相关</p>
-<p>数据结构学过吧，聊一下？学过什么结构？讲下树和队列？B树呢？</p>
-<p>操作系统学过吧，聊一下？讲一下系统内存是怎样的？分段分页虚拟内存？</p>
-<p>页面置换算法呢？多少种？有最优的置换算法吗？</p>
-<p>你学过什么课程？然后聊下操作系统，内核、用户之类。</p>
-<p>反转链表手撸;</p>
-<p>快排，给一串数组，把具体每次patition写下，最终结果也写45, 32, 41, 35, 38, 20, 50;</p>
-<p>一个整数status, 判断第K个比特位是否为比特1;</p>
-<p>把递归实现的快排改成非递归，你知道非递归有什么好处吗;</p>
-<p>举例使用分治思想的算法;</p>
-<p>四、网络相关</p>
-<p>讲下请求头细节？</p>
-<p>Http和Https？Http1.0,1.1,2.0，讲下长连接和短连接？Https是怎样的？如果我篡改了公钥呢？怎么防止？</p>
-<p>Get和Post，讲下区别，要我模拟出抓包来。</p>
-<p>详细讲下Cookie和Session，Token，OAuth2.0协议;</p>
-<p>拥塞算法知道吗？哪些，分别怎样？</p>
-<p>学过计算机网络是吧？socket熟悉吗？对它的读写缓冲区有理解吗？怎么的？那滑动窗口是怎样的？为什么这样设计？</p>
-<p>再聊下Http的Http basic authentication;</p>
-<p>Https的过程;</p>
-<p>五、框架相关</p>
-<p>聊下Spring源码，知道多少，都聊一下；</p>
-<p>聊下Spring注解，@Autowire，@Resource，以及他们的解析过程；</p>
-<p>聊一下架构，接入层架构，服务层架构。聊下技术栈，Spring Boot，Spring Cloud、Docker；</p>
-<p>Spring ioc的具体优势，和直接New一个对象有什么区别;</p>
-<p>Servlet生命周期，是否单例，为什么是单例;</p>
-<p>Spring Mvc初始化过程；</p>
-<p>五、分布式相关</p>
-<p>多少种RPC框架？</p>
-<p>一致性哈希是干嘛的？</p>
-<p>搭建高并发高可用系统需要怎样设计？考虑哪些东西，有多少说多少。</p>
-<p>你对缓存有什么理解？缓存是解决什么问题？后端缓存有哪些，分别解决什么问题？</p>
-<p>聊一下分布式锁；</p>
-<p>你是怎么设计系统缓存的，为什么，什么场景；</p>
-<p>也来说下，削峰的多种实现，Redis？MQ？</p>
-<p>为什么用mq就能削峰？解决什么问题？</p>
-<p>六、设计题</p>
-<p>有几台机器存储着几亿淘宝搜索日志，你只有一台2g的电脑，怎么选出搜索热度最高的十个搜索关键词;</p>
-<p>如何设计算法压缩一段URL;</p>
-<p>有一个页面能同时展示两个广告，现在有五个广告，设计算法使五个广告展示概率为1:2:3:4:5；</p>
-<p>有25匹马，五个赛道，用最少比赛次数将25匹马排序；</p>
-<p>七、其他相关</p>
-<p>Tomcat缓存，聊下缓存的整体理解，知道多少种缓存；</p>
-<p>解释下Mucene原理，倒排索引，怎样进行中文分词，基于什么进行分词；</p>
-<p>TopN的大数据量题；</p>
-<p>你对接入层要思考什么东西？遇到过哪些问题？搭建系统要考量哪些因素？</p>
-<p>然后项目问题，优化问题；</p>
-<p>熟悉maven是吧？我们来聊下Maven的源码原理，Maven冲突的时候，怎么选择依赖包，我们怎么查，我们遇到两个不一样的版本，我们应该如何去选择，为什么？</p>
-<p>项目如何分组，性能优化小组应该做哪些;</p>
-<p>我们来说下接入层的搭建，认知分析;</p>
-<p>问下项目的系统构建，思考，为什么这样构建？</p>
-<p>如何判断一段代码的好坏;</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1702,7 +1628,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/shortfeng/archives/">
-                <span class="site-state-item-count">48</span>
+                <span class="site-state-item-count">49</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

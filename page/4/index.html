@@ -260,6 +260,135 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/21/HashMap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="changfeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/shortfeng/2018/03/21/HashMap/" itemprop="url">HashMap</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-21T12:57:47+08:00">
+                2018-03-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h2><hr>
+<p>特点：</p>
+<blockquote>
+<ul>
+<li>允许null键/值</li>
+<li>非同步</li>
+<li>不保证有序（比如插入顺序）</li>
+<li>不保证顺序不随时间变化</li>
+</ul>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/19/JVM/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1396,130 +1525,6 @@ top -stats pid,command,cpu,th,pstate,time
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/mysql总结/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="changfeng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/shortfeng/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/shortfeng/2018/03/12/mysql总结/" itemprop="url">mysql常用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-12T17:36:17+08:00">
-                2018-03-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="mysql常用"><a href="#mysql常用" class="headerlink" title="mysql常用"></a>mysql常用</h2><hr>
-<p>1、查找子字符串在字符串中的位置，类似oracle的indexof方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">LOCATE(substr,str), LOCATE(substr,str,pos)</span><br><span class="line"></span><br><span class="line">         第一个语法返回substr在字符串str 的第一个出现的位置。</span><br><span class="line"></span><br><span class="line">         第二个语法返回子符串 substr 在字符串str，从pos处开始的第一次出现的位置。如果substr 不在str 中，则返回值为0 。</span><br></pre></td></tr></table></figure>
-<p>2、ON UPDATE CURRENT_TIMESTAMP<br><code>gmt_modified</code> datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT ‘修改时间’</p>
-<p>3、 char_length、length函数<br>length:是计算字段的长度一个汉字是算三个字符,一个数字或字母算一个字符<br>char_length:不管汉字还是数字或者是字母都算是一个字符</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/java lambda/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1658,7 +1663,7 @@ top -stats pid,command,cpu,th,pstate,time
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/ThreadLocal/">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/mysql总结/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="changfeng">
@@ -1677,7 +1682,7 @@ top -stats pid,command,cpu,th,pstate,time
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/shortfeng/2018/03/12/ThreadLocal/" itemprop="url">ThreadLocal</a></h1>
+                <a class="post-title-link" href="/shortfeng/2018/03/12/mysql总结/" itemprop="url">mysql常用</a></h1>
         
 
         <div class="post-meta">
@@ -1729,22 +1734,11 @@ top -stats pid,command,cpu,th,pstate,time
       
         
           
-            <h2 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h2><hr>
-<blockquote>
-<ul>
-<li>synchronized 以时间换空间</li>
-<li>ThreadLocal 以空间换时间</li>
-</ul>
-</blockquote>
-<p>Thread类保存了ThreadLocalMap类型的变量, ThreadLocalMap的key为ThreadLoacal对象</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ThreadLocal.ThreadLocalMap threadLocals = <span class="keyword">null</span>;</span><br></pre></td></tr></table></figure>
-<p>ThreadLocal类，支持范型</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>) &#123;</span><br><span class="line">        ThreadLocalMap.Entry e = map.getEntry(<span class="keyword">this</span>);</span><br><span class="line">        <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">            T result = (T)e.value;</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> setInitialValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(T value)</span> </span>&#123;</span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>)</span><br><span class="line">        map.set(<span class="keyword">this</span>, value);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        createMap(t, value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ThreadLocalMap <span class="title">getMap</span><span class="params">(Thread t)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> t.threadLocals;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> T <span class="title">setInitialValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    T value = initialValue();</span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>)</span><br><span class="line">        map.set(<span class="keyword">this</span>, value);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        createMap(t, value);</span><br><span class="line">    <span class="keyword">return</span> value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.sql.Connection;</span><br><span class="line"><span class="keyword">import</span> java.sql.DriverManager;</span><br><span class="line"><span class="keyword">import</span> java.sql.SQLException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConnectionManager</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> ThreadLocal&lt;Connection&gt; connectionHolder = <span class="keyword">new</span> ThreadLocal&lt;Connection&gt;() &#123;</span><br><span class="line">		<span class="meta">@Override</span></span><br><span class="line">		<span class="function"><span class="keyword">protected</span> Connection <span class="title">initialValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			Connection conn = <span class="keyword">null</span>;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				conn = DriverManager.getConnection(</span><br><span class="line">						<span class="string">"jdbc:mysql://localhost:3306/test"</span>, <span class="string">"username"</span>,</span><br><span class="line">						<span class="string">"password"</span>);</span><br><span class="line">			&#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">return</span> conn;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Connection <span class="title">getConnection</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> connectionHolder.get();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setConnection</span><span class="params">(Connection conn)</span> </span>&#123;</span><br><span class="line">		connectionHolder.set(conn);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以创建不同的ThreadLocal实例来实现多个变量在不同线程间的访问隔离，为什么可以这么做？因为不同的ThreadLocal对象作为不同键，当然也可以在线程的ThreadLocalMap对象中设置不同的值了。通过ThreadLocal对象，在多线程中共享一个值和多个值的区别，就像你在一个HashMap对象中存储一个键值对和多个键值对一样，仅此而已</p>
+            <h2 id="mysql常用"><a href="#mysql常用" class="headerlink" title="mysql常用"></a>mysql常用</h2><hr>
+<p>1、查找子字符串在字符串中的位置，类似oracle的indexof方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">LOCATE(substr,str), LOCATE(substr,str,pos)</span><br><span class="line"></span><br><span class="line">         第一个语法返回substr在字符串str 的第一个出现的位置。</span><br><span class="line"></span><br><span class="line">         第二个语法返回子符串 substr 在字符串str，从pos处开始的第一次出现的位置。如果substr 不在str 中，则返回值为0 。</span><br></pre></td></tr></table></figure>
+<p>2、ON UPDATE CURRENT_TIMESTAMP<br><code>gmt_modified</code> datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT ‘修改时间’</p>
+<p>3、 char_length、length函数<br>length:是计算字段的长度一个汉字是算三个字符,一个数字或字母算一个字符<br>char_length:不管汉字还是数字或者是字母都算是一个字符</p>
 
           
         
@@ -1793,7 +1787,7 @@ top -stats pid,command,cpu,th,pstate,time
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/dubbo服务调用三次的问题/">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/OLTP、OLAP/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="changfeng">
@@ -1812,7 +1806,7 @@ top -stats pid,command,cpu,th,pstate,time
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/shortfeng/2018/03/12/dubbo服务调用三次的问题/" itemprop="url">mysql常用</a></h1>
+                <a class="post-title-link" href="/shortfeng/2018/03/12/OLTP、OLAP/" itemprop="url">OLTP、OLAP</a></h1>
         
 
         <div class="post-meta">
@@ -1864,22 +1858,17 @@ top -stats pid,command,cpu,th,pstate,time
       
         
           
-            <h2 id="dubbo服务被调用三次的问题"><a href="#dubbo服务被调用三次的问题" class="headerlink" title="dubbo服务被调用三次的问题"></a>dubbo服务被调用三次的问题</h2><hr>
-<p>该服务为涉及新增操作的服务，服务调用多次，导致数据保存了多条相同数据<br>出现该问题，排查过程：<br>1、通过查看数据库数据，发现有三条一样的数据，调试服务方代码，发现也进入了三次。<br>最终在服务方打印调用日志，结果为打印了三次</p>
-<p>2、是否消费方也请求了三次，消费方打印日志，消费方且只调用了一次，消费方只调用了一次，服务方且执行了三次，有点摸不到头脑了</p>
-<p>3、百度搜索“dubbo服务莫名调用多次”,发现有人遇到相同问题，网上说有两种情况会导致服务调用多次，一是dubbo架包存在多个，二是服务超时重试导致的</p>
-<p>4、网上说的原因给我提供思路，我就去检查项目中是否存在多个dubbo架包，发现存在两个不同版本的架包，我试着删除其中一个依赖其中一个版本dubbo架包的依赖配置，但是发现不管用，服务方还是调用三次；换另外一种解决方法，在服务提供方配置的暴露的服务地方设置retries属性为0，发现起作用了</p>
-<p>检查修改服务方retries属性为0时</p>
-<p>1、消费方日志：</p>
-<p>org.springframework.web.util.NestedServletException: Request processing failed; nested exception is com.alibaba.dubbo.rpc.RpcException: Failed to invoke the method commitApply in the service com.mhc.spyker.api.service.AdmittanceApplyFacade. Tried 1 times of the providers [192.168.0.105:20882] (1/1) from the registry 172.21.10.42:2181 on the consumer 192.168.0.105 using the dubbo version 2.5.3. Last error is: Invoke remote method timeout. method: commitApply</p>
-<p>Caused by: com.alibaba.dubbo.rpc.RpcException: Failed to invoke the method commitApply in the service com.mhc.spyker.api.service.AdmittanceApplyFacade. Tried 1 times of the providers [192.168.0.105:20882] (1/1) from the registry 172.21.10.42:2181 on the consumer 192.168.0.105 using the dubbo version 2.5.3. Last error is: Invoke remote method timeout. method: commitApply, </p>
-<p>Caused by: com.alibaba.dubbo.remoting.TimeoutException: Waiting server-side response timeout by scan timer. start time: 2018-05-26 00:38:45.035, end time: 2018-05-26 00:38:46.044, client elapsed: 11 ms, server elapsed: 998 ms, timeout: 1000 ms, </p>
-<p>2、服务方日志,打印服务方执行时间，结果为1684ms<br>2018-05-26 00:38:46.697 DEBUG 5913 — [:20882-thread-2] c.m.s.d.d.A.updateById                   : ==&gt; Parameters: 4268340(String), 111(Long)<br>2018-05-26 00:38:46.721 DEBUG 5913 — [:20882-thread-2] c.m.s.d.d.A.updateById                   : &lt;==    Updates: 1<br> Time：24 ms - ID：com.mhc.spyker.dal.dao.AdmittanceApplyRecordDao.updateById<br> Execute SQL： UPDATE b2b_admittance_apply_record SET process_InstanceId=’4268340’ WHERE id=111</p>
-<p>时间：1684<br>2018-05-26 00:39:45.878  INFO 5913 — [dTimer-thread-1] c.a.dubbo.monitor.dubbo.DubboMonitor     :  [DUBBO] Send statistics to monitor zookeeper://172.21.10.42:2181/com.alibaba.dubbo.monitor.MonitorService?dubbo=2.6.0&amp;interface=com.alibaba.dubbo.monitor.MonitorService&amp;pid=5913&amp;timestamp=1527265217854, dubbo version: 2.6.0, current host: 192.168.0.105<br>2018-05-26 00:39:45.880 ERROR 5913 — [dTimer-thread-1] c.a.dubbo.monitor.dubbo.DubboMonitor     :  [DUBBO] Unexpected error occur at send statistic, cause: No provider available from registry 172.21.10.42:2181 for service com.alibaba.dubbo.monitor.MonitorService on consumer 192.168.0.105 use dubbo version 2.6.0, may be providers disabled or not registered ?, dubbo version: 2.6.0, current host: 192.168.0.105</p>
-<p>通过日志能看出服务默认超时时间timeout为1000ms，超时默认最多重试两次，导致该问题的原因服务方的执行时间大于超时时间1000ms，导致重试了两次</p>
-<p>涉及修改操作：</p>
-<p>1、需要把retries设置为0，建议在服务消费方设置</p>
-<p>2、需要在服务方设置timeout属性，建议在服务提供方设置（服务提供方了解服务执行时间）</p>
+            <h2 id="OLTP、OLAP"><a href="#OLTP、OLAP" class="headerlink" title="OLTP、OLAP"></a>OLTP、OLAP</h2><hr>
+<p>OLTP（on-line transaction processing），联机事务处理</p>
+<p>特点：</p>
+<p>1、实时性要求高</p>
+<p>2、DML多</p>
+<p>3、处理时间短</p>
+<p>OLAP（On-Line Analytical Processing），联机分析处理</p>
+<p>特点：</p>
+<p>1、实时性要求不是很高</p>
+<p>2、DML少，读多</p>
+<p>3、数据量大</p>
 
           
         
@@ -1928,7 +1917,7 @@ top -stats pid,command,cpu,th,pstate,time
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/mac linux/">
+    <link itemprop="mainEntityOfPage" href="https://killgc.github.io/shortfeng/shortfeng/2018/03/12/mvn/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="changfeng">
@@ -1947,7 +1936,7 @@ top -stats pid,command,cpu,th,pstate,time
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/shortfeng/2018/03/12/mac linux/" itemprop="url">mac linux</a></h1>
+                <a class="post-title-link" href="/shortfeng/2018/03/12/mvn/" itemprop="url">mvn</a></h1>
         
 
         <div class="post-meta">
@@ -1999,14 +1988,28 @@ top -stats pid,command,cpu,th,pstate,time
       
         
           
-            <h2 id="linux"><a href="#linux" class="headerlink" title="linux"></a>linux</h2><hr>
-<p>1、端口占用及杀死占用进程<br>sudo lsof -i:8080<br>sudo kill -9 2123</p>
-<p>2、搜索日志，并打印前后100行的内容<br>cat jetty_stdout.log | grep -C 100 注意接受到流程消息 </p>
-<p>3、从服务器上下载文件<br>scp publish@172.21.10.70:/home/publish/antx/finance/dev/antx-volks.properties /Users/user/</p>
-<p>4、docker容器命令<br>docker logs -f  ld9 看日志</p>
-<p>docker ps -a | grep volks 查看应用id<br>docker exec -it 1d9 /bin/bash 执行指定应用id的应用</p>
-<p>sudo su - admin 切换admin后才能执行docker命令</p>
-<p>5、显示或隐藏隐藏文件<br>快捷键：Command + Shift + .</p>
+            <h2 id="mvn"><a href="#mvn" class="headerlink" title="mvn"></a>mvn</h2><hr>
+<p>1、使用以下命令做一次构建</p>
+<p>mvn clean install</p>
+<p>2、可以通过以下的构建命令来跳过单元测试</p>
+<p>mvn install -Dmaven.test.skip</p>
+<p>3、架包推送<br>mvn clean package deploy -Dmaven.test.skip=true</p>
+<p>4、冲突解决</p>
+<p>mvn dependency:tree -Dverbose -Dincludes=commons-logging:commons-loggging</p>
+<p>这条命令可以打印出所有依赖了groupId和artifactId都为commons-logging的jar包的依赖路径。</p>
+<p>mvn dependency:tree -Dverbose -Dincludes=org.mybatis:mybatis -l /Users/user/log.txt<br>mvn dependency:tree -Dverbose -Dincludes=org.mybatis:mybatis –&gt; /Users/user/log.txt<br>输出到文件</p>
+<p>-D 指定参数，如 -Dmaven.test.skip=true 跳过单元测试；</p>
+<h4 id="原则："><a href="#原则：" class="headerlink" title="原则："></a>原则：</h4><p>1、第一声明优先原则</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line">&lt;!--   spring-beans-<span class="number">4.2</span>.4 --&gt;</span><br><span class="line">  	&lt;dependency&gt;</span><br><span class="line">  		&lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">  		&lt;artifactId&gt;spring-context&lt;/artifactId&gt;</span><br><span class="line">  		&lt;version&gt;4.2.4.RELEASE&lt;/version&gt;</span><br><span class="line">  	&lt;/dependency&gt;</span><br><span class="line">  </span><br><span class="line">&lt;!--   spring-beans-<span class="number">3.0</span>.5 --&gt;</span><br><span class="line">  	&lt;dependency&gt;</span><br><span class="line">  		&lt;groupId&gt;org.apache.struts&lt;/groupId&gt;</span><br><span class="line">  		&lt;artifactId&gt;struts2-spring-plugin&lt;/artifactId&gt;</span><br><span class="line">  		&lt;version&gt;2.3.24&lt;/version&gt;</span><br><span class="line">  	&lt;/dependency&gt;</span><br><span class="line">&lt;/dependencies&gt;</span><br></pre></td></tr></table></figure>
+<p>2、路径近者优先原则</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  	&lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">  	&lt;artifactId&gt;spring-beans&lt;/artifactId&gt;</span><br><span class="line">  	&lt;version&gt;4.2.4.RELEASE&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<p>3、排除原则</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  	&lt;groupId&gt;org.apache.struts&lt;/groupId&gt;</span><br><span class="line">  	&lt;artifactId&gt;struts2-spring-plugin&lt;/artifactId&gt;</span><br><span class="line">  	&lt;version&gt;2.3.24&lt;/version&gt;</span><br><span class="line">  	&lt;exclusions&gt;</span><br><span class="line">  	   &lt;exclusion&gt;</span><br><span class="line">  	      &lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">  	      &lt;artifactId&gt;spring-beans&lt;/artifactId&gt;</span><br><span class="line">  	   &lt;/exclusion&gt;</span><br><span class="line">       &lt;/exclusions&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<p>4、版本锁定原则</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;properties&gt;</span><br><span class="line">	&lt;spring.version&gt;4.2.4.RELEASE&lt;/spring.version&gt;</span><br><span class="line">	&lt;hibernate.version&gt;5.0.7.Final&lt;/hibernate.version&gt;</span><br><span class="line">	&lt;struts.version&gt;2.3.24&lt;/struts.version&gt;</span><br><span class="line">&lt;/properties&gt;</span><br><span class="line"> </span><br><span class="line">&lt;!-- 锁定版本，struts2-<span class="number">2.3</span>.24、spring4.2.4、hibernate5.0.7 --&gt;</span><br><span class="line">&lt;dependencyManagement&gt;</span><br><span class="line">	&lt;dependencies&gt;</span><br><span class="line">		&lt;dependency&gt;</span><br><span class="line">			&lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">			&lt;artifactId&gt;spring-context&lt;/artifactId&gt;</span><br><span class="line">			&lt;version&gt;$&#123;spring.version&#125;&lt;/version&gt;</span><br><span class="line">		&lt;/dependency&gt;</span><br><span class="line">        &lt;/dependencies&gt;</span><br><span class="line">&lt;/dependencyManagement&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="dependencies与dependencyManagement区别"><a href="#dependencies与dependencyManagement区别" class="headerlink" title="dependencies与dependencyManagement区别"></a>dependencies与dependencyManagement区别</h4><p>dependencyManagement只会影响现有依赖的配置，但不会引入依赖</p>
+<p>dependencies即使在子项目中不写该依赖项，那么子项目仍然会从父项目中继承该依赖项（全部继承）</p>
+<p>dependencyManagement里只是声明依赖，并不实现引入，因此子项目需要显示的声明需要用的依赖。如果不在子项目中声明依赖，是不会从父项目中继承下来的；只有在子项目中写了该依赖项，并且没有指定具体版本，才会从父项目中继承该项，并且version和scope都读取自父pom;另外如果子项目中指定了版本号，那么会使用子项目中指定的jar版本。</p>
 
           
         
@@ -2092,7 +2095,7 @@ top -stats pid,command,cpu,th,pstate,time
           
             <div class="site-state-item site-state-posts">
               <a href="/shortfeng/archives/">
-                <span class="site-state-item-count">48</span>
+                <span class="site-state-item-count">49</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
